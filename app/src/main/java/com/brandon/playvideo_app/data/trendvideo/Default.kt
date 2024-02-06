@@ -1,8 +1,8 @@
-package com.brandon.playvideo_app.data
+package com.brandon.playvideo_app.data.trendvideo
 
 import com.google.gson.annotations.SerializedName
 
-data class Maxres(
+data class Default(
     @SerializedName("height")
     val height: Int,
     @SerializedName("url")

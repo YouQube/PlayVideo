@@ -1,6 +1,7 @@
 package com.brandon.playvideo_app.data.api
 
-import com.brandon.playvideo_app.data.TrendVideoModel
+import com.brandon.playvideo_app.data.category.CategoryVideoModel
+import com.brandon.playvideo_app.data.trendvideo.TrendVideoModel
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -20,4 +21,11 @@ interface YouTubeApi {
         @Query("videoCategoryId") videoCategoryId: String? = null,
         @Query("key") apiKey: String = API_KEY
     ): TrendVideoModel
+
+    @GET("videoCategories")
+    suspend fun getCategoriesId(
+        @Query("part") part: String = PART,
+        @Query("regionCode") regionCode: String = REGION,
+        @Query("id") id: String,
+    ): CategoryVideoModel
 }

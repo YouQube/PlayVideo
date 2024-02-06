@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.brandon.playvideo_app.data.Item
+import com.brandon.playvideo_app.data.trendvideo.Item
 import com.brandon.playvideo_app.databinding.ItemTrendBinding
 import com.bumptech.glide.Glide
 
