@@ -9,11 +9,11 @@
         android:id="@+id/iv_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="6dp"
         android:adjustViewBounds="true"
         android:minHeight="300dp"
         android:scaleType="fitXY"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tv_channel_title" />
 
     <TextView
         android:id="@+id/tv_video_title"
@@ -22,6 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="22dp"
         android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_thumbnail"
@@ -32,9 +34,10 @@
         style="@style/channel_title_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="@id/tv_video_title"
-        app:layout_constraintTop_toBottomOf="@id/tv_video_title"
+        android:layout_marginStart="22dp"
+        app:layout_constraintBottom_toTopOf="@id/iv_thumbnail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="channelTitle" />
 
 
