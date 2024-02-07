@@ -114,6 +114,8 @@ class CategoryFragment : Fragment() {
                 withContext(Dispatchers.Main) {
                     categoryVideoAdapter.items = categoryVideos
                     categoryVideoAdapter.notifyDataSetChanged()
+                    //포지션 위치 초기화
+                    binding.recyclerviewCategory.scrollToPosition(0)
                 }
                 //404에러 API 불러올 수 없음
             }.onFailure {
