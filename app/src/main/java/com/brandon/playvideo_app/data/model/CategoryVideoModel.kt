@@ -1,4 +1,4 @@
-package com.brandon.playvideo_app.data.category
+package com.brandon.playvideo_app.data.model
 
 import com.google.gson.annotations.SerializedName
 

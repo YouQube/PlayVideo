@@ -6,14 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.brandon.playvideo_app.adapter.VideoAdapter
 import com.brandon.playvideo_app.data.api.RetrofitInstance
 import com.brandon.playvideo_app.databinding.TrendFragmentBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 class TrendFragment : Fragment() {
     private var _binding: TrendFragmentBinding? = null
@@ -31,7 +29,7 @@ class TrendFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Timber.d("Create")
+        //Timber.d("Create")
 
     }
 
@@ -65,6 +63,5 @@ class TrendFragment : Fragment() {
                 }
             }
         }
-
     }
 }
