@@ -6,14 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.brandon.playvideo_app.R
 import com.brandon.playvideo_app.data.api.RetrofitInstance
 import com.brandon.playvideo_app.data.model.ChannelItem
 import com.brandon.playvideo_app.databinding.CategoryFragmentBinding
+import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
 import com.google.android.material.chip.Chip
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class CategoryFragment : Fragment() {
     private var _binding: CategoryFragmentBinding? = null
@@ -47,6 +50,26 @@ class CategoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val toolbarBinding = ToolbarCommonBinding.bind(view.findViewById(R.id.included_tool_bar))
+        toolbarBinding.toolbarCommon.inflateMenu(R.menu.library_tool_bar_menu)
+
+        toolbarBinding.toolbarCommon.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.search -> {
+                    // 메뉴 아이템 1 클릭 시 동작할 코드 작성
+                    Timber.d("Search Item Clicked!")
+                    true
+                }
+                R.id.setting -> {
+                    // 메뉴 아이템 2 클릭 시 동작할 코드 작성
+                    Timber.d("Setting Item Clicked!")
+                    true
+                }
+                // 다른 메뉴 아이템에 대해서도 필요한 경우 추가할 수 있음
+                else -> false
+            }
+        }
 
     }
 
