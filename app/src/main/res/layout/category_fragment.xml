@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="12dp"
-        android:text="Channels by Category"
+        android:text="@string/category_fragment_title"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -75,5 +75,45 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_channel_by_category" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_marginHorizontal="10dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/constraint_layout_category_fragment"
+        app:layout_constraintTop_toBottomOf="@id/tb_category_toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
+        >
+        <ImageView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iv_category_empty"
+            android:src="@drawable/img_category_empty"
+            android:maxHeight="220dp"
+            android:minHeight="220dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.4"
+            />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_category_notice"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="해당 카테고리의 영상을 받아 올 수 없습니다."
+            app:layout_constraintTop_toBottomOf="@id/iv_category_empty"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

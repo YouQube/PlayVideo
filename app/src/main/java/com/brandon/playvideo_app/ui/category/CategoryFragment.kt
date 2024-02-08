@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.brandon.playvideo_app.R
@@ -77,7 +78,6 @@ class CategoryFragment : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             val responseData = RetrofitInstance.api.getTrendingVideos().items
             categoryVideoAdapter = CategoryVideoAdapter(responseData)
-
             channelAdapter = ChannelAdapter()
 
             withContext(Dispatchers.Main) {
@@ -99,7 +99,7 @@ class CategoryFragment : Fragment() {
     }
 
     private fun initViews() {
-        binding.chipGroupCategory.removeAllViewsInLayout()
+        binding.tvChannelByCategory.isVisible = false
         //카테고리 목록 받아오기
         CoroutineScope(Dispatchers.IO).launch {
             runCatching {
@@ -146,6 +146,7 @@ class CategoryFragment : Fragment() {
                     }
                     val videoCategoryId = idList[idx]
                     fetchCategory(videoCategoryId)
+
                 }.onFailure {
                     Toast.makeText(context, "index 에러", Toast.LENGTH_SHORT).show()
                 }
@@ -160,7 +161,6 @@ class CategoryFragment : Fragment() {
             runCatching {
                 val categoryVideos =
                     RetrofitInstance.api.getTrendingVideos(videoCategoryId = categoryId).items
-
 
                 //channelId를 리스트에 추가
                 val channelIdList = mutableListOf<String>()
@@ -184,10 +184,12 @@ class CategoryFragment : Fragment() {
                         recyclerviewCategory.scrollToPosition(0)
                         recyclerviewChannelsByCategory.scrollToPosition(0)
                     }
+                    viewVisible(true)
                 }
                 //404에러 API 불러올 수 없음
             }.onFailure {
                 withContext(Dispatchers.Main) {
+                    viewVisible(false)
                     categoryVideoAdapter.items = listOf()
                     categoryVideoAdapter.notifyDataSetChanged()
 
@@ -198,4 +200,8 @@ class CategoryFragment : Fragment() {
         }
     }
 
+    private fun viewVisible(state: Boolean) {
+        binding.tvChannelByCategory.isVisible = state
+        binding.constraintLayoutCategoryFragment.isVisible = !state
+    }
 }
