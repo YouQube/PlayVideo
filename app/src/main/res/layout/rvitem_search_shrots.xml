@@ -2,18 +2,20 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="96dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="8dp">
 
     <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="90dp"
+        android:id="@+id/iv_search_thumbnail"
+        android:layout_width="match_parent"
         android:layout_height="160dp"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tv_search_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -25,11 +27,11 @@
         android:ellipsize="end"
         android:text="동영상 제목동영상 제목동영상 제목동영상 제목동영상 제목동영상 제목동영상 제목"
         android:textSize="8sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintBottom_toTopOf="@+id/tv_search_uploader"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tv_search_uploader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -38,11 +40,11 @@
         android:textStyle="bold"
         android:text="업로더"
         android:textSize="8sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintBottom_toTopOf="@+id/tv_search_view"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/tv_search_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -50,7 +52,7 @@
         android:text="조회수"
         android:textSize="7sp"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_search_thumbnail"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
@@ -58,8 +60,9 @@
         android:layout_height="15dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="5dp"
-        android:src="@drawable/ic_launcher_background"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:src="@drawable/toggle_option"
+        app:layout_constraintEnd_toEndOf="@+id/iv_search_thumbnail"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
