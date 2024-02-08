@@ -5,30 +5,41 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/iv_category_thumbnail"
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:adjustViewBounds="true"
-        android:maxHeight="240dp"
-        android:maxWidth="220dp"
-        android:scaleType="fitXY"
+        android:id="@+id/cardview_category"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="12dp"
+        android:layout_marginHorizontal="10dp"
+        >
+        <ImageView
+            android:padding="1dp"
+            android:src="@mipmap/ic_launcher_round"
+            android:id="@+id/iv_category_thumbnail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:maxWidth="280dp"
+            android:maxHeight="250dp"
+            android:scaleType="fitXY"
+            />
+
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/tv_category_title"
         style="@style/video_title_style"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:ellipsize="end"
-        android:maxLines="2"
-        app:layout_constraintEnd_toEndOf="@id/iv_category_thumbnail"
-        app:layout_constraintStart_toStartOf="@id/iv_category_thumbnail"
-        app:layout_constraintTop_toBottomOf="@id/iv_category_thumbnail"
+        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="@id/cardview_category"
+        app:layout_constraintStart_toStartOf="@id/cardview_category"
+        app:layout_constraintTop_toBottomOf="@id/cardview_category"
         tools:text="Love wins all (Love wins all) " />
 
 
