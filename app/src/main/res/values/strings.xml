@@ -8,4 +8,6 @@
     <string name="main_tab_title_library">Library</string>
     <string name="main_tab_title_category">Category</string>
     <string name="trend_fragment_title">Most Popular Videos</string>
+    <string name="common_tool_bar_search">goToSearch</string>
+    <string name="library_tool_bar_open_setting">openSetting</string>
 </resources>
