@@ -1,10 +1,10 @@
-package com.brandon.playvideo_app.adapter
+package com.brandon.playvideo_app.ui.trend
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.brandon.playvideo_app.data.Item
+import com.brandon.playvideo_app.data.model.Item
 import com.brandon.playvideo_app.databinding.ItemTrendBinding
 import com.bumptech.glide.Glide
 
@@ -16,9 +16,8 @@ class VideoAdapter(private val items: List<Item>) :
             with(binding) {
                 tvVideoTitle.text = item.snippet.title
                 tvChannelTitle.text = item.snippet.channelTitle
-                Glide.with(itemView).load(item.snippet.thumbnails.maxres.url).into(ivThumbnail)
+                Glide.with(itemView).load(item.snippet.thumbnails.maxres?.url ?: item.snippet.thumbnails.default).into(ivThumbnail)
             }
-
         }
     }
 

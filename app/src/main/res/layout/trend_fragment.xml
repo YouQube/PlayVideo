@@ -6,37 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".ui.trend.TrendFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tb_trend_logo"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/tb_trend_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraint_layout_trend_top"
+            android:id="@+id/collapse_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/iv_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <include
+                android:id="@+id/included_tool_bar"
+                layout="@layout/toolbar_common" />
 
-            <ImageView
-                android:id="@+id/iv_search"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <View
         android:id="@+id/top_horizontal_line"
@@ -45,7 +33,7 @@
         android:layout_marginHorizontal="10dp"
         android:alpha="0.3"
         android:background="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/tb_trend_logo" />
+        app:layout_constraintTop_toBottomOf="@id/tb_trend_toolbar" />
 
     <View
         android:id="@+id/top_vertical_line"
