@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.brandon.playvideo_app.data.api.RetrofitInstance
+import com.brandon.playvideo_app.data.model.ChannelItem
 import com.brandon.playvideo_app.databinding.CategoryFragmentBinding
 import com.google.android.material.chip.Chip
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +19,7 @@ class CategoryFragment : Fragment() {
     private var _binding: CategoryFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var categoryVideoAdapter: CategoryVideoAdapter
+    private lateinit var channelAdapter: ChannelAdapter
     private var idList = mutableListOf<String>()
 
     companion object {
@@ -31,7 +33,6 @@ class CategoryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //Timber.d("Create")
     }
 
     override fun onCreateView(
@@ -54,22 +55,34 @@ class CategoryFragment : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             val responseData = RetrofitInstance.api.getTrendingVideos().items
             categoryVideoAdapter = CategoryVideoAdapter(responseData)
+
+            channelAdapter = ChannelAdapter()
+
             withContext(Dispatchers.Main) {
-                binding.recyclerviewCategory.apply {
-                    adapter = categoryVideoAdapter
-                    layoutManager =
-                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                with(binding) {
+                    recyclerviewCategory.apply {
+                        adapter = categoryVideoAdapter
+                        layoutManager =
+                            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+                        recyclerviewChannelsByCategory.apply {
+                            adapter = channelAdapter
+                            layoutManager =
+                                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        }
+                    }
                 }
             }
         }
     }
 
     private fun initViews() {
-        //카테고리 받아오기
+        //카테고리 목록 받아오기
         CoroutineScope(Dispatchers.IO).launch {
             runCatching {
                 val categories = RetrofitInstance.api.getCategoryIds().items
                 val category = mutableListOf<String>()
+                //assignable이 허용된 api Item만 추가
                 categories.filter { it.snippet.assignable }.forEach {
                     category.add(it.snippet.title)
                     idList.add(it.id)
@@ -98,34 +111,56 @@ class CategoryFragment : Fragment() {
             isClickable = true
             isCheckable = true
             setOnClickListener {
-                val idx = (id % 31) - 1
-                val videoCategoryId = idList[idx]
+                val idx = (id % 15) - 1
+                val videoCategoryId = idList[idx] //TODO 방식 변경 해야할 듯?
                 fetchCategory(videoCategoryId)
             }
         }
     }
 
-    //카테고리 별 영상 불러오기
+    //화면 초기화시 카테고리 별 영상 불러오기
     private fun fetchCategory(categoryId: String) {
+
         CoroutineScope(Dispatchers.IO).launch {
             runCatching {
                 val categoryVideos =
                     RetrofitInstance.api.getTrendingVideos(videoCategoryId = categoryId).items
+
+
+                //channelId를 리스트에 추가
+                val channelIdList = mutableListOf<String>()
+                categoryVideos.forEach { channelIdList.add(it.snippet.channelId) }
+
+                var channel = listOf<ChannelItem>()
+                channel =
+                    RetrofitInstance.api.getChannelInfo(channelId = channelIdList.joinToString(",")).items
+
                 withContext(Dispatchers.Main) {
+                    //CategoryVideos
                     categoryVideoAdapter.items = categoryVideos
                     categoryVideoAdapter.notifyDataSetChanged()
+
+                    //Channel By Category
+                    channelAdapter.channelItem = channel
+                    channelAdapter.notifyDataSetChanged()
+
                     //포지션 위치 초기화
-                    binding.recyclerviewCategory.scrollToPosition(0)
+                    with(binding) {
+                        recyclerviewCategory.scrollToPosition(0)
+                        recyclerviewChannelsByCategory.scrollToPosition(0)
+                    }
                 }
                 //404에러 API 불러올 수 없음
             }.onFailure {
                 withContext(Dispatchers.Main) {
                     categoryVideoAdapter.items = listOf()
                     categoryVideoAdapter.notifyDataSetChanged()
+
+                    channelAdapter.channelItem = listOf()
+                    channelAdapter.notifyDataSetChanged()
                 }
             }
         }
     }
+
 }
-
-
