@@ -12,7 +12,7 @@
 
     <item
         android:id="@+id/subscriptionFragment"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_subscription"
         android:title="@string/main_tab_title_subscription" />
 
     <item
