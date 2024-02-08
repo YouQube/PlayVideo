@@ -32,7 +32,7 @@ data class SearchItem(
     @SerializedName("channelTitle")
     var channelTitle : String?,
     @SerializedName("liveBroadcastContent")
-    var liveBroadcastContent : String,
+    var liveBroadcastContent : String
 //    @SerializedName("publishTime")
 //    var publishTime : Date
 )
@@ -62,46 +62,4 @@ data class SearchPageInfo(
     val totalResults : Int,
     @SerializedName("resultsPerPage")
     val resultsPerPage : Int
-)
-data class Snippet(
-    @SerializedName("publishedAt")
-    val publishedAt: Date,
-    @SerializedName("channelId")
-    val channelId : String,
-    @SerializedName("title")
-    val title : String,
-    @SerializedName("description")
-    val description : String,
-    @SerializedName("thumbnails")
-    val sThumbnails : thumbnails
-)
-
-
-
-
-data class High (
-    @SerializedName("url")
-    val url : String,
-    @SerializedName("width")
-    val width : Int,
-    @SerializedName("height")
-    val height : Int
-)
-
-data class Medium (
-    @SerializedName("url")
-    val url : String,
-    @SerializedName("width")
-    val width : Int,
-    @SerializedName("height")
-    val height : Int
-)
-
-data class Default (
-    @SerializedName("url")
-    val url : String,
-    @SerializedName("width")
-    val width : Int,
-    @SerializedName("height")
-    val height : Int
 )

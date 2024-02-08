@@ -79,7 +79,7 @@ class SearchFragment : Fragment() {
                     for(item in shortResult.items ){
                         val title = item.snippet.title
                         val uploader = item.channelTitle
-                        val url = item.snippet.sThumbnails.default.url
+                        val url = item.snippet.thumbnails.default.url
                         shortsVideoIds.add(item.id.videoId)
                         resShortsItem.add(SearchListItem(title,uploader,0,url,false,"12:02"))
 
@@ -99,7 +99,8 @@ class SearchFragment : Fragment() {
                     for(item in result.items ){
                         val title = item.snippet.title
                         val uploader = item.channelTitle
-                        val url = item.snippet.sThumbnails.default.url
+                        Timber.tag("test").d("uploader= %s", uploader)
+                        val url = item.snippet.thumbnails.default.url
                         listVideoIds.add(item.id.videoId)
                         resListItem.add(SearchListItem(title,uploader,0,url,false,"12:02"))
                     }
