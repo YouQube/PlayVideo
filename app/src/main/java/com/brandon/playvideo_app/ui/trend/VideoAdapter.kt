@@ -16,7 +16,7 @@ class VideoAdapter(private val items: List<Item>) :
             with(binding) {
                 tvVideoTitle.text = item.snippet.title
                 tvChannelTitle.text = item.snippet.channelTitle
-                Glide.with(itemView).load(item.snippet.thumbnails.maxres?.url ?: item.snippet.thumbnails.default).into(ivThumbnail)
+                Glide.with(itemView).load(item.snippet.thumbnails.maxres?.url ?: item.snippet.thumbnails.default.url).into(ivThumbnail)
             }
         }
     }
