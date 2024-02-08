@@ -58,6 +58,7 @@ class TrendFragment : Fragment() {
                     Timber.d("Search Item Clicked!")
                     true
                 }
+
                 R.id.setting -> {
                     // 메뉴 아이템 2 클릭 시 동작할 코드 작성
                     Timber.d("Setting Item Clicked!")

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.brandon.playvideo_app.R
@@ -53,20 +54,18 @@ class CategoryFragment : Fragment() {
 
         val toolbarBinding = ToolbarCommonBinding.bind(view.findViewById(R.id.included_tool_bar))
         toolbarBinding.toolbarCommon.inflateMenu(R.menu.library_tool_bar_menu)
-
         toolbarBinding.toolbarCommon.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.search -> {
-                    // 메뉴 아이템 1 클릭 시 동작할 코드 작성
                     Timber.d("Search Item Clicked!")
                     true
                 }
+
                 R.id.setting -> {
-                    // 메뉴 아이템 2 클릭 시 동작할 코드 작성
                     Timber.d("Setting Item Clicked!")
                     true
                 }
-                // 다른 메뉴 아이템에 대해서도 필요한 경우 추가할 수 있음
+
                 else -> false
             }
         }
@@ -100,6 +99,7 @@ class CategoryFragment : Fragment() {
     }
 
     private fun initViews() {
+        binding.chipGroupCategory.removeAllViewsInLayout()
         //카테고리 목록 받아오기
         CoroutineScope(Dispatchers.IO).launch {
             runCatching {
@@ -119,9 +119,13 @@ class CategoryFragment : Fragment() {
                     }
                 }
             }.onFailure {
+                //api 수신 실패 시
                 withContext(Dispatchers.Main) {
                     categoryVideoAdapter.items = listOf()
                     categoryVideoAdapter.notifyDataSetChanged()
+
+                    channelAdapter.channelItem = listOf()
+                    channelAdapter.notifyDataSetChanged()
                 }
             }
         }
@@ -134,9 +138,17 @@ class CategoryFragment : Fragment() {
             isClickable = true
             isCheckable = true
             setOnClickListener {
-                val idx = (id % 15) - 1
-                val videoCategoryId = idList[idx] //TODO 방식 변경 해야할 듯?
-                fetchCategory(videoCategoryId)
+                runCatching {
+                    //id의 인덱스 받아 오는 부분
+                    var idx = (id % 14) - 1
+                    if (idx == -1) {
+                        idx = 13
+                    }
+                    val videoCategoryId = idList[idx]
+                    fetchCategory(videoCategoryId)
+                }.onFailure {
+                    Toast.makeText(context, "index 에러", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
