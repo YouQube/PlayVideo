@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.brandon.playvideo_app.R
 import com.brandon.playvideo_app.data.api.RetrofitInstance
 import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
 import com.brandon.playvideo_app.databinding.TrendFragmentBinding
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -76,15 +76,15 @@ class TrendFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val responseData = RetrofitInstance.api.getTrendingVideos().items
-            withContext(Dispatchers.Main) {
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                val responseData = RetrofitInstance.api.getTrendingVideos().items
                 videoAdapter = VideoAdapter(responseData)
-                binding.recyclerView.apply {
-                    adapter = videoAdapter
-                    layoutManager =
-                        LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                }
+            }
+            binding.recyclerView.apply {
+                adapter = videoAdapter
+                layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             }
         }
     }
