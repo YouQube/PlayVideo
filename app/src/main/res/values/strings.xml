@@ -10,4 +10,5 @@
     <string name="trend_fragment_title">Most Popular Videos</string>
     <string name="common_tool_bar_search">goToSearch</string>
     <string name="library_tool_bar_open_setting">openSetting</string>
+    <string name="category_fragment_title">Channels by Category</string>
 </resources>
