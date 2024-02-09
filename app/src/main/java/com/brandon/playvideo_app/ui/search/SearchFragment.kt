@@ -1,15 +1,41 @@
 package com.brandon.playvideo_app.ui.search
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.brandon.playvideo_app.R
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.brandon.playvideo_app.data.RetrofitClient.apiService
+import com.brandon.playvideo_app.data.api.SearchInterface
+import com.brandon.playvideo_app.data.model.SearchModel
+import com.brandon.playvideo_app.data.model.VideoModel
+import com.brandon.playvideo_app.ui.search.adapter.SearchListAdapter
+import com.brandon.playvideo_app.databinding.SearchFragmentBinding
+import com.brandon.playvideo_app.model.SearchListItem
+import com.brandon.playvideo_app.ui.search.adapter.SearchShortsAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import timber.log.Timber
+import kotlin.concurrent.timer
 
 class SearchFragment : Fragment() {
+    private lateinit var binding : SearchFragmentBinding
+    private var resListItem = mutableListOf<SearchListItem>()
+    private var resShortsItem = mutableListOf<SearchListItem>()
+    private val listAdapter by lazy { SearchListAdapter(resListItem) }
+    private val shortsAdapter by lazy { SearchShortsAdapter(resShortsItem) }
 
+    private var listVideoIds = mutableListOf<String>()
+    private var shortsVideoIds = mutableListOf<String>()
+    private val apiKey = "AIzaSyCC8wNtOt0EiqzkoudHp1P9mrOHdCc1ap4"
     companion object {
         @JvmStatic
         fun newInstance() =
@@ -29,9 +55,111 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.search_fragment, container, false)
+        binding = SearchFragmentBinding.inflate(inflater,container,false)
+        return binding.root
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.rvSearchShorts.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvSearchShorts.adapter = shortsAdapter
+        //(binding.rvSearchShorts.adapter as SearchShortsAdapter).notifyDataSetChanged()
+        binding.rvSearchList.layoutManager =
+            LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+        binding.rvSearchList.adapter = listAdapter
+
+        binding.ivSearchSearchBtn.setOnClickListener {
+            val query = binding.etSearchSearching.text.toString()
+            lifecycleScope.launch { //서스펜드 메소드를 사용한다면 라이프사이클 스코프 안에서는 순차적으로 시행된다.
+                val shortResult = getSearchShorts(query)
+                if( shortResult?.pageInfo?.totalResults!! > 0 ) {
+                    for(item in shortResult.items ){
+                        val title = item.snippet.title
+                        val uploader = item.channelTitle
+                        val url = item.snippet.thumbnails.default.url
+                        shortsVideoIds.add(item.id.videoId)
+                        resShortsItem.add(SearchListItem(title,uploader,0,url,false,"12:02"))
+
+                    }
+                }
+                val shortResult2 = getViewCount(shortsVideoIds)
+
+                for(i in resShortsItem.indices){
+                    val viewCount = shortResult2?.item?.get(i)?.statistics?.viewCount
+                    if (viewCount != null) {
+                        resShortsItem[i].viewCount = viewCount
+                    }
+                }
+                val result = getSearchList(query)
+                Timber.tag("test").d("result= %s", result)
+                if( result?.pageInfo?.totalResults!! > 0 ) {
+                    for(item in result.items ){
+                        val title = item.snippet.title
+                        val uploader = item.channelTitle
+                        Timber.tag("test").d("uploader= %s", uploader)
+                        val url = item.snippet.thumbnails.default.url
+                        listVideoIds.add(item.id.videoId)
+                        resListItem.add(SearchListItem(title,uploader,0,url,false,"12:02"))
+                    }
+                }
+                val result2 = getViewCount(listVideoIds)
+
+                for(i in resListItem.indices){
+                    val viewCount = result2?.item?.get(i)?.statistics?.viewCount
+                    if (viewCount != null) {
+                        resListItem[i].viewCount = viewCount
+                    }
+                }
+
+                listAdapter.items = resListItem
+                shortsAdapter.items = resShortsItem
+
+                listAdapter.notifyDataSetChanged()
+                shortsAdapter.notifyDataSetChanged()
+
+            }
+        }
+    }
+
+    private suspend fun getSearchList(query: String)=
+        withContext(Dispatchers.IO){
+            apiService.searchVideo(
+                apiKey,
+                "snippet",
+                query,
+                5,
+                "relevance",
+                "KR",
+                "video",
+                "any")
+        }
+
+    private suspend fun getSearchShorts(query: String) =
+        withContext(Dispatchers.IO){
+        apiService.searchVideo(
+            apiKey,
+            "snippet",
+            query,
+            5,
+            "relevance",
+            "KR",
+            "video",
+            "short",
+        )}
+
+    private suspend fun getViewCount(ids : MutableList<String>)=
+        withContext(Dispatchers.IO){
+            val conrvertedId = ids.joinToString(",")
+            apiService.getViewCount(
+                apiKey,
+                "statistics",
+                conrvertedId,
+                "KR"
+            )
+        }
 
 
 }
