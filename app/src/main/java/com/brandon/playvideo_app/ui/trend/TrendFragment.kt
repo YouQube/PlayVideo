@@ -4,14 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.brandon.playvideo_app.R
 import com.brandon.playvideo_app.data.api.RetrofitInstance
+import com.brandon.playvideo_app.data.model.Item
 import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
 import com.brandon.playvideo_app.databinding.TrendFragmentBinding
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -20,6 +23,7 @@ class TrendFragment : Fragment() {
     private var _binding: TrendFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var videoAdapter: VideoAdapter
+    private lateinit var trendVideos: List<Item>
 
     companion object {
         @JvmStatic
@@ -77,15 +81,24 @@ class TrendFragment : Fragment() {
 
     private fun initRecyclerView() {
         lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                val responseData = RetrofitInstance.api.getTrendingVideos().items
-                videoAdapter = VideoAdapter(responseData)
-            }
-            binding.recyclerView.apply {
-                adapter = videoAdapter
-                layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            with(binding) {
+                pbTrendLoading.isVisible = true
+                trendVideos = getTrendingVideos()
+                pbTrendLoading.isVisible = false
+                videoAdapter = VideoAdapter(trendVideos)
+                recyclerView.apply {
+                    adapter = videoAdapter
+                    layoutManager =
+                        LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                }
             }
         }
     }
+
+    //async,await을 이용해서 통신결과를 기다리고 결과를 리턴하는 함수
+    private suspend fun getTrendingVideos(): List<Item> =
+        withContext(Dispatchers.IO) {
+            val responseData = async { RetrofitInstance.api.getTrendingVideos().items }
+            responseData.await()
+        }
 }
