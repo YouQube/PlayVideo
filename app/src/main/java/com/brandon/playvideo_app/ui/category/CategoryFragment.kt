@@ -17,6 +17,7 @@ import com.brandon.playvideo_app.databinding.CategoryFragmentBinding
 import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
 import com.google.android.material.chip.Chip
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -158,16 +159,17 @@ class CategoryFragment : Fragment() {
 
         lifecycleScope.launch {
             runCatching {
-                withContext(Dispatchers.IO) {
-                    categoryVideos =
-                        RetrofitInstance.api.getTrendingVideos(videoCategoryId = categoryId).items
-                    //channelId를 리스트에 추가
-                    val channelIdList = mutableListOf<String>()
-                    categoryVideos.forEach { channelIdList.add(it.snippet.channelId) }
+                binding.pbCategoryLoading.isVisible = true //로딩 처리
+                categoryVideos =
+                    getCategoryVideos(categoryId) //api 통신
 
-                    channel =
-                        RetrofitInstance.api.getChannelInfo(channelId = channelIdList.joinToString(",")).items
-                }
+                //channelId를 리스트에 추가
+                val channelIdList = mutableListOf<String>()
+                categoryVideos.forEach { channelIdList.add(it.snippet.channelId) }
+                channel =
+                    getChannelInfo(channelIdList) //api 통신
+
+                binding.pbCategoryLoading.isVisible = false //로딩 처리
 
                 //CategoryVideos
                 categoryVideoAdapter.items = categoryVideos
@@ -182,7 +184,7 @@ class CategoryFragment : Fragment() {
                     recyclerviewCategory.scrollToPosition(0)
                     recyclerviewChannelsByCategory.scrollToPosition(0)
                 }
-                viewVisible(true)//Channels by Category Text-View
+                viewVisible(true, false)//Channels by Category Text-View
 
                 //404에러 API 불러올 수 없음
             }.onFailure {
@@ -192,18 +194,36 @@ class CategoryFragment : Fragment() {
     }
 
     //Api 수신 결과에 따른 view 상태
-    private fun viewVisible(state: Boolean) {
+    private fun viewVisible(state: Boolean, loadingState: Boolean) {
         binding.tvChannelByCategory.isVisible = state
         binding.constraintLayoutCategoryFragment.isVisible = !state
+        binding.pbCategoryLoading.isVisible = loadingState
     }
 
     //api 수신 실패시 ui 변경
     private fun receptionFailed() {
-        viewVisible(false)
+        viewVisible(false, false)
         categoryVideoAdapter.items = listOf()
         categoryVideoAdapter.notifyDataSetChanged()
 
         channelAdapter.channelItem = listOf()
         channelAdapter.notifyDataSetChanged()
     }
+
+    //api 통신 로딩 처리 부분
+    private suspend fun getCategoryVideos(categoryId: String): List<Item> =
+        withContext(Dispatchers.IO) {
+            val responseData =
+                async { RetrofitInstance.api.getTrendingVideos(videoCategoryId = categoryId).items }
+            responseData.await()
+        }
+
+    private suspend fun getChannelInfo(channelIdList: MutableList<String>): List<ChannelItem> =
+        withContext(Dispatchers.IO) {
+            val responseData = async {
+                RetrofitInstance.api.getChannelInfo(channelId = channelIdList.joinToString(",")).items
+            }
+            responseData.await()
+        }
 }
+
