@@ -18,14 +18,6 @@ data class YoutubeSearchResponse(
     val items: List<YoutubeSearchItem>?
 )
 
-// 페이지 정보에 대한 모델
-data class PageInfo(
-    @SerializedName("totalResults") // 총 결과 수
-    val totalResults: Int?,
-    @SerializedName("resultsPerPage") // 페이지당 결과 수
-    val resultsPerPage: Int?
-)
-
 // YouTube 비디오 검색 결과 항목에 대한 모델
 data class YoutubeSearchItem(
     @SerializedName("kind") // 항목의 종류
@@ -66,6 +58,7 @@ data class YoutubeVideoSnippet(
     val publishTime: String?
 )
 
+
 // YouTube 비디오 썸네일 정보에 대한 모델
 data class YoutubeThumbnails(
     @SerializedName("default") // 기본 썸네일
@@ -85,3 +78,4 @@ data class Thumbnail(
     @SerializedName("height") // 이미지 높이
     val height: Int?
 )
+

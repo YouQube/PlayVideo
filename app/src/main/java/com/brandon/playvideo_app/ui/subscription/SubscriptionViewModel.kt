@@ -12,6 +12,7 @@ class SubscriptionViewModel(
     private val youtubeSearchRepository: YoutubeSearchRepository
 ) : ViewModel() {
 
+    // 비디오, 카테고리, 채널, 써치
 
     /**
      * 구독 채널 정보
