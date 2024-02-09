@@ -13,10 +13,7 @@ import com.brandon.playvideo_app.data.api.RetrofitInstance
 import com.brandon.playvideo_app.data.model.Item
 import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
 import com.brandon.playvideo_app.databinding.TrendFragmentBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class TrendFragment : Fragment() {
@@ -95,10 +92,7 @@ class TrendFragment : Fragment() {
         }
     }
 
-    //async,await을 이용해서 통신결과를 기다리고 결과를 리턴하는 함수
+    //api 통신 부분
     private suspend fun getTrendingVideos(): List<Item> =
-        withContext(Dispatchers.IO) {
-            val responseData = async { RetrofitInstance.api.getTrendingVideos().items }
-            responseData.await()
-        }
+        RetrofitInstance.api.getTrendingVideos().items
 }

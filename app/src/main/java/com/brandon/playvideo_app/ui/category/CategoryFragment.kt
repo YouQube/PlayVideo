@@ -17,7 +17,6 @@ import com.brandon.playvideo_app.databinding.CategoryFragmentBinding
 import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
 import com.google.android.material.chip.Chip
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -210,20 +209,15 @@ class CategoryFragment : Fragment() {
         channelAdapter.notifyDataSetChanged()
     }
 
-    //api 통신 로딩 처리 부분
+    //api 통신 부분
     private suspend fun getCategoryVideos(categoryId: String): List<Item> =
         withContext(Dispatchers.IO) {
-            val responseData =
-                async { RetrofitInstance.api.getTrendingVideos(videoCategoryId = categoryId).items }
-            responseData.await()
+            RetrofitInstance.api.getTrendingVideos(videoCategoryId = categoryId).items
         }
 
     private suspend fun getChannelInfo(channelIdList: MutableList<String>): List<ChannelItem> =
         withContext(Dispatchers.IO) {
-            val responseData = async {
-                RetrofitInstance.api.getChannelInfo(channelId = channelIdList.joinToString(",")).items
-            }
-            responseData.await()
+            RetrofitInstance.api.getChannelInfo(channelId = channelIdList.joinToString(",")).items
         }
 }
 
