@@ -19,7 +19,8 @@ class ChannelAdapter :
             with(binding) {
                 tvChannelName.text = item.snippet.title
                 Glide.with(itemView)
-                    .load(item.snippet.thumbnails.high?.url ?: item.snippet.thumbnails.default.url).into(ivChannelThumbnail)
+                    .load(item.snippet.thumbnails.high?.url ?: item.snippet.thumbnails.default.url)
+                    .into(ivChannelThumbnail)
             }
         }
     }

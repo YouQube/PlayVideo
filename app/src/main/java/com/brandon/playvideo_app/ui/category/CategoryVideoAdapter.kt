@@ -15,7 +15,8 @@ class CategoryVideoAdapter(var items: List<Item>) :
         fun bind(item: Item) {
             with(binding) {
                 tvCategoryTitle.text = item.snippet.title
-                Glide.with(itemView).load(item.snippet.thumbnails.maxres?.url ?: item.snippet.thumbnails.default)
+                Glide.with(itemView)
+                    .load(item.snippet.thumbnails.maxres?.url ?: item.snippet.thumbnails.default)
                     .into(ivCategoryThumbnail)
             }
         }
