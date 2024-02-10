@@ -6,31 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.brandon.playvideo_app.R
-import com.brandon.playvideo_app.data.api.RetrofitInstance
-import com.brandon.playvideo_app.data.model.CategoryItem
-import com.brandon.playvideo_app.data.model.ChannelItem
-import com.brandon.playvideo_app.data.model.Item
 import com.brandon.playvideo_app.databinding.CategoryFragmentBinding
 import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
+import com.brandon.playvideo_app.viewmodel.CategoryViewModel
 import com.google.android.material.chip.Chip
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class CategoryFragment : Fragment() {
     private var _binding: CategoryFragmentBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by viewModels<CategoryViewModel>()
+    private val channelAdapter by lazy { ChannelAdapter() }
     private lateinit var categoryVideoAdapter: CategoryVideoAdapter
-    private lateinit var channelAdapter: ChannelAdapter
-    private lateinit var channel: List<ChannelItem>
-    private lateinit var categoryVideos: List<Item>
-    private lateinit var categories: List<CategoryItem>
-    private lateinit var trendVideos: List<Item>
-    private var idList = mutableListOf<String>()
 
     companion object {
         @JvmStatic
@@ -51,12 +41,17 @@ class CategoryFragment : Fragment() {
     ): View {
         _binding = CategoryFragmentBinding.inflate(inflater, container, false)
         initViews()
+
+        //진입시 초기 트렌드 비디오 셋팅
         initRecyclerView()
+        viewModelObserve()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getTrendingVideos()//초기 화면 트렌드 비디오 셋팅
+
 
         val toolbarBinding = ToolbarCommonBinding.bind(view.findViewById(R.id.included_tool_bar))
         toolbarBinding.toolbarCommon.inflateMenu(R.menu.library_tool_bar_menu)
@@ -78,12 +73,97 @@ class CategoryFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
+        categoryVideoAdapter = CategoryVideoAdapter(listOf())
+        with(binding) {
+            //카테고리 영상 recyclerView
+            recyclerviewCategory.apply {
+                adapter = categoryVideoAdapter
+                layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            }
+            //채널 정보 recyclerView
+            recyclerviewChannelsByCategory.apply {
+                adapter = channelAdapter
+                layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            }
+        }
+    }
+
+    //초기 화면 셋팅 칩 생성
+    private fun initViews() {
+        viewModel.loadingState(false)
+        viewModel.getCategoryIds()
+        //assignable 허용된 id만 가져와서 칩그룹에 추가하는 코드
+        viewModel.categoryIdList.observe(viewLifecycleOwner) { idList ->
+            idList.filter { it.snippet.assignable }.forEach { id ->
+                binding.chipGroupCategory.addView(createChip(id.snippet.title, id.id))
+            }
+        }
+    }
+
+    private fun createChip(category: String, videoCategoryId: String): Chip {
+        return Chip(context).apply {
+            setText(category)
+            isClickable = true
+            isCheckable = true
+
+            setOnClickListener {
+                //로딩 ui 처리
+                viewModel.loadingState(true)
+                //칩이 눌리면 카테고리별 영상과 채널 정보를 가져옴
+                viewModel.fetchCategoryVideos(videoCategoryId)
+            }
+        }
+    }
+
+    private fun viewVisible(state: Boolean) {
+        binding.tvChannelByCategory.isVisible = state
+        binding.constraintLayoutCategoryFragment.isVisible = !state
+    }
+
+    private fun viewModelObserve() {
+        viewModel.trendVideos.observe(viewLifecycleOwner) {
+            categoryVideoAdapter.items = it
+            categoryVideoAdapter.notifyDataSetChanged()
+        }
+        //카테고리 칩이 눌리면 카테고리별 영상과 채널의 썸네일을 보여줌
+        viewModel.categoryVideos.observe(viewLifecycleOwner) {
+            categoryVideoAdapter.items = it
+            categoryVideoAdapter.notifyDataSetChanged()
+        }
+
+        viewModel.channel.observe(viewLifecycleOwner) {
+            channelAdapter.channelItem = it
+            channelAdapter.notifyDataSetChanged()
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            binding.pbCategoryLoading.isVisible = it
+        }
+        //api 통신 상태에 따른 ui 처리
+        viewModel.receptionState.observe(viewLifecycleOwner) {
+            viewVisible(it)
+        }
+    }
+}
+
+/* 초기 코드
+private lateinit var categoryVideoAdapter: CategoryVideoAdapter
+private val channelAdapter by lazy { ChannelAdapter() }
+private lateinit var channel: List<ChannelItem>
+private lateinit var categoryVideos: List<Item>
+private lateinit var categories: List<CategoryItem>
+private lateinit var trendVideos: List<Item>
+private var idList = mutableListOf<String>()
+
+    private fun initRecyclerView() {
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 trendVideos = RetrofitInstance.api.getTrendingVideos().items
             }
             categoryVideoAdapter = CategoryVideoAdapter(trendVideos)
-            channelAdapter = ChannelAdapter()
+
 
             with(binding) {
                 recyclerviewCategory.apply {
@@ -219,5 +299,5 @@ class CategoryFragment : Fragment() {
         withContext(Dispatchers.IO) {
             RetrofitInstance.api.getChannelInfo(channelId = channelIdList.joinToString(",")).items
         }
-}
+*/
 
