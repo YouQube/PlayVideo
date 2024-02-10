@@ -6,21 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.brandon.playvideo_app.R
-import com.brandon.playvideo_app.data.api.RetrofitInstance
-import com.brandon.playvideo_app.data.model.Item
 import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
 import com.brandon.playvideo_app.databinding.TrendFragmentBinding
-import kotlinx.coroutines.launch
+import com.brandon.playvideo_app.viewmodel.TrendViewModel
 import timber.log.Timber
 
 class TrendFragment : Fragment() {
     private var _binding: TrendFragmentBinding? = null
     private val binding get() = _binding!!
-    private lateinit var videoAdapter: VideoAdapter
-    private lateinit var trendVideos: List<Item>
+
+    private val videoAdapter by lazy { VideoAdapter(listOf()) }
+    private val viewModel by viewModels<TrendViewModel>()
 
     companion object {
         @JvmStatic
@@ -43,6 +42,7 @@ class TrendFragment : Fragment() {
     ): View {
         _binding = TrendFragmentBinding.inflate(inflater, container, false)
         initRecyclerView()
+        viewModelObserving()
         return binding.root
     }
 
@@ -69,6 +69,9 @@ class TrendFragment : Fragment() {
                 else -> false
             }
         }
+        //viewModel에 데이터 요청
+        viewModel.trendingVideos()
+
     }
 
     override fun onDestroy() {
@@ -76,23 +79,26 @@ class TrendFragment : Fragment() {
         _binding = null
     }
 
+    //리사이클러뷰 초기화
     private fun initRecyclerView() {
-        lifecycleScope.launch {
-            with(binding) {
-                pbTrendLoading.isVisible = true
-                trendVideos = getTrendingVideos()
-                pbTrendLoading.isVisible = false
-                videoAdapter = VideoAdapter(trendVideos)
-                recyclerView.apply {
-                    adapter = videoAdapter
-                    layoutManager =
-                        LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                }
+        with(binding) {
+            recyclerView.apply {
+                adapter = videoAdapter
+                layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             }
         }
     }
 
-    //api 통신 부분
-    private suspend fun getTrendingVideos(): List<Item> =
-        RetrofitInstance.api.getTrendingVideos().items
+    //viewModel 상태 관찰 //binding 으로 묶고 viewModel 상태를 observing 해도 되는지??
+    private fun viewModelObserving() {
+        with(binding) {
+            viewModel.trendVideos.observe(viewLifecycleOwner) {
+                recyclerView.adapter = VideoAdapter(it)
+            }
+            viewModel.isLoading.observe(viewLifecycleOwner) {
+                pbTrendLoading.isVisible = it
+            }
+        }
+    }
 }
