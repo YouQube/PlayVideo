@@ -20,8 +20,10 @@ class TrendViewModel(val repository: PlayVideoRepository = PlayVideoRepository()
         viewModelScope.launch {
             val trendingVideos = repository.getTrendingVideos()
             _trendVideos.value = trendingVideos
-            _isLoading.value = false
+            loadingState(false)
         }
     }
-
+    fun loadingState(state:Boolean){
+        _isLoading.value = state
+    }
 }
