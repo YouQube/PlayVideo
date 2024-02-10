@@ -23,7 +23,9 @@ data class Item(
     @SerializedName("kind")
     val kind: String,
     @SerializedName("snippet")
-    val snippet: Snippet
+    val snippet: Snippet,
+    @SerializedName("statistics")
+    var statistics : Statistics
 )
 
 data class Snippet(
@@ -123,4 +125,15 @@ data class Default(
     val url: String,
     @SerializedName("width")
     val width: Int
+)
+
+data class Statistics(
+    @SerializedName("viewCount")
+    val viewCount: Int,
+    @SerializedName("likeCount")
+    val likeCount : Int,
+    @SerializedName("favoriteCount")
+    val favoriteCount : Int,
+    @SerializedName("commentCount")
+    val commentCount : Int
 )

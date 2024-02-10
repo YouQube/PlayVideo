@@ -87,7 +87,8 @@ interface YouTubeApi {
         @Query("videoCategoryId") videoCategoryId: String?,
         @Query("videoDuration") videoDuration: String?,
         @Query("videoEmbeddable") videoEmbeddable: Boolean?,
-        @Query("videoType") videoType: String?
+        @Query("videoType") videoType: String?,
+        @Query("regionCode") regionCode: String
     ): Response<YoutubeSearchResponse>
 
     /**
@@ -109,4 +110,42 @@ interface YouTubeApi {
         @Query("order") order: String = "date"
     ): Response<YoutubeSearchResponse>
 
+    /**
+     * YouTube Data API를 사용하여 단어를 이용하여 비디오의 검색 결과를 가져옵니다..
+     *
+     * @param key YouTube Data API 키
+     * @param part 검색 결과에서 반환할 리소스의 파트 (snippet 단일 값)
+     * @param maxResults 검색 결과로 반환할 최대 항목 수 (기본 5 - 0~50)
+     * @param q 검색할 검색어를 지정합니다, 다중 검색어 검색 가능, 이스케이프 처리 [|, 검색어 추가], [-, 검색어 제외]]
+     * @param order 정렬기준 (기본 relevance - date, rating, relevance, title, videoCount, viewCount)
+     * @param regionCode 국가코드 예시 KR
+     * @param type 검색 결과로 반환할 리소스 유형 (video, channel, playlist 등)
+     * @param videoDuration 검색할 비디오의 길이 (any, long, medium, short)
+     * @return 채널의 최신 비디오 목록에 대한 ApiResponse<TrendVideoModel>
+     */
+    @GET("search")
+    suspend fun searchVideo(
+        @Query("key") apiKey: String,
+        @Query("part") part: String,
+        @Query("q") q: String,
+        @Query("maxResults") maxResults: Int,
+        @Query("order") order: String,
+        @Query("regionCode") regionCode: String,
+        @Query("type") type: String,
+        @Query("videoDuration") videoDuration: String
+    ): YoutubeSearchResponse?
+
+
+    /**
+     * YouTube Data API를 사용하여 비디오 아이디를 이용하여 해당 비디오의 통계 정보를 가져옵니다..
+     *
+     * @param id 비디오의 ID
+     * @return 채널의 최신 비디오 목록에 대한 ApiResponse<TrendVideoModel>
+     */
+    @GET("videos")
+    suspend fun getViewCountByVideoId(
+        @Query("key") apiKey: String,
+        @Query("part") part: String = "statics",
+        @Query("id") id: String
+    ): TrendVideoModel?
 }
