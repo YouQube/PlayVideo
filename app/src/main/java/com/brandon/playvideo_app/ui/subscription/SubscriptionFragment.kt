@@ -44,7 +44,6 @@ class SubscriptionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(view)
 
-        viewModel.fetchSubChannelsInfo()
     }
 
     override fun onDestroyView() {

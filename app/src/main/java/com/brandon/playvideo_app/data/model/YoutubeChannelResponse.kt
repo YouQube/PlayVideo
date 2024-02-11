@@ -2,7 +2,7 @@ package com.brandon.playvideo_app.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class ChannelByCategoryModel(
+data class YoutubeChannelResponse(
     val etag: String,
     @SerializedName("items")
     val items: List<ChannelItem>,
@@ -52,7 +52,8 @@ data class ChannelItem(
     val id: String,
     val kind: String,
     @SerializedName("snippet")
-    val snippet: ChannelSnippet
+    val snippet: ChannelSnippet,
+    val statistics: ChannelStatistics? = null
 )
 
 data class ChannelHigh(
@@ -78,4 +79,11 @@ data class ChannelLocalized(
     val description: String,
     @SerializedName("title")
     val title: String
+)
+
+data class ChannelStatistics(
+    val viewCount: String? = null,
+    val subscriberCount: String? = null,
+    val hiddenSubscriberCount: Boolean? = null,
+    val videoCount: String? = null,
 )

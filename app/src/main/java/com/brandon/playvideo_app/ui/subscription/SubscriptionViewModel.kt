@@ -29,25 +29,4 @@ class SubscriptionViewModel(
         SubscribedChannelItem(channelId = "UCvW8norVMTLt7QN-s2pS4Bw"),  // 조승연의 탐구생활
     )
 
-    /**
-     * 구독자 목록을 참고하여
-     * 총 영상 개수가 null 이고 마지막 개수 업데이트 시간이 null 이면,
-     * 각 구독 채널에 대해 영상 10개씩 조회, 업데이트
-     * 각 구독 채널에 대해 채널의 총 영상 개수 조회, 업데이트
-     * 마지막 개수 업데이트 시간 업데이트
-     */
-    fun fetchSubChannelsInfo() {
-        viewModelScope.launch {
-            SubscribedChannelItem(channelId = "UChbZEmY6uHbTRHxu5g--c7Q").also {
-                val result = youtubeSearchRepository.getRecentVideosByChannelId(it.channelId, 5)
-                when(result){
-                    is RepositoryResult.Success -> Timber.d("success: $result")
-                    is RepositoryResult.Error -> Timber.d("error: $result")
-                }
-
-            }
-        }
-    }
-
-
 }
