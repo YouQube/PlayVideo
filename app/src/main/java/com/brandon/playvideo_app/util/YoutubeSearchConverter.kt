@@ -1,6 +1,7 @@
 package com.brandon.playvideo_app.util
 
 import com.brandon.playvideo_app.data.model.SubscribedChannelModel
+import com.brandon.playvideo_app.data.model.SubscribedVideoModel
 import com.brandon.playvideo_app.data.model.VideoModel
 import com.brandon.playvideo_app.data.model.YoutubeSearchItem
 import com.brandon.playvideo_app.data.model.YoutubeSearchResponse
@@ -24,11 +25,11 @@ object YoutubeSearchConverter {
         return null
     }
 
-    private fun convertToVideoModel(youtubeSearchItem: YoutubeSearchItem): VideoModel? {
+    private fun convertToVideoModel(youtubeSearchItem: YoutubeSearchItem): SubscribedVideoModel? {
         val snippet = youtubeSearchItem.snippet ?: return null
         val thumbnails = snippet.thumbnails
         val publishTime = snippet.publishTime?.let { convertPublishTimeToLocalDateTime(it) }
-        return VideoModel(
+        return SubscribedVideoModel(
             videoId = youtubeSearchItem.id?.videoId,
             title = snippet.title,
             description = snippet.description,
