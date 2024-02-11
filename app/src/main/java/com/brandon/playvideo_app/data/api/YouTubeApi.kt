@@ -1,7 +1,7 @@
 package com.brandon.playvideo_app.data.api
 
 import com.brandon.playvideo_app.data.model.CategoryVideoModel
-import com.brandon.playvideo_app.data.model.ChannelByCategoryModel
+import com.brandon.playvideo_app.data.model.YoutubeChannelResponse
 import com.brandon.playvideo_app.data.model.TrendVideoModel
 import com.brandon.playvideo_app.data.model.YoutubeSearchResponse
 import retrofit2.Response
@@ -51,7 +51,7 @@ interface YouTubeApi {
         @Query("part") part: String = PART,
         @Query("id") channelId: String,
         @Query("key") apiKey: String = API_KEY
-    ): ChannelByCategoryModel
+    ): YoutubeChannelResponse
 
     /**
      * YouTube Data API를 사용하여 비디오를 검색합니다.
@@ -74,39 +74,27 @@ interface YouTubeApi {
      */
     @GET("search")
     suspend fun searchVideos(
-        @Query("key") key: String,
-        @Query("part") part: String,
-        @Query("channelId") channelId: String?,
-        @Query("channelType") channelType: String?,
-        @Query("maxResults") maxResults: Int?,
-        @Query("pageToken") pageToken: String?,
-        @Query("type") type: String?,
-        @Query("q") q: String?,
-        @Query("order") order: String?,
-        @Query("videoCaption") videoCaption: String?,
-        @Query("videoCategoryId") videoCategoryId: String?,
-        @Query("videoDuration") videoDuration: String?,
-        @Query("videoEmbeddable") videoEmbeddable: Boolean?,
-        @Query("videoType") videoType: String?
-    ): Response<YoutubeSearchResponse>
-
-    /**
-     * YouTube Data API를 사용하여 채널의 최신 비디오를 가져옵니다.
-     *
-     * @param channelId 채널의 ID
-     * @param maxResults 가져올 최대 비디오 수
-     * @param type 검색 결과로 반환할 리소스 유형 (기본값은 "video")
-     * @param order 결과 정렬 순서 (기본값은 "date")
-     * @return 채널의 최신 비디오 목록에 대한 ApiResponse<YoutubeSearchResponse>
-     */
-
-    @GET("search")
-    suspend fun searchRecentVideosByChannelId(
-        @Query("channelId") channelId: String,
-        @Query("maxResults") maxResults: Int,
+        @Query("channelId") channelId: String? = null,
+        @Query("channelType") channelType: String? = null,
+        @Query("maxResults") maxResults: Int? = null,
+        @Query("pageToken") pageToken: String? = null,
+        @Query("q") q: String? = null,
+        @Query("videoCaption") videoCaption: String? = null,
+        @Query("videoCategoryId") videoCategoryId: String? = null,
+        @Query("videoDuration") videoDuration: String? = null,
+        @Query("videoEmbeddable") videoEmbeddable: Boolean? = null,
+        @Query("videoType") videoType: String? = null,
+        @Query("order") order: String? = "date",
+        @Query("type") type: String? = "video",
         @Query("part") part: String = "snippet",
-        @Query("type") type: String = "video",
-        @Query("order") order: String = "date"
     ): Response<YoutubeSearchResponse>
+
+    @GET("channels")
+    suspend fun searchChannels(
+        @Query("id") channelId: String,
+        @Query("part") part: String? = "snippet%2Cstatistics",
+    ): YoutubeChannelResponse
+
+
 
 }
