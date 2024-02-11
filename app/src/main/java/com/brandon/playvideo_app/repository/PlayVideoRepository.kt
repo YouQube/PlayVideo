@@ -31,4 +31,9 @@ class PlayVideoRepository {
         withContext(Dispatchers.IO) {
             RetrofitInstance.api.getCategoryIds().items
         }
+    //다음 페이지의 트렌딩 비디오를 받아오 옴
+    suspend fun getNextTrendingVideos(): List<Item> =
+        withContext(Dispatchers.IO) {
+            RetrofitInstance.api.getTrendingVideos(pageToken = "CDIQAA").items
+        }
 }

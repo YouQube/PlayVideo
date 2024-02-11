@@ -15,6 +15,7 @@ class TrendViewModel(val repository: PlayVideoRepository = PlayVideoRepository()
     private val _isLoading = MutableLiveData<Boolean>(true)
     val isLoading: LiveData<Boolean> get() = _isLoading
 
+
     //repository 데이터 요청 하고 통신 끝나면 isLoading false
     fun trendingVideos() {
         viewModelScope.launch {
@@ -23,7 +24,16 @@ class TrendViewModel(val repository: PlayVideoRepository = PlayVideoRepository()
             loadingState(false)
         }
     }
-    fun loadingState(state:Boolean){
+
+    fun loadingState(state: Boolean) {
         _isLoading.value = state
+    }
+
+    fun getNextTrendingVideos() {
+        viewModelScope.launch {
+            val videos = repository.getNextTrendingVideos()
+            _trendVideos.value = videos
+            loadingState(false)
+        }
     }
 }

@@ -120,7 +120,7 @@ class TrendFragment : Fragment() {
                 //스크롤이 끝까지 닫아서 내릴 곳이 없으면 아이템을 추가
                 if (!recyclerView.canScrollVertically(1)) {
                     viewModel.loadingState(true)
-                    viewModel.trendingVideos()
+                    viewModel.getNextTrendingVideos()
                 }
                 //scrollToTop 버튼 visible
                 with(binding) {
