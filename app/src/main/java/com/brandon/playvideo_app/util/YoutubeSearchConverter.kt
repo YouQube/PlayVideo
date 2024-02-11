@@ -2,7 +2,6 @@ package com.brandon.playvideo_app.util
 
 import com.brandon.playvideo_app.data.model.SubscribedChannelModel
 import com.brandon.playvideo_app.data.model.SubscribedVideoModel
-import com.brandon.playvideo_app.data.model.VideoModel
 import com.brandon.playvideo_app.data.model.YoutubeSearchItem
 import com.brandon.playvideo_app.data.model.YoutubeSearchResponse
 import java.time.Instant

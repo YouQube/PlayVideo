@@ -45,18 +45,4 @@ interface YoutubeSearchRepository {
         @Query("videoType") videoType: String? = null
     ): RepositoryResult<YoutubeSearchResponse>
 
-    /**
-     * 채널 ID를 기준으로 최근 영상을 가져오는 함수입니다.
-     * @param channelId 채널 ID
-     * @param maxResults 가져올 최대 영상 수 (기본값은 5)
-     * @return 채널의 최근 영상 목록에 대한 RepositoryResult<YoutubeSearchResponse>
-     */
-    @GET("search")
-    suspend fun getRecentVideosByChannelId(
-        @Query("channelId") channelId: String,
-        @Query("maxResults") maxResults: Int,
-        @Query("part") part: String = "snippet",
-        @Query("type") type: String = "video",
-        @Query("order") order: String = "date",
-    ): RepositoryResult<YoutubeSearchResponse>
 }
