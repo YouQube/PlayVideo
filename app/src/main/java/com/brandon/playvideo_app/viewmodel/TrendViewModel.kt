@@ -34,6 +34,7 @@ class TrendViewModel(val repository: PlayVideoRepository = PlayVideoRepository()
     fun loadingState(state: Boolean) {
         _isLoading.value = state
     }
+
     //다음 트렌딩 비디오를 받아 오는 함수
     fun getNextTrendingVideos() {
         viewModelScope.launch {
