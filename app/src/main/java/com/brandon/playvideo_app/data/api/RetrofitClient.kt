@@ -1,6 +1,6 @@
-package com.brandon.playvideo_app.data
+package com.brandon.playvideo_app.data.api
 
-import com.brandon.playvideo_app.data.api.SearchInterface
+
 import com.google.gson.GsonBuilder
 
 import okhttp3.OkHttpClient
@@ -11,9 +11,9 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private val BASE_URL = "https://www.googleapis.com/youtube/"
-    val apiService: SearchInterface get() =
-        instance.create(SearchInterface::class.java)
+    private val BASE_URL = "https://www.googleapis.com/youtube/v3/"
+    val apiService: YouTubeApi get() =
+        instance.create(YouTubeApi::class.java)
 
     // Retrofit 인스턴스를 초기화하고 반환한다.
 

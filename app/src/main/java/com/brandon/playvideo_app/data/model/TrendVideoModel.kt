@@ -23,7 +23,9 @@ data class Item(
     @SerializedName("kind")
     val kind: String,
     @SerializedName("snippet")
-    val snippet: Snippet
+    val snippet: Snippet,
+    @SerializedName("statistics")
+    var statistics : Statistics
 )
 
 data class Snippet(
@@ -53,6 +55,13 @@ data class Snippet(
     val title: String
 )
 
+data class PageInfo(
+    @SerializedName("totalResults")
+    val totalResults: Int?,
+    @SerializedName("resultsPerPage")
+    val resultsPerPage: Int?
+)
+
 data class Thumbnails(
     @SerializedName("default")
     val default: Default,
@@ -73,13 +82,6 @@ data class Standard(
     val url: String,
     @SerializedName("width")
     val width: Int
-)
-
-data class PageInfo(
-    @SerializedName("resultsPerPage")
-    val resultsPerPage: Int,
-    @SerializedName("totalResults")
-    val totalResults: Int
 )
 
 data class Medium(
@@ -123,4 +125,15 @@ data class Default(
     val url: String,
     @SerializedName("width")
     val width: Int
+)
+
+data class Statistics(
+    @SerializedName("viewCount")
+    val viewCount: Int,
+    @SerializedName("likeCount")
+    val likeCount : Int,
+    @SerializedName("favoriteCount")
+    val favoriteCount : Int,
+    @SerializedName("commentCount")
+    val commentCount : Int
 )
