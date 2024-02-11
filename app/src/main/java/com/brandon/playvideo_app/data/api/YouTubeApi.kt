@@ -35,6 +35,7 @@ interface YouTubeApi {
         @Query("maxResults") maxResults: Int = MAX_RESULT,
         @Query("regionCode") regionCode: String = REGION,
         @Query("videoCategoryId") videoCategoryId: String = VIDEO_CATEGORY_ID,
+        @Query("pageToken") pageToken: String? = null,
         @Query("key") apiKey: String = API_KEY
     ): TrendVideoModel
 

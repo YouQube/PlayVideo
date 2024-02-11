@@ -71,4 +71,6 @@ dependencies {
     // swipe refreshLayout for recyclerView
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
+    //progressBar Loading UI
+    implementation ("com.github.emreesen27:Android-Nested-Progress:v1.0.2")
 }
