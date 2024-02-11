@@ -53,6 +53,13 @@ data class Snippet(
     val title: String
 )
 
+data class PageInfo(
+    @SerializedName("totalResults")
+    val totalResults: Int?,
+    @SerializedName("resultsPerPage")
+    val resultsPerPage: Int?
+)
+
 data class Thumbnails(
     @SerializedName("default")
     val default: Default,
@@ -73,13 +80,6 @@ data class Standard(
     val url: String,
     @SerializedName("width")
     val width: Int
-)
-
-data class PageInfo(
-    @SerializedName("resultsPerPage")
-    val resultsPerPage: Int,
-    @SerializedName("totalResults")
-    val totalResults: Int
 )
 
 data class Medium(

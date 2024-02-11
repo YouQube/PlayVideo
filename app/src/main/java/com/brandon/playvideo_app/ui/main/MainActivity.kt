@@ -1,10 +1,12 @@
 package com.brandon.playvideo_app.ui.main
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.brandon.playvideo_app.R
 import com.brandon.playvideo_app.databinding.MainActivityBinding
@@ -44,6 +46,17 @@ class MainActivity : AppCompatActivity() {
 
 
         Timber.plant(Timber.DebugTree())
+        window.apply {
+            setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+            )
+            statusBarColor = Color.BLACK
+            WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars = true
+        }
+
+        binding.clContainer.setPadding(0, getStatusBarHeight(this)-10, 0, getNaviBarHeight(this))
+
 
         initView()
     }
@@ -56,6 +69,26 @@ class MainActivity : AppCompatActivity() {
         ) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNavigation.setupWithNavController(navController)
+    }
+
+    fun getStatusBarHeight(context: Context): Int {
+        val resourceId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
+
+        return if (resourceId > 0) {
+            context.resources.getDimensionPixelSize(resourceId)
+        } else {
+            0
+        }
+    }
+
+    fun getNaviBarHeight(context:Context) : Int {
+        val resourceId = context.resources.getIdentifier("navigation_bar_height", "dimen", "android")
+
+        return if (resourceId > 0) {
+            context.resources.getDimensionPixelSize(resourceId)
+        } else {
+            0
+        }
     }
 
 }
