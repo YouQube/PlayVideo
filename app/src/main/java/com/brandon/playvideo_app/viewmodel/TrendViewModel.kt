@@ -14,6 +14,7 @@ class TrendViewModel(val repository: PlayVideoRepository = PlayVideoRepository()
 
     private val _isLoading = MutableLiveData<Boolean>(true)
     val isLoading: LiveData<Boolean> get() = _isLoading
+
     //다음 페이지 정보 관련 변수
     private val pageList: MutableList<String> = mutableListOf()
     private var pageIdx = 0
@@ -33,7 +34,7 @@ class TrendViewModel(val repository: PlayVideoRepository = PlayVideoRepository()
     fun loadingState(state: Boolean) {
         _isLoading.value = state
     }
-
+    //다음 트렌딩 비디오를 받아 오는 함수
     fun getNextTrendingVideos() {
         viewModelScope.launch {
             val videos = repository.getNextTrendingVideos(pageList[pageIdx]).items

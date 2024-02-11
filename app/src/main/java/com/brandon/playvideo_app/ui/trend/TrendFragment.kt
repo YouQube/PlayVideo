@@ -106,13 +106,14 @@ class TrendFragment : Fragment() {
                 pbTrendLoading.isVisible = it
             }
         }
-
     }
-    private fun setUpClickListener(){
+
+    private fun setUpClickListener() {
         binding.fbTrendScrollToTop.setOnClickListener {
             binding.recyclerView.smoothScrollToPosition(0)
         }
     }
+
     private var onScrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
