@@ -14,14 +14,19 @@ class TrendViewModel(val repository: PlayVideoRepository = PlayVideoRepository()
 
     private val _isLoading = MutableLiveData<Boolean>(true)
     val isLoading: LiveData<Boolean> get() = _isLoading
-
+    //다음 페이지 정보 관련 변수
+    private val pageList: MutableList<String> = mutableListOf()
+    private var pageIdx = 0
 
     //repository 데이터 요청 하고 통신 끝나면 isLoading false
+    //최초 실행시 nextPage를 받아 와서 List에 저장
     fun trendingVideos() {
         viewModelScope.launch {
-            val trendingVideos = repository.getTrendingVideos()
+            val trendingVideos = repository.getTrendingVideos().items
             _trendVideos.value = trendingVideos
             loadingState(false)
+            val nextPageToken = repository.getTrendingVideos().nextPageToken
+            pageList.add(nextPageToken)
         }
     }
 
@@ -31,9 +36,14 @@ class TrendViewModel(val repository: PlayVideoRepository = PlayVideoRepository()
 
     fun getNextTrendingVideos() {
         viewModelScope.launch {
-            val videos = repository.getNextTrendingVideos()
+            val videos = repository.getNextTrendingVideos(pageList[pageIdx]).items
             _trendVideos.value = videos
             loadingState(false)
+            //해당 페이지의 nextPageToken을 받아옴
+            val nextPageToken = repository.getNextTrendingVideos(pageList[pageIdx]).nextPageToken
+            pageList.add(nextPageToken)
+            //페이지 index 이동
+            pageIdx++
         }
     }
 }

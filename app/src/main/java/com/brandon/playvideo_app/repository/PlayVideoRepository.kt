@@ -4,14 +4,15 @@ import com.brandon.playvideo_app.data.api.RetrofitInstance
 import com.brandon.playvideo_app.data.model.CategoryItem
 import com.brandon.playvideo_app.data.model.ChannelItem
 import com.brandon.playvideo_app.data.model.Item
+import com.brandon.playvideo_app.data.model.TrendVideoModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class PlayVideoRepository {
     //api 통신 부분
-    suspend fun getTrendingVideos(): List<Item> =
+    suspend fun getTrendingVideos(): TrendVideoModel =
         withContext(Dispatchers.IO) {
-            RetrofitInstance.api.getTrendingVideos().items
+            RetrofitInstance.api.getTrendingVideos()
         }
 
     //칩 선택시 카테고리 영상
@@ -31,9 +32,10 @@ class PlayVideoRepository {
         withContext(Dispatchers.IO) {
             RetrofitInstance.api.getCategoryIds().items
         }
+
     //다음 페이지의 트렌딩 비디오를 받아오 옴
-    suspend fun getNextTrendingVideos(): List<Item> =
+    suspend fun getNextTrendingVideos(nextPageToken: String): TrendVideoModel =
         withContext(Dispatchers.IO) {
-            RetrofitInstance.api.getTrendingVideos(pageToken = "CDIQAA").items
+            RetrofitInstance.api.getTrendingVideos(pageToken = nextPageToken)
         }
 }
