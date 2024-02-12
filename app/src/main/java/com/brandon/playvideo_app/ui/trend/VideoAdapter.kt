@@ -3,13 +3,23 @@ package com.brandon.playvideo_app.ui.trend
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.brandon.playvideo_app.data.model.Item
 import com.brandon.playvideo_app.databinding.ItemTrendBinding
 import com.bumptech.glide.Glide
 
-class VideoAdapter(private val items: List<Item>) :
-    RecyclerView.Adapter<VideoAdapter.VideoHolder>() {
+class VideoAdapter :
+    ListAdapter<Item, VideoAdapter.VideoHolder>(object : DiffUtil.ItemCallback<Item>() {
+        override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
+            return oldItem == newItem
+        }
+    }) {
     inner class VideoHolder(private val binding: ItemTrendBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Item) {
@@ -30,9 +40,9 @@ class VideoAdapter(private val items: List<Item>) :
         return VideoHolder(binding)
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() = currentList.size
 
     override fun onBindViewHolder(holder: VideoHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(currentList[position])
     }
 }

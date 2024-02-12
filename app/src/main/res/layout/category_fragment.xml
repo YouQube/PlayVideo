@@ -115,14 +115,18 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ProgressBar
+    <com.sn.lib.NestedProgress
         android:id="@+id/pb_category_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        app:innerAnimInterpolator="linear"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:outerAnimInterpolator="overshoot"
+        app:outerLoaderAnimDuration="1500" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

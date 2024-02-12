@@ -136,9 +136,14 @@ data class VideoContentDetails(
     val projection: String?
 )
 
+
 data class VideoStatistics(
-    val viewCount: String,
-    val likeCount: String,
-    val favoriteCount: String,
-    val commentCount: String
+    @SerializedName("viewCount")
+    val viewCount: Int,
+    @SerializedName("likeCount")
+    val likeCount : Int,
+    @SerializedName("favoriteCount")
+    val favoriteCount : Int,
+    @SerializedName("commentCount")
+    val commentCount : Int
 )
