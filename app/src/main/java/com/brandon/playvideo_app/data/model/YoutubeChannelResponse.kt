@@ -53,7 +53,7 @@ data class ChannelItem(
     val kind: String,
     @SerializedName("snippet")
     val snippet: ChannelSnippet,
-    val statistics: ChannelStatistics? = null
+    val statistics: ChannelStatistics? = null,
 )
 
 data class ChannelHigh(
@@ -85,5 +85,6 @@ data class ChannelStatistics(
     val viewCount: String? = null,
     val subscriberCount: String? = null,
     val hiddenSubscriberCount: Boolean? = null,
-    val videoCount: String? = null,
+    val videoCount: Int? = null,
 )
+
