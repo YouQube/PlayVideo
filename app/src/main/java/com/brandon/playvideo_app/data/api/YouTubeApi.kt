@@ -173,7 +173,7 @@ interface YouTubeApi {
     ): PlaylistsResponse
 
     @GET("search")
-    suspend fun searchVideoByChannelId(
+    suspend fun searchShortsByChannelId(
         @Query("key") apiKey: String,
         @Query("part") part: String,
         @Query("channelId") channelId: String,

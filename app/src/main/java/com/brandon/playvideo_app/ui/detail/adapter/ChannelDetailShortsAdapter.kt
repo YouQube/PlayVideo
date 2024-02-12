@@ -16,7 +16,8 @@ class ChannelDetailShortsAdapter(searchListItems : MutableList<SearchListItem>) 
     var items = searchListItems
 
     inner class PlayShortsHolder (private val binding: RvitemSearchShortsBinding) : RecyclerView.ViewHolder(binding.root){
-
+        val tvTitel = binding.tvSearchTitle
+        val tvUploader = binding.tvSearchUploader
         var tvViews = binding.tvSearchView
         val ivThumbnail = binding.ivSearchThumbnail
 
@@ -31,7 +32,8 @@ class ChannelDetailShortsAdapter(searchListItems : MutableList<SearchListItem>) 
     }
 
     override fun onBindViewHolder(holder: PlayShortsHolder, position: Int) {
-
+        holder.tvTitel.isGone = true
+        holder.tvUploader.isGone = true
         holder.tvViews.isGone = true
         holder.tvViews.text = items[position].viewCount.toString()
 
