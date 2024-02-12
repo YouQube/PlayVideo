@@ -49,7 +49,7 @@ class ChannelDetailActivity: AppCompatActivity() {
                 tvChannelDetailTitle.text = channelInfo.items[0].brandingSettings?.channel?.title
                 tvChannelDetailHandler.text = channelInfo.items[0].snippet?.customUrl
                 tvChannelDetailSubscCount.text = channelInfo.items[0].statistics?.subscriberCount
-                tvChannelDetailVideoCount.text = channelInfo.items[0].statistics?.videoCount
+                tvChannelDetailVideoCount.text = channelInfo.items[0].statistics?.videoCount.toString()
                 tvChannelDetailDescription.text = channelInfo.items[0].brandingSettings?.channel?.description
             }
 
