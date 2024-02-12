@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -50,8 +51,6 @@ class CategoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getTrendingVideos()//초기 화면 트렌드 비디오 셋팅
-
 
         val toolbarBinding = ToolbarCommonBinding.bind(view.findViewById(R.id.included_tool_bar))
         toolbarBinding.toolbarCommon.inflateMenu(R.menu.library_tool_bar_menu)
@@ -113,6 +112,8 @@ class CategoryFragment : Fragment() {
                 viewModel.loadingState(true)
                 //칩이 눌리면 카테고리별 영상과 채널 정보를 가져옴
                 viewModel.fetchCategoryVideos(videoCategoryId)
+                //칩이 눌리면 카테고리명 저장
+                viewModel.saveCategoryTitle(category)
             }
         }
     }
@@ -123,6 +124,7 @@ class CategoryFragment : Fragment() {
     }
 
     private fun viewModelObserve() {
+        //초기 화면 트렌딩 비디오
         viewModel.trendVideos.observe(viewLifecycleOwner) {
             categoryVideoAdapter.items = it
             categoryVideoAdapter.notifyDataSetChanged()
@@ -132,12 +134,12 @@ class CategoryFragment : Fragment() {
             categoryVideoAdapter.items = it
             categoryVideoAdapter.notifyDataSetChanged()
         }
-
+        //채널 썸네일
         viewModel.channel.observe(viewLifecycleOwner) {
             channelAdapter.channelItem = it
             channelAdapter.notifyDataSetChanged()
         }
-
+        //로딩 상태 처리
         viewModel.isLoading.observe(viewLifecycleOwner) {
             binding.pbCategoryLoading.isVisible = it
         }
@@ -145,159 +147,19 @@ class CategoryFragment : Fragment() {
         viewModel.receptionState.observe(viewLifecycleOwner) {
             viewVisible(it)
         }
+        //최초 CategoryFragment 진입 했을 때 처리
+        viewModel.initState.observe(viewLifecycleOwner) { initState ->
+            if (initState) {
+                viewModel.getTrendingVideos() //초기 화면 트렌드 비디오 셋팅
+                binding.tvChannelByCategory.isVisible = false
+            }
+        }
+        //선택된 칩의 위치를 찾아서 isChecked 상태로 변경
+        viewModel.saveCategoryTitle.observe(viewLifecycleOwner) { categoryTitle ->
+            val selectedChip =
+                binding.chipGroupCategory.children.firstOrNull { (it as Chip).text == categoryTitle } as? Chip
+            selectedChip?.isChecked = true
+        }
     }
 }
-
-/* 초기 코드
-private lateinit var categoryVideoAdapter: CategoryVideoAdapter
-private val channelAdapter by lazy { ChannelAdapter() }
-private lateinit var channel: List<ChannelItem>
-private lateinit var categoryVideos: List<Item>
-private lateinit var categories: List<CategoryItem>
-private lateinit var trendVideos: List<Item>
-private var idList = mutableListOf<String>()
-
-    private fun initRecyclerView() {
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                trendVideos = RetrofitInstance.api.getTrendingVideos().items
-            }
-            categoryVideoAdapter = CategoryVideoAdapter(trendVideos)
-
-
-            with(binding) {
-                recyclerviewCategory.apply {
-                    adapter = categoryVideoAdapter
-                    layoutManager =
-                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
-                    recyclerviewChannelsByCategory.apply {
-                        adapter = channelAdapter
-                        layoutManager =
-                            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    }
-                }
-            }
-
-        }
-    }
-
-    private fun initViews() {
-        binding.tvChannelByCategory.isVisible =
-            false //chip이 선택되지 않았을 경우 Channels by Category 안보이게처리
-        //카테고리 목록 받아오기
-        lifecycleScope.launch {
-            runCatching {
-                withContext(Dispatchers.IO) {
-                    categories = RetrofitInstance.api.getCategoryIds().items
-                }
-                val category = mutableListOf<String>()
-                //assignable이 허용된 api Item만 추가
-                categories.filter { it.snippet.assignable }.forEach {
-                    category.add(it.snippet.title)
-                    idList.add(it.id)
-                }
-                //칩 셋팅
-                binding.chipGroupCategory.apply {
-                    category.forEach { category ->
-                        addView(createChip(category))
-                    }
-                }
-            }.onFailure {
-                //api 수신 실패 시
-                receptionFailed()
-            }
-        }
-    }
-
-    //칩 생성
-    private fun createChip(category: String): Chip {
-        return Chip(context).apply {
-            setText(category)
-            isClickable = true
-            isCheckable = true
-            setOnClickListener {
-                runCatching {
-                    //id의 인덱스 받아 오는 부분 chip 의 개수가 14개(api assignable), id가 1부터 시작
-                    var idx = (id % 14) - 1
-                    if (idx == -1) {
-                        idx = 13
-                    }
-                    val videoCategoryId = idList[idx]
-                    fetchCategory(videoCategoryId)
-
-                }.onFailure {
-                    receptionFailed()
-                }
-            }
-        }
-    }
-
-    //화면 초기화시 카테고리 별 영상 불러오기
-    private fun fetchCategory(categoryId: String) {
-
-        lifecycleScope.launch {
-            runCatching {
-                binding.pbCategoryLoading.isVisible = true //로딩 처리
-                categoryVideos =
-                    getCategoryVideos(categoryId) //api 통신
-
-                //channelId를 리스트에 추가
-                val channelIdList = mutableListOf<String>()
-                categoryVideos.forEach { channelIdList.add(it.snippet.channelId) }
-                channel =
-                    getChannelInfo(channelIdList) //api 통신
-
-                binding.pbCategoryLoading.isVisible = false //로딩 처리
-
-                //CategoryVideos
-                categoryVideoAdapter.items = categoryVideos
-                categoryVideoAdapter.notifyDataSetChanged()
-
-                //Channel By Category
-                channelAdapter.channelItem = channel
-                channelAdapter.notifyDataSetChanged()
-
-                //포지션 위치 초기화
-                with(binding) {
-                    recyclerviewCategory.scrollToPosition(0)
-                    recyclerviewChannelsByCategory.scrollToPosition(0)
-                }
-                viewVisible(true, false)//Channels by Category Text-View
-
-                //404에러 API 불러올 수 없음
-            }.onFailure {
-                receptionFailed()
-            }
-        }
-    }
-
-    //Api 수신 결과에 따른 view 상태
-    private fun viewVisible(state: Boolean, loadingState: Boolean) {
-        binding.tvChannelByCategory.isVisible = state
-        binding.constraintLayoutCategoryFragment.isVisible = !state
-        binding.pbCategoryLoading.isVisible = loadingState
-    }
-
-    //api 수신 실패시 ui 변경
-    private fun receptionFailed() {
-        viewVisible(false, false)
-        categoryVideoAdapter.items = listOf()
-        categoryVideoAdapter.notifyDataSetChanged()
-
-        channelAdapter.channelItem = listOf()
-        channelAdapter.notifyDataSetChanged()
-    }
-
-    //api 통신 부분
-    private suspend fun getCategoryVideos(categoryId: String): List<Item> =
-        withContext(Dispatchers.IO) {
-            RetrofitInstance.api.getTrendingVideos(videoCategoryId = categoryId).items
-        }
-
-    private suspend fun getChannelInfo(channelIdList: MutableList<String>): List<ChannelItem> =
-        withContext(Dispatchers.IO) {
-            RetrofitInstance.api.getChannelInfo(channelId = channelIdList.joinToString(",")).items
-        }
-*/
 

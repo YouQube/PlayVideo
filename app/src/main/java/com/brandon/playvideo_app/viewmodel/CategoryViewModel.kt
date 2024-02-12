@@ -30,6 +30,10 @@ class CategoryViewModel(val repository: PlayVideoRepository = PlayVideoRepositor
     val isLoading: LiveData<Boolean> get() = _isLoading
     private val _receptionState = MutableLiveData<Boolean>(true)
     val receptionState: LiveData<Boolean> get() = _receptionState
+    private val _initState = MutableLiveData<Boolean>(true)
+    val initState: LiveData<Boolean> get() = _initState
+    private val _saveCategoryTitle = MutableLiveData<String>()
+    val saveCategoryTitle: LiveData<String> get() = _saveCategoryTitle
 
     //칩 눌렀을 때 카테고리 별 영상
     fun fetchCategoryVideos(videoCategoryId: String) {
@@ -66,6 +70,7 @@ class CategoryViewModel(val repository: PlayVideoRepository = PlayVideoRepositor
         viewModelScope.launch {
             val videos = repository.getTrendingVideos().items
             _trendVideos.value = videos
+            _initState.value = false
         }
     }
 
@@ -92,5 +97,9 @@ class CategoryViewModel(val repository: PlayVideoRepository = PlayVideoRepositor
     //통신 상태
     fun receptionState(state: Boolean) {
         _receptionState.value = state
+    }
+
+    fun saveCategoryTitle(category: String) {
+        _saveCategoryTitle.value = category
     }
 }
