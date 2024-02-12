@@ -87,7 +87,7 @@ data class ChannelStatistics(
     val viewCount: String? = null,
     val subscriberCount: String? = null,
     val hiddenSubscriberCount: Boolean? = null,
-    val videoCount: String? = null,
+    val videoCount: Int? = null,
 )
 
 data class ChannelBrandingSettings(
@@ -106,3 +106,4 @@ data class ChannelChannel(
 data class ChannelImage(
     val bannerExternalUrl : String?
 )
+

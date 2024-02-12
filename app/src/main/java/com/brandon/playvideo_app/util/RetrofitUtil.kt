@@ -7,7 +7,7 @@ import retrofit2.Response
 object RetrofitUtil {
 
     // 에러 응답을 처리하기 위한 확장 함수
-    fun <T> Response<T>.message(): String {
+    fun <T> Response<T>.error(): String {
         val errorBodyString = this.errorBody()?.string()
         return errorBodyString?.let { parseErrorBody(it) } ?: "Unknown Error"
     }

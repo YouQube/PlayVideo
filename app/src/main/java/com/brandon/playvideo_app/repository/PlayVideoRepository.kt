@@ -4,13 +4,13 @@ import com.brandon.playvideo_app.data.api.RetrofitInstance
 import com.brandon.playvideo_app.data.model.CategoryItem
 import com.brandon.playvideo_app.data.model.ChannelItem
 import com.brandon.playvideo_app.data.model.Item
-import com.brandon.playvideo_app.data.model.TrendVideoModel
+import com.brandon.playvideo_app.data.model.YoutubeVideoResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class PlayVideoRepository {
     //api 통신 부분
-    suspend fun getTrendingVideos(): TrendVideoModel =
+    suspend fun getTrendingVideos(): YoutubeVideoResponse =
         withContext(Dispatchers.IO) {
             RetrofitInstance.api.getTrendingVideos()
         }
@@ -34,7 +34,7 @@ class PlayVideoRepository {
         }
 
     //다음 페이지의 트렌딩 비디오를 받아오 옴
-    suspend fun getNextTrendingVideos(nextPageToken: String): TrendVideoModel =
+    suspend fun getNextTrendingVideos(nextPageToken: String): YoutubeVideoResponse =
         withContext(Dispatchers.IO) {
             RetrofitInstance.api.getTrendingVideos(pageToken = nextPageToken)
         }
