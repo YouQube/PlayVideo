@@ -58,7 +58,7 @@ class SearchFragment : Fragment() {
         binding.rvSearchShorts.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvSearchShorts.adapter = shortsAdapter
-        //(binding.rvSearchShorts.adapter as SearchShortsAdapter).notifyDataSetChanged()
+
         binding.rvSearchList.layoutManager =
             LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         binding.rvSearchList.adapter = listAdapter

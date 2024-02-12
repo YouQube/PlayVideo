@@ -148,8 +148,20 @@ interface YouTubeApi {
     @GET("playlists")
     suspend fun getPlaylistsByChannelId(
         @Query("key") apiKey: String,
-        @Query("id") id: String,
+        @Query("channelId") channelId: String,
         @Query("part") part: String? = "snippet%2CcontentDetails",
     ): PlaylistsResponse
+
+    @GET("search")
+    suspend fun searchVideoByChannelId(
+        @Query("key") apiKey: String,
+        @Query("part") part: String,
+        @Query("channelId") channelId: String,
+        @Query("maxResults") maxResults: Int,
+        @Query("order") order: String,
+        @Query("regionCode") regionCode: String,
+        @Query("type") type: String,
+        @Query("videoDuration") videoDuration: String
+    ): YoutubeSearchResponse?
 
 }

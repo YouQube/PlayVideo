@@ -191,7 +191,7 @@
     </ScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tv_channelDetail"
+        android:id="@+id/rv_channelDetail"
         android:layout_width="match_parent"
         android:paddingHorizontal="12dp"
         android:layout_height="0dp"
