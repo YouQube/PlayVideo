@@ -2,7 +2,7 @@ package com.brandon.playvideo_app.data.api
 
 import com.brandon.playvideo_app.data.model.CategoryVideoModel
 import com.brandon.playvideo_app.data.model.YoutubeChannelResponse
-import com.brandon.playvideo_app.data.model.TrendVideoModel
+import com.brandon.playvideo_app.data.model.YoutubeVideoResponse
 import com.brandon.playvideo_app.data.model.YoutubeSearchResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -36,7 +36,7 @@ interface YouTubeApi {
         @Query("regionCode") regionCode: String = REGION,
         @Query("videoCategoryId") videoCategoryId: String = VIDEO_CATEGORY_ID,
         @Query("key") apiKey: String = API_KEY
-    ): TrendVideoModel
+    ): YoutubeVideoResponse
 
     @GET("videoCategories")
     suspend fun getCategoryIds(
@@ -71,9 +71,10 @@ interface YouTubeApi {
      * @param videoEmbeddable 임베드 가능한 비디오만 반환할지 여부(any, true)
      * @param videoType 영상 유형 제한 (any, episode, movie)
      * @return 비디오 검색 결과에 대한 ApiResponse<YoutubeSearchResponse>
+     * @see com.brandon.playvideo_app.data.model.YoutubeSearchResponse
      */
     @GET("search")
-    suspend fun searchVideos(
+    suspend fun search(
         @Query("channelId") channelId: String? = null,
         @Query("channelType") channelType: String? = null,
         @Query("maxResults") maxResults: Int? = null,
@@ -89,12 +90,29 @@ interface YouTubeApi {
         @Query("part") part: String = "snippet",
     ): Response<YoutubeSearchResponse>
 
+
+    /**
+     * YouTube Data API를 통해 특정 채널을 검색하는 함수입니다.
+     *
+     * @param channelId 검색할 채널의 ID입니다.
+     * @param part 검색 결과에 포함할 리소스의 파트를 지정합니다. 기본값은 "snippet"과 "statistics"입니다.
+     *              해당 파트는 API 응답에 포함됩니다.
+     *              여러 파트를 지정할 경우 각 파트를 "%2C"로 구분하여 문자열로 전달합니다.
+     * @return Response<YoutubeChannelResponse> 타입의 객체를 반환합니다.
+     *         이 객체에는 API 요청에 대한 응답이 포함되어 있습니다.
+     *         응답은 YouTube 채널에 대한 정보를 포함합니다.
+     * @see com.brandon.playvideo_app.data.model.YoutubeChannelResponse
+     */
     @GET("channels")
-    suspend fun searchChannels(
+    suspend fun channels(
         @Query("id") channelId: String,
-        @Query("part") part: String? = "snippet%2Cstatistics",
-    ): YoutubeChannelResponse
+        @Query("part") part: String? = "snippet,statistics"
+    ): Response<YoutubeChannelResponse>
 
-
+    @GET("videos")
+    suspend fun videos(
+        @Query("id") videoId: String,
+        @Query("part") part: String = "snippet,contentDetails,statistics",
+    ): Response<YoutubeVideoResponse>
 
 }

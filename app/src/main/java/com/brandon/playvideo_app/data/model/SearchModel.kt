@@ -1,7 +1,6 @@
 package com.brandon.playvideo_app.data.model
 
 import com.google.gson.annotations.SerializedName
-import java.util.Date
 
 data class SearchModel (
     @SerializedName("kind")
@@ -28,7 +27,7 @@ data class SearchItem(
     @SerializedName("id")
     var id : SearchId,
     @SerializedName("snippet")
-    var snippet : Snippet,
+    var snippet : VideoSnippet,
     @SerializedName("channelTitle")
     var channelTitle : String?,
     @SerializedName("liveBroadcastContent")

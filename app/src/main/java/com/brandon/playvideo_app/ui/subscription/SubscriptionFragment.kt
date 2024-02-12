@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.brandon.playvideo_app.R
+import com.brandon.playvideo_app.data.repository.impl.YoutubeChannelRepositoryImpl
 import com.brandon.playvideo_app.data.repository.impl.YoutubeSearchRepositoryImpl
+import com.brandon.playvideo_app.data.repository.impl.YoutubeVideoRepositoryImpl
 import com.brandon.playvideo_app.databinding.SubscriptionFragmentBinding
 import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
 import com.brandon.playvideo_app.ui.trend.TrendFragment
@@ -20,7 +22,11 @@ class SubscriptionFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: SubscriptionViewModel by viewModels {
-        SubscriptionViewModelFactory(youtubeSearchRepository = YoutubeSearchRepositoryImpl(youtubeApiService))
+        SubscriptionViewModelFactory(
+            youtubeSearchRepository = YoutubeSearchRepositoryImpl(youtubeApiService),
+            youtubeChannelRepository = YoutubeChannelRepositoryImpl(youtubeApiService),
+            youtubeVideoRepository = YoutubeVideoRepositoryImpl(youtubeApiService),
+        )
     }
 
     companion object {
@@ -44,7 +50,7 @@ class SubscriptionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(view)
 
-        viewModel.fetchSubChannelsInfo()
+        viewModel.updateChannels()
     }
 
     override fun onDestroyView() {
@@ -59,12 +65,17 @@ class SubscriptionFragment : Fragment() {
             when (menuItem.itemId) {
                 R.id.search -> {
                     Timber.d("Search Item Clicked!")
+                    viewModel.channels?.forEach {
+                        Timber.tag("Check").d("channel: ${it}")
+                    }
                     true
                 }
+
                 R.id.setting -> {
                     Timber.d("Setting Item Clicked!")
                     true
                 }
+
                 else -> false
             }
         }
