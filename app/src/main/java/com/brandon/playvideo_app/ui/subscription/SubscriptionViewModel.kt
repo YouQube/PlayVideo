@@ -12,6 +12,8 @@ import com.brandon.playvideo_app.data.model.VideoInfoModel
 import com.brandon.playvideo_app.data.repository.YoutubeChannelRepository
 import com.brandon.playvideo_app.data.repository.YoutubeSearchRepository
 import com.brandon.playvideo_app.data.repository.YoutubeVideoRepository
+import com.brandon.playvideo_app.ui.subscription.adapter.ChannelItemHorizontal
+import com.brandon.playvideo_app.ui.subscription.adapter.toChannelItem
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -24,39 +26,58 @@ class SubscriptionViewModel(
     private val _mediaData = MutableLiveData<List<SubscribedChannelModel>>(
         listOf(
             SubscribedChannelModel(channelId = "UChbZEmY6uHbTRHxu5g--c7Q"),  // 일타쿠마
-//            SubscribedChannelItem(channelId = "UC0VR2v4TZeGcOrZHnmwbU_Q"),  // 육식맨
-//        SubscribedChannelItem(channelId = "UCg86gCCgZGWkoHk8c015cQQ"),  // 떼잉
+            SubscribedChannelModel(channelId = "UC0VR2v4TZeGcOrZHnmwbU_Q"),  // 육식맨
+            SubscribedChannelModel(channelId = "UCg86gCCgZGWkoHk8c015cQQ"),  // 떼잉
 //        SubscribedChannelItem(channelId = "UCY2uWQDCzn_ZE-JpTfDRR2A"),  // 입질의 추억
 //        SubscribedChannelItem(channelId = "UCvW8norVMTLt7QN-s2pS4Bw"),  // 조승연의 탐구생활
         )
     )
     val mediaData: LiveData<List<SubscribedChannelModel>> = _mediaData
 
+    private val _channelsHorizontal = MutableLiveData<List<ChannelItemHorizontal>>()
+    val channelItemHorizontal: LiveData<List<ChannelItemHorizontal>> = _channelsHorizontal
+
     val channels: List<SubscribedChannelModel>? = _mediaData.value
+
+//    private val channelItemsHorizontal: List<ChannelItemHorizontal>? get() {
+//        return channels?.map { it.toChannelItem() }
+//    }
 
 
     fun updateChannels() {
-        // 전체 채널 순회
-        // 채널의 정보 가져오기
-        // 채널의 영상 리스트 id들 가져오기
-        // 영상 리스트의 상세 정보 가져오기
-        channels?.forEach { channel ->
-            viewModelScope.launch {
-                val channelInfo: ChannelInfoModel? = fetchChannelInfo(channel)
-                channel.channelInfo = channelInfo
-
-                val videosWithoutInfo: List<SubscribedVideoModel> = fetchChannelVideos(channel)
-                val videosInfo: List<VideoInfoModel> = fetchVideosInfo(videosWithoutInfo)
-                val videosWithInfo = videosWithoutInfo.map { video ->
-                    val targetInfo = videosInfo.find { it.videoId == video.videoId }
-                    video.copy(info= targetInfo)
-                }
-                channel.videos = videosWithInfo
+        Timber.d("구독 채널 데이터 업데이트")
+        viewModelScope.launch {
+            val updatedChannels = mutableListOf<SubscribedChannelModel>()
+            channels?.forEach { channel ->
+                updateChannel(channel)
+                updatedChannels.add(channel)
             }
+            updateChannelsHorizontal(updatedChannels)
         }
     }
 
-    private suspend fun fetchVideosInfo(initialVideos: List<SubscribedVideoModel>) :List<VideoInfoModel> {
+    private suspend fun updateChannel(channel: SubscribedChannelModel) {
+        val channelInfo = fetchChannelInfo(channel)
+        channel.channelInfo = channelInfo
+
+        val videosWithoutInfo = fetchChannelVideoIdsWithoutInfo(channel)
+        val videosInfo = fetchVideosInfo(videosWithoutInfo)
+        val videosWithInfo = videosWithoutInfo.map { video ->
+            val targetInfo = videosInfo.find { it.videoId == video.videoId }
+            video.copy(info = targetInfo)
+        }
+        channel.videos = videosWithInfo
+    }
+
+
+    private fun updateChannelsHorizontal(updatedChannels: MutableList<SubscribedChannelModel>) {
+        // TODO: active 기준 정렬
+        Timber.d("채널 정보: ${updatedChannels.map { it.channelId }}")
+        _channelsHorizontal.value = updatedChannels.map { it.toChannelItem() }
+        Timber.d("가로 채널 정보 업데이트: ${channelItemHorizontal.value}")
+    }
+
+    private suspend fun fetchVideosInfo(initialVideos: List<SubscribedVideoModel>): List<VideoInfoModel> {
         val videoIds = initialVideos.map { it.videoId }
         val result = youtubeVideoRepository.fetchVideoInfoByIds(videoIds)
 
@@ -76,7 +97,7 @@ class SubscriptionViewModel(
         }
     }
 
-    private suspend fun fetchChannelVideos(channel: SubscribedChannelModel): List<SubscribedVideoModel> {
+    private suspend fun fetchChannelVideoIdsWithoutInfo(channel: SubscribedChannelModel): List<SubscribedVideoModel> {
         Timber.d("fetchChannelVideos called")
         val result = youtubeSearchRepository.fetchRecentVideosByChannelId(channel.channelId, 10)
         return when (result) {
@@ -105,7 +126,6 @@ class SubscriptionViewModel(
         val result = youtubeChannelRepository.fetchChannelInfoById(channel.channelId)
         return when (result) {
             is RepositoryResult.Success -> {
-                Timber.d("fetchChannelInfo data: ${result.data}")
                 result.data.items.firstOrNull()?.let {
                     ChannelInfoModel(channelId = it.id, snippet = it.snippet, statistics = it.statistics)
                 }

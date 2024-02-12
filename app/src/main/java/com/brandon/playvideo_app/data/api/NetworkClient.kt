@@ -29,7 +29,7 @@ object NetworkClient {
     // OkHttpClient 설정
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(apiKeyInterceptor)
-        .addInterceptor(loggingInterceptor)
+//        .addInterceptor(loggingInterceptor)
         .build()
 
     // Retrofit 설정

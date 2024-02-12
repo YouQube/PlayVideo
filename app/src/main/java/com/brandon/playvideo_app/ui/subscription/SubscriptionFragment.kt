@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.brandon.playvideo_app.R
 import com.brandon.playvideo_app.data.repository.impl.YoutubeChannelRepositoryImpl
 import com.brandon.playvideo_app.data.repository.impl.YoutubeSearchRepositoryImpl
 import com.brandon.playvideo_app.data.repository.impl.YoutubeVideoRepositoryImpl
 import com.brandon.playvideo_app.databinding.SubscriptionFragmentBinding
 import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
+import com.brandon.playvideo_app.ui.subscription.adapter.HorizontalChannelAdapter
 import com.brandon.playvideo_app.ui.trend.TrendFragment
 import timber.log.Timber
 
@@ -27,6 +29,10 @@ class SubscriptionFragment : Fragment() {
             youtubeChannelRepository = YoutubeChannelRepositoryImpl(youtubeApiService),
             youtubeVideoRepository = YoutubeVideoRepositoryImpl(youtubeApiService),
         )
+    }
+
+    private val horizontalListAdapter: HorizontalChannelAdapter by lazy {
+        HorizontalChannelAdapter()
     }
 
     companion object {
@@ -50,7 +56,25 @@ class SubscriptionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(view)
 
+        initView()
+        initViewModel()
         viewModel.updateChannels()
+    }
+
+    private fun initViewModel() = with(viewModel) {
+        channelItemHorizontal.observe(viewLifecycleOwner){
+            Timber.tag("update").d("list update: $it")
+            horizontalListAdapter.submitList(it)
+        }
+    }
+
+    private fun initView() = with(binding) {
+        with(binding.horizontalRecyclerView) {
+            adapter = horizontalListAdapter
+            val manager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            manager.isAutoMeasureEnabled = true
+            layoutManager = manager
+        }
     }
 
     override fun onDestroyView() {
