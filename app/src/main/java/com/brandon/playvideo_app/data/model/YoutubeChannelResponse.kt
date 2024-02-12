@@ -106,4 +106,3 @@ data class ChannelChannel(
 data class ChannelImage(
     val bannerExternalUrl : String?
 )
-
