@@ -6,7 +6,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 private const val BASE_URL = "https://www.googleapis.com/youtube/v3/"
-private const val YOUTUBE_API_KEY = "AIzaSyD1EOr7wypjcnHHfrWvPmdPkx4wn04OBk4"
+//private const val YOUTUBE_API_KEY = "AIzaSyAuOpRI04QeuoBRNQ3ii4MuRLwFpMDbyZg"
+private const val YOUTUBE_API_KEY = "AIzaSyDPbh-4HEF-nCtEwjSXpL_OUQpqoH5Oh_4"
 
 object NetworkClient {
 
@@ -29,7 +30,7 @@ object NetworkClient {
     // OkHttpClient 설정
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(apiKeyInterceptor)
-//        .addInterceptor(loggingInterceptor)
+        .addInterceptor(loggingInterceptor)
         .build()
 
     // Retrofit 설정

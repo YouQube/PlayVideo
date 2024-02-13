@@ -6,31 +6,32 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.brandon.playvideo_app.data.model.ChannelItemHorizontal
 import com.brandon.playvideo_app.databinding.ItemSubscriptionHorizontalBinding
 import com.bumptech.glide.Glide
 
-class HorizontalChannelAdapter() :
-    ListAdapter<ChannelItemHorizontal, HorizontalChannelAdapter.SubscribedChannelHorizontalHolder>(ChannelItemHorizontalDiffCallback()) {
+class HorizontalChannelListAdapter() :
+    ListAdapter<ChannelItemHorizontal, HorizontalChannelListAdapter.SubscribedChannelHolder>(ChannelItemHorizontalDiffCallback()) {
 
-    class SubscribedChannelHorizontalHolder(private val binding: ItemSubscriptionHorizontalBinding) :
+    inner class SubscribedChannelHolder(private val binding: ItemSubscriptionHorizontalBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ChannelItemHorizontal) {
             with(binding){
                 Glide.with(itemView.context)
                     .load(item.channelIconImageUrl)
-                    .into(ivChannelLogo)
+                    .into(ivChannelIcon)
                 tvChannelName.text = item.channelName
                 viewIsActive.isVisible = item.isActive
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubscribedChannelHorizontalHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubscribedChannelHolder {
         val binding = ItemSubscriptionHorizontalBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return SubscribedChannelHorizontalHolder(binding)
+        return SubscribedChannelHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: SubscribedChannelHorizontalHolder, position: Int) {
+    override fun onBindViewHolder(holder: SubscribedChannelHolder, position: Int) {
         holder.bind(getItem(position))
     }
 

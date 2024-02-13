@@ -24,6 +24,7 @@ interface YoutubeSearchRepository {
         @Query("part") part: String = "snippet",
         @Query("type") type: String = "video",
         @Query("order") order: String = "date",
+        @Query("pageToken") pageToken: String? = null,
     ): RepositoryResult<YoutubeSearchResponse>
 
 
