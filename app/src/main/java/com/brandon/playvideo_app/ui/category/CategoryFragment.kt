@@ -91,12 +91,14 @@ class CategoryFragment : Fragment() {
 
     //초기 화면 셋팅 칩 생성
     private fun initViews() {
-        viewModel.loadingState(false)
-        viewModel.getCategoryIds()
-        //assignable 허용된 id만 가져와서 칩그룹에 추가하는 코드
-        viewModel.categoryIdList.observe(viewLifecycleOwner) { idList ->
-            idList.filter { it.snippet.assignable }.forEach { id ->
-                binding.chipGroupCategory.addView(createChip(id.snippet.title, id.id))
+        with(viewModel) {
+            loadingState(false)
+            getCategoryIds()
+            //assignable 허용된 id만 가져와서 칩그룹에 추가하는 코드
+            categoryIdList.observe(viewLifecycleOwner) { idList ->
+                idList.filter { it.snippet.assignable }.forEach { id ->
+                    binding.chipGroupCategory.addView(createChip(id.snippet.title, id.id))
+                }
             }
         }
     }
@@ -108,57 +110,63 @@ class CategoryFragment : Fragment() {
             isCheckable = true
 
             setOnClickListener {
-                //로딩 ui 처리
-                viewModel.loadingState(true)
-                //칩이 눌리면 카테고리별 영상과 채널 정보를 가져옴
-                viewModel.fetchCategoryVideos(videoCategoryId)
-                //칩이 눌리면 카테고리명 저장
-                viewModel.saveCategoryTitle(category)
+                with(viewModel) {
+                    //로딩 ui 처리
+                    loadingState(true)
+                    //칩이 눌리면 카테고리별 영상과 채널 정보를 가져옴
+                    fetchCategoryVideos(videoCategoryId)
+                    //칩이 눌리면 카테고리명 저장
+                    saveCategoryTitle(category)
+                }
             }
         }
     }
 
     private fun viewVisible(state: Boolean) {
-        binding.tvChannelByCategory.isVisible = state
-        binding.constraintLayoutCategoryFragment.isVisible = !state
+        with(binding) {
+            tvChannelByCategory.isVisible = state
+            constraintLayoutCategoryFragment.isVisible = !state
+        }
     }
 
     private fun viewModelObserve() {
-        //초기 화면 트렌딩 비디오
-        viewModel.trendVideos.observe(viewLifecycleOwner) {
-            categoryVideoAdapter.items = it
-            categoryVideoAdapter.notifyDataSetChanged()
-        }
-        //카테고리 칩이 눌리면 카테고리별 영상과 채널의 썸네일을 보여줌
-        viewModel.categoryVideos.observe(viewLifecycleOwner) {
-            categoryVideoAdapter.items = it
-            categoryVideoAdapter.notifyDataSetChanged()
-        }
-        //채널 썸네일
-        viewModel.channel.observe(viewLifecycleOwner) {
-            channelAdapter.channelItem = it
-            channelAdapter.notifyDataSetChanged()
-        }
-        //로딩 상태 처리
-        viewModel.isLoading.observe(viewLifecycleOwner) {
-            binding.pbCategoryLoading.isVisible = it
-        }
-        //api 통신 상태에 따른 ui 처리
-        viewModel.receptionState.observe(viewLifecycleOwner) {
-            viewVisible(it)
-        }
-        //최초 CategoryFragment 진입 했을 때 처리
-        viewModel.initState.observe(viewLifecycleOwner) { initState ->
-            if (initState) {
-                viewModel.getTrendingVideos() //초기 화면 트렌드 비디오 셋팅
-                binding.tvChannelByCategory.isVisible = false
+        with(viewModel) {
+            //초기 화면 트렌딩 비디오
+            trendVideos.observe(viewLifecycleOwner) {
+                categoryVideoAdapter.items = it
+                categoryVideoAdapter.notifyDataSetChanged()
             }
-        }
-        //선택된 칩의 위치를 찾아서 isChecked 상태로 변경
-        viewModel.saveCategoryTitle.observe(viewLifecycleOwner) { categoryTitle ->
-            val selectedChip =
-                binding.chipGroupCategory.children.firstOrNull { (it as Chip).text == categoryTitle } as? Chip
-            selectedChip?.isChecked = true
+            //카테고리 칩이 눌리면 카테고리별 영상과 채널의 썸네일을 보여줌
+            categoryVideos.observe(viewLifecycleOwner) {
+                categoryVideoAdapter.items = it
+                categoryVideoAdapter.notifyDataSetChanged()
+            }
+            //채널 썸네일
+            channel.observe(viewLifecycleOwner) {
+                channelAdapter.channelItem = it
+                channelAdapter.notifyDataSetChanged()
+            }
+            //로딩 상태 처리
+            isLoading.observe(viewLifecycleOwner) {
+                binding.pbCategoryLoading.isVisible = it
+            }
+            //api 통신 상태에 따른 ui 처리
+            receptionState.observe(viewLifecycleOwner) {
+                viewVisible(it)
+            }
+            //최초 CategoryFragment 진입 했을 때 처리
+            initState.observe(viewLifecycleOwner) { initState ->
+                if (initState) {
+                    viewModel.getTrendingVideos() //초기 화면 트렌드 비디오 셋팅
+                    binding.tvChannelByCategory.isVisible = false
+                }
+            }
+            //선택된 칩의 위치를 찾아서 isChecked 상태로 변경
+            saveCategoryTitle.observe(viewLifecycleOwner) { categoryTitle ->
+                val selectedChip =
+                    binding.chipGroupCategory.children.firstOrNull { (it as Chip).text == categoryTitle } as? Chip
+                selectedChip?.isChecked = true
+            }
         }
     }
 }

@@ -35,7 +35,6 @@ class TrendFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Timber.d("Create")
-
     }
 
     override fun onCreateView(
@@ -44,7 +43,7 @@ class TrendFragment : Fragment() {
     ): View {
         _binding = TrendFragmentBinding.inflate(inflater, container, false)
         initRecyclerView()
-        viewModelObserving()
+        viewModelObserve()
         return binding.root
     }
 
@@ -94,23 +93,28 @@ class TrendFragment : Fragment() {
 
 
     //viewModel 상태 관찰 //binding 으로 묶고 viewModel 상태를 observing 해도 되는지??
-    private fun viewModelObserving() {
-        with(binding) {
-            viewModel.trendVideos.observe(viewLifecycleOwner) {
+    private fun viewModelObserve() {
+        with(viewModel) {
+            trendVideos.observe(viewLifecycleOwner) {
                 val videos = videoAdapter.currentList.toMutableList().apply {
                     addAll(it)
                 }
                 videoAdapter.submitList(videos)
             }
-            viewModel.isLoading.observe(viewLifecycleOwner) {
-                pbTrendLoading.isVisible = it
+            isLoading.observe(viewLifecycleOwner) {
+                binding.pbTrendLoading.isVisible = it
+            }
+            receptionImage.observe(viewLifecycleOwner) {
+                binding.constraintLayoutTrendFragment.isVisible = it
             }
         }
     }
 
     private fun setUpClickListener() {
-        binding.fbTrendScrollToTop.setOnClickListener {
-            binding.recyclerView.smoothScrollToPosition(0)
+        with(binding) {
+            fbTrendScrollToTop.setOnClickListener {
+                recyclerView.smoothScrollToPosition(0)
+            }
         }
     }
 
@@ -120,8 +124,10 @@ class TrendFragment : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
                 //스크롤이 끝까지 닫아서 내릴 곳이 없으면 아이템을 추가
                 if (!recyclerView.canScrollVertically(1)) {
-                    viewModel.loadingState(true)
-                    viewModel.getNextTrendingVideos()
+                    with(viewModel) {
+                        loadingState(true)
+                        getNextTrendingVideos()
+                    }
                 }
                 //scrollToTop 버튼 visible
                 with(binding) {

@@ -15,6 +15,9 @@ class TrendViewModel(val repository: PlayVideoRepository = PlayVideoRepository()
     private val _isLoading = MutableLiveData<Boolean>(true)
     val isLoading: LiveData<Boolean> get() = _isLoading
 
+    private val _receptionImage = MutableLiveData<Boolean>(false)
+    val receptionImage: LiveData<Boolean> get() = _receptionImage
+
     //다음 페이지 정보 관련 변수
     private val pageList: MutableList<String> = mutableListOf()
     private var pageIdx = 0
@@ -23,11 +26,17 @@ class TrendViewModel(val repository: PlayVideoRepository = PlayVideoRepository()
     //최초 실행시 nextPage를 받아 와서 List에 저장
     fun trendingVideos() {
         viewModelScope.launch {
-            val trendingVideos = repository.getTrendingVideos().items
-            _trendVideos.value = trendingVideos
-            loadingState(false)
-            val nextPageToken = repository.getTrendingVideos().nextPageToken
-            pageList.add(nextPageToken)
+            runCatching {
+                val trendingVideos = repository.getTrendingVideos().items
+                _trendVideos.value = trendingVideos
+                loadingState(false)
+                val nextPageToken = repository.getTrendingVideos().nextPageToken
+                pageList.add(nextPageToken)
+                failedState(false)
+            }.onFailure {
+                loadingState(false)
+                failedState(true) //통신 실패
+            }
         }
     }
 
@@ -47,5 +56,10 @@ class TrendViewModel(val repository: PlayVideoRepository = PlayVideoRepository()
             //페이지 index 이동
             pageIdx++
         }
+    }
+
+    //통신 불가 예외 처리 state true 이면 실패
+    private fun failedState(state: Boolean) {
+        _receptionImage.value = state
     }
 }
