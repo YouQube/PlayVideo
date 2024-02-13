@@ -14,7 +14,6 @@ import com.brandon.playvideo_app.databinding.CategoryFragmentBinding
 import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
 import com.brandon.playvideo_app.viewmodel.CategoryViewModel
 import com.google.android.material.chip.Chip
-import timber.log.Timber
 
 class CategoryFragment : Fragment() {
     private var _binding: CategoryFragmentBinding? = null
@@ -53,15 +52,10 @@ class CategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val toolbarBinding = ToolbarCommonBinding.bind(view.findViewById(R.id.included_tool_bar))
-        toolbarBinding.toolbarCommon.inflateMenu(R.menu.library_tool_bar_menu)
+        toolbarBinding.toolbarCommon.inflateMenu(R.menu.common_tool_bar_menu)
         toolbarBinding.toolbarCommon.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.search -> {
-                    true
-                }
-
-                R.id.setting -> {
-                    Timber.d("Setting Item Clicked!")
                     true
                 }
 
@@ -126,6 +120,7 @@ class CategoryFragment : Fragment() {
         with(binding) {
             tvChannelByCategory.isVisible = state
             constraintLayoutCategoryFragment.isVisible = !state
+            ivCategoryLogo.isVisible = state
         }
     }
 
