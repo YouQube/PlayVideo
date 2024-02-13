@@ -27,7 +27,8 @@ data class ChannelSnippet(
     @SerializedName("thumbnails")
     val thumbnails: ChannelThumbnails,
     @SerializedName("title")
-    val title: String
+    val title: String,
+    val customUrl : String
 )
 
 data class ChannelPageInfo(
@@ -54,6 +55,7 @@ data class ChannelItem(
     @SerializedName("snippet")
     val snippet: ChannelSnippet,
     val statistics: ChannelStatistics? = null,
+    val brandingSettings: ChannelBrandingSettings? = null
 )
 
 data class ChannelHigh(
@@ -88,3 +90,19 @@ data class ChannelStatistics(
     val videoCount: Int? = null,
 )
 
+data class ChannelBrandingSettings(
+    val channel : ChannelChannel?,
+    val image : ChannelImage?
+)
+
+data class ChannelChannel(
+    val title : String?,
+    val description: String?,
+    val keywords : String?,
+    val defaultLanguage : String?,
+    val country : String?
+)
+
+data class ChannelImage(
+    val bannerExternalUrl : String?
+)
