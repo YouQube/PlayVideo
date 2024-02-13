@@ -15,6 +15,7 @@ import com.brandon.playvideo_app.data.repository.impl.YoutubeSearchRepositoryImp
 import com.brandon.playvideo_app.data.repository.impl.YoutubeVideoRepositoryImpl
 import com.brandon.playvideo_app.databinding.SubscriptionFragmentBinding
 import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
+import com.brandon.playvideo_app.ui.detail.video.VideoDetailFragment
 import com.brandon.playvideo_app.ui.subscription.adapter.HorizontalChannelListAdapter
 import com.brandon.playvideo_app.ui.subscription.adapter.VerticalVideoListAdapter
 import com.brandon.playvideo_app.ui.trend.TrendFragment
@@ -38,7 +39,11 @@ class SubscriptionFragment : Fragment() {
     }
 
     private val verticalVideoListAdapter: VerticalVideoListAdapter by lazy {
-        VerticalVideoListAdapter()
+        VerticalVideoListAdapter(
+            onItemClick = { id ->
+                viewModel.onClickItem(id)
+            }
+        )
     }
 
     companion object {
@@ -68,26 +73,28 @@ class SubscriptionFragment : Fragment() {
 
     }
 
-    private fun initListener() {
-       binding.verticalRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener(){
-           override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-               super.onScrolled(recyclerView, dx, dy)
-               val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-               val visibleItemCount = layoutManager.childCount
-               val totalItemCount = layoutManager.itemCount
-               val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+    private fun initListener() = with(binding) {
+        verticalRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
-               // findFirstVisibleItemPosition() 는 화면에 아직 아무것도 보이지 않는 상태라면 -1 을 반환. 아래 두 번째 조건은 아이템 로드 전 데이터 로딩을 방지한다.
-               if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
-                   viewModel.getNextVideos()
-               }
-           }
-       })
+                // findFirstVisibleItemPosition() 는 화면에 아직 아무것도 보이지 않는 상태라면 -1 을 반환. 아래 두 번째 조건은 아이템 로드 전 데이터 로딩을 방지한다.
+                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
+                    viewModel.getNextVideos()
+                }
+            }
+        })
 
-        binding.swipeRefreshLayout.setOnRefreshListener {
-//            viewModel.swipeRefresh()
+        swipeRefreshLayout.setOnRefreshListener {
+            viewModel.swipeRefresh()
             binding.swipeRefreshLayout.isRefreshing = false
         }
+
+
     }
 
     private fun initViewModel() = with(viewModel) {
@@ -95,8 +102,22 @@ class SubscriptionFragment : Fragment() {
             horizontalListAdapter.submitList(it)
         }
 
-        videosVertical.observe(viewLifecycleOwner){
+        videosVertical.observe(viewLifecycleOwner) {
             verticalVideoListAdapter.submitList(it)
+        }
+
+        event.observe(viewLifecycleOwner) { event ->
+            when (event) {
+                is SubscriptionListEvent.OpenContent -> {
+                    Timber.tag("event").d("이벤트 발생!")
+                    val detailFragment = VideoDetailFragment.newInstance(event.videoEntity)
+                    requireActivity().supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.nav_host_fragment_activity_main, detailFragment)
+                        addToBackStack(null)
+                        commit()
+                    }
+                }
+            }
         }
     }
 
@@ -108,7 +129,7 @@ class SubscriptionFragment : Fragment() {
 
         with(binding.verticalRecyclerView) {
             adapter = verticalVideoListAdapter
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
     }
 
@@ -126,6 +147,7 @@ class SubscriptionFragment : Fragment() {
                     Timber.d("Search Item Clicked!")
                     true
                 }
+
                 else -> false
             }
         }

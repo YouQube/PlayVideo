@@ -35,12 +35,19 @@ object Converter {
         views ?: return "알 수 없음"
         return when {
             views < 1000 -> views.toString()
-            views < 10000 -> "${views / 1000}천회"
-            views < 100000 -> "${views / 10000}만회"
-            views < 1000000 -> "${views / 100000}만회"
-            views < 10000000 -> "${views / 1000000}백만회"
-            views < 100000000 -> "${views / 10000000}천만회"
-            else -> "${views / 100000000}억회"
+            views < 10000 -> String.format("%.1f천", views.toDouble() / 1000)
+            views < 100000000 -> String.format("%.1f만", views.toDouble() / 10000)
+            else -> String.format("%.1f억", views.toDouble() / 100000000)
+        }
+    }
+
+    fun formatSubscriberCount(views: Int?): String {
+        views ?: return "알 수 없음"
+        return when {
+            views < 1000 -> views.toString()
+            views < 10000 -> String.format("%.1f천", views.toDouble() / 1000)
+            views < 100000000 -> String.format("%.1f만", views.toDouble() / 10000)
+            else -> String.format("%.1f억", views.toDouble() / 100000000)
         }
     }
 

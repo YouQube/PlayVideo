@@ -11,12 +11,17 @@ import com.brandon.playvideo_app.util.Converter.formatPublishedTime
 import com.brandon.playvideo_app.util.Converter.formatViews
 import com.bumptech.glide.Glide
 
-class VerticalVideoListAdapter :
+class VerticalVideoListAdapter(
+    private val onItemClick: (String) -> Unit
+) :
     ListAdapter<VideoItemVertical, VerticalVideoListAdapter.SubscribedChannelVideoHolder>(
         VideoItemVerticalDiffCallback()
     ) {
 
-    inner class SubscribedChannelVideoHolder(private val binding: ItemSubscriptionVerticalBinding) :
+    inner class SubscribedChannelVideoHolder(
+        private val binding: ItemSubscriptionVerticalBinding,
+        private val onItemClick: (String) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: VideoItemVertical) {
             with(binding) {
@@ -30,6 +35,10 @@ class VerticalVideoListAdapter :
                 val detail =
                     "${item.channelName} · 조회수 ${formatViews(item.viewers)} · ${formatPublishedTime(item.publishedAt)}"
                 tvDetail.text = detail
+
+                container.setOnClickListener {
+                    onItemClick(item.videoId)
+                }
             }
         }
     }
@@ -37,7 +46,7 @@ class VerticalVideoListAdapter :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubscribedChannelVideoHolder {
         val binding =
             ItemSubscriptionVerticalBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return SubscribedChannelVideoHolder(binding)
+        return SubscribedChannelVideoHolder(binding, onItemClick)
     }
 
     override fun onBindViewHolder(holder: SubscribedChannelVideoHolder, position: Int) {

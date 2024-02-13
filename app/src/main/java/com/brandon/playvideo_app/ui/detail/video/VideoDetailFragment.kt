@@ -1,60 +1,81 @@
 package com.brandon.playvideo_app.ui.detail.video
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.brandon.playvideo_app.R
+import androidx.fragment.app.Fragment
+import com.brandon.playvideo_app.data.model.VideoEntity
+import com.brandon.playvideo_app.databinding.DetailVideoFragmentBinding
+import com.brandon.playvideo_app.util.Converter.formatPublishedTime
+import com.brandon.playvideo_app.util.Converter.formatSubscriberCount
+import com.brandon.playvideo_app.util.Converter.formatViews
+import com.bumptech.glide.Glide
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class VideoDetailFragment() : Fragment() {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [VideoDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class VideoDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: DetailVideoFragmentBinding? = null
+    private val binding get() = _binding!!
+
+    private var videoEntity: VideoEntity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
+        // arguments에서 데이터 가져오기
+        videoEntity = arguments?.getParcelable(VIDEO_ENTITY, VideoEntity::class.java)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.video_detail_fragment, container, false)
+        _binding = DetailVideoFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment VideoDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            VideoDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
     }
+
+    private fun initView() {
+        with(binding) {
+            videoEntity?.let {
+                Glide.with(this@VideoDetailFragment)
+                    .load(it.videoThumbnail)
+                    .into(ivThumbnail)
+                tvTitle.text = it.videoTitle
+                tvViewCount.text = formatViews(it.videoViewCount)
+                tvPublishedAt.text = formatPublishedTime(it.videoPublishedAt)
+                Glide.with(this@VideoDetailFragment)
+                    .load(it.channelIconImage)
+                    .into(ivChannelIcon)
+                tvChannelName.text = it.channelTitle
+                tvSubscriberCount.text = formatSubscriberCount(it.channelSubscriberCount?.toInt())
+                tvCommentCount.text = it.videoCommentCount.toString()
+                tvSummeryContent.text = it.videoDescription
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+
+    companion object {
+        private const val VIDEO_ENTITY = "video_model"
+
+        @JvmStatic
+        fun newInstance(videoEntity: VideoEntity) = VideoDetailFragment().apply {
+            arguments = Bundle().apply {
+                // 데이터를 arguments에 저장
+                putParcelable(VIDEO_ENTITY, videoEntity)
+            }
+        }
+    }
+
+
 }
