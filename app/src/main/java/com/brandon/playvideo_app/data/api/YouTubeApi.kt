@@ -1,6 +1,8 @@
 package com.brandon.playvideo_app.data.api
 
 import com.brandon.playvideo_app.data.model.CategoryVideoModel
+import com.brandon.playvideo_app.data.model.PlaylistsItem
+import com.brandon.playvideo_app.data.model.PlaylistsResponse
 import com.brandon.playvideo_app.data.model.YoutubeChannelResponse
 import com.brandon.playvideo_app.data.model.YoutubeVideoResponse
 import com.brandon.playvideo_app.data.model.YoutubeSearchResponse
@@ -156,4 +158,29 @@ interface YouTubeApi {
         @Query("part") part: String = "snippet,contentDetails,statistics",
     ): Response<YoutubeVideoResponse>
 
+    @GET("channels")
+    suspend fun getChannelDetail(
+        @Query("key") apiKey: String,
+        @Query("id") id: String,
+        @Query("part") part: String? = "snippet%2Cstatistics%2CbrandingSettings",
+    ): YoutubeChannelResponse
+
+    @GET("playlists")
+    suspend fun getPlaylistsByChannelId(
+        @Query("key") apiKey: String,
+        @Query("channelId") channelId: String,
+        @Query("part") part: String? = "snippet%2CcontentDetails",
+    ): PlaylistsResponse
+
+    @GET("search")
+    suspend fun searchShortsByChannelId(
+        @Query("key") apiKey: String,
+        @Query("part") part: String,
+        @Query("channelId") channelId: String,
+        @Query("maxResults") maxResults: Int,
+        @Query("order") order: String,
+        @Query("regionCode") regionCode: String,
+        @Query("type") type: String,
+        @Query("videoDuration") videoDuration: String
+    ): YoutubeSearchResponse?
 }

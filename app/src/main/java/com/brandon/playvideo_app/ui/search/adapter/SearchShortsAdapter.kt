@@ -3,15 +3,14 @@ package com.brandon.playvideo_app.ui.search.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.brandon.playvideo_app.databinding.RvitemSearchListBinding
-import com.brandon.playvideo_app.databinding.RvitemSearchShrotsBinding
+import com.brandon.playvideo_app.databinding.RvitemSearchShortsBinding
 import com.brandon.playvideo_app.model.SearchListItem
 import com.bumptech.glide.Glide
 
 class SearchShortsAdapter(searchListItems : MutableList<SearchListItem>) : RecyclerView.Adapter<SearchShortsAdapter.SearchShortsHolder>() {
     var items = searchListItems
 
-    inner class SearchShortsHolder (private val binding: RvitemSearchShrotsBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class SearchShortsHolder (private val binding: RvitemSearchShortsBinding) : RecyclerView.ViewHolder(binding.root){
 
         val tvTitle = binding.tvSearchTitle
         val tvUploader = binding.tvSearchUploader
@@ -20,7 +19,7 @@ class SearchShortsAdapter(searchListItems : MutableList<SearchListItem>) : Recyc
 
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchShortsHolder {
-        val binding = RvitemSearchShrotsBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding = RvitemSearchShortsBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return SearchShortsHolder(binding)
     }
 
