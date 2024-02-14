@@ -11,4 +11,10 @@
     <string name="common_tool_bar_search">goToSearch</string>
     <string name="library_tool_bar_open_setting">openSetting</string>
     <string name="category_fragment_title">Channels by Category</string>
+    <string name="videoID">videoId</string>
+    <string name="empty_name_error">이름을 입력하세요.</string>
+    <string name="empty_description_error">설명을 입력하세요.</string>
+    <string name="title_require">제목</string>
+    <string name="snackbarok">ok</string>
+    <string name="empty_note_description_warning">설명</string>
 </resources>

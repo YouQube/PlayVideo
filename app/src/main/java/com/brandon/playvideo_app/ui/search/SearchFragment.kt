@@ -8,10 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.brandon.playvideo_app.R
 import com.brandon.playvideo_app.data.api.RetrofitClient.apiService
 import com.brandon.playvideo_app.ui.search.adapter.SearchListAdapter
 import com.brandon.playvideo_app.databinding.SearchFragmentBinding
 import com.brandon.playvideo_app.model.SearchListItem
+import com.brandon.playvideo_app.ui.detail.VideoDetailFragment
+import com.brandon.playvideo_app.ui.library.adapter.LibraryChannelAdapter
+import com.brandon.playvideo_app.ui.library.adapter.LibraryVideoAdapter
 import com.brandon.playvideo_app.ui.search.adapter.SearchShortsAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,7 +32,7 @@ class SearchFragment : Fragment() {
 
     private var listVideoIds = mutableListOf<String?>()
     private var shortsVideoIds = mutableListOf<String?>()
-    private val apiKey = "AIzaSyCC8wNtOt0EiqzkoudHp1P9mrOHdCc1ap4"
+    private val apiKey = "AIzaSyASGZ29yAFmNLR0ArC0TTj1euF8nE5Ppng"
     companion object {
         @JvmStatic
         fun newInstance() =
@@ -118,6 +123,11 @@ class SearchFragment : Fragment() {
 
             }
         }
+        with(binding) {
+
+            listAdapter.setOnClickListener(onVideoClicked)
+            rvSearchList.adapter = listAdapter
+        }
     }
 
     private suspend fun getSearchList(query: String)=
@@ -156,5 +166,30 @@ class SearchFragment : Fragment() {
             )
         }
 
+    private val onVideoClicked = object : SearchListAdapter.OnItemClickListener {
+        override fun onClicked(item: SearchListItem) {
+            val fragment: Fragment
+            val bundle = Bundle()
+//            bundle.putParcelable("searchResult", listAdapter.items)
+            fragment = VideoDetailFragment.newInstance()
+            fragment.arguments = bundle
 
+            replaceFragment(fragment, true)
+        }
+    }
+
+    fun replaceFragment(fragment: Fragment, isTransition: Boolean) {
+
+        val fragmentTransition = requireActivity().supportFragmentManager.beginTransaction()
+
+        if (isTransition) {
+            fragmentTransition.setCustomAnimations(
+                android.R.anim.slide_out_right,
+                android.R.anim.slide_in_left
+            )
+        }
+        fragmentTransition.replace(R.id.nav_host_fragment_activity_main, fragment)
+            .addToBackStack(fragment.javaClass.simpleName)
+        fragmentTransition.commit()
+    }
 }

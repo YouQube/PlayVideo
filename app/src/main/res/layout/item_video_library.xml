@@ -6,10 +6,10 @@
     android:layout_height="wrap_content"
     android:paddingRight="8dp"
     android:layout_marginBottom="10dp"
-    android:id="@+id/cl_search_item">
+    android:id="@+id/cl_video_thumb_item">
 
     <ImageView
-        android:id="@+id/iv_search_thumbnail"
+        android:id="@+id/iv_video_thumbnail"
         android:layout_width="152dp"
         android:layout_height="90dp"
         android:src="@drawable/ic_launcher_background"
@@ -18,26 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_search_playTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="8dp"
-        android:ellipsize="end"
-        android:maxWidth="80dp"
-        android:maxLines="2"
-        android:visibility="gone"
-        android:paddingVertical="2dp"
-        android:paddingHorizontal="4dp"
-        android:text="5:14"
-        android:background="@color/gray2"
-        android:textSize="8sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_search_thumbnail"
-        app:layout_constraintEnd_toEndOf="@+id/iv_search_thumbnail" />
-
-    <TextView
-        android:id="@+id/tv_search_title"
+        android:id="@+id/tv_video_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -49,11 +30,11 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_search_thumbnail"
+        app:layout_constraintStart_toEndOf="@+id/iv_video_thumbnail"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_search_uploader"
+        android:id="@+id/tv_video_uploader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -63,11 +44,11 @@
         android:text="업로더"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_search_thumbnail"
-        app:layout_constraintTop_toBottomOf="@+id/tv_search_title" />
+        app:layout_constraintStart_toEndOf="@+id/iv_video_thumbnail"
+        app:layout_constraintTop_toBottomOf="@+id/tv_video_title" />
 
     <TextView
-        android:id="@+id/tv_search_view"
+        android:id="@+id/tv_video_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -77,11 +58,11 @@
         android:text="조회수"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_search_thumbnail"
-        app:layout_constraintTop_toBottomOf="@+id/tv_search_uploader" />
+        app:layout_constraintStart_toEndOf="@+id/iv_video_thumbnail"
+        app:layout_constraintTop_toBottomOf="@+id/tv_video_uploader" />
 
     <ImageView
-        android:id="@+id/iv_search_option"
+        android:id="@+id/iv_video_option"
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:layout_marginTop="5dp"
