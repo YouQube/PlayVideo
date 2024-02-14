@@ -17,7 +17,7 @@
 
     <item
         android:id="@+id/libraryFragment"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_library"
         android:title="@string/main_tab_title_library" />
 
     <item

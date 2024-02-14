@@ -17,9 +17,11 @@ import com.brandon.playvideo_app.ui.library.LibraryFragment
 import com.brandon.playvideo_app.ui.search.SearchFragment
 import com.brandon.playvideo_app.ui.subscription.SubscriptionFragment
 import com.brandon.playvideo_app.ui.trend.TrendFragment
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import kotlin.text.Typography.dagger
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val binding: MainActivityBinding by lazy { MainActivityBinding.inflate(layoutInflater) }

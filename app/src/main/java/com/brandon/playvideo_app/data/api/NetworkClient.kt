@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 private const val BASE_URL = "https://www.googleapis.com/youtube/v3/"
-private const val YOUTUBE_API_KEY = "AIzaSyD1EOr7wypjcnHHfrWvPmdPkx4wn04OBk4"
+private const val YOUTUBE_API_KEY = "AIzaSyASGZ29yAFmNLR0ArC0TTj1euF8nE5Ppng"
 
 object NetworkClient {
 
