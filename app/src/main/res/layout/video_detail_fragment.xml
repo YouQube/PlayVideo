@@ -59,45 +59,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/iv_detail_thumbnail" />
 
             <TextView
-                android:id="@+id/tv_detail_favorite"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/btn_edge"
-                android:gravity="center"
-                android:text="favorite"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_title" />
-
-            <TextView
-                android:id="@+id/tv_detail_share"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="32dp"
-                android:background="@drawable/btn_edge"
-                android:gravity="center"
-                android:text="share"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.979"
-                app:layout_constraintStart_toEndOf="@+id/tv_detail_favorite"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_title" />
-
-            <TextView
-                android:id="@+id/tv_line2"
-                android:layout_width="0dp"
-                android:layout_height="3dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/btn_edge"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_share" />
-
-            <TextView
                 android:id="@+id/tv_detail_channel"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -110,7 +71,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_line2" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_line1" />
+
+            <TextView
+                android:id="@+id/tv_detail_favorite"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/btn_edge"
+                android:gravity="center"
+                android:text="favorite"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/tv_line3"
+                app:layout_constraintEnd_toEndOf="@+id/tv_detail_channel"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_title" />
 
             <TextView
                 android:id="@+id/tv_line3"

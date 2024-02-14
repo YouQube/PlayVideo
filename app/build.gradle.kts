@@ -1,12 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-<<<<<<< HEAD
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
-=======
     id("kotlin-parcelize")
->>>>>>> 4bd14740827758fea0e9f43486d3ed1575901461
 }
 
 android {
@@ -81,7 +78,6 @@ dependencies {
     //progressBar Loading UI
     implementation ("com.github.emreesen27:Android-Nested-Progress:v1.0.2")
 
-<<<<<<< HEAD
     // Dagger Hilt
     implementation("com.google.dagger:hilt-android:2.48")
     ksp("com.google.dagger:hilt-android-compiler:2.48")
@@ -104,12 +100,11 @@ dependencies {
 
     // CircleImageView
     implementation("de.hdodenhof:circleimageview:3.1.0")
-=======
+
     // youtube embed player
     implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
 
     // lottie
     implementation ("com.airbnb.android:lottie:6.3.0")
 
->>>>>>> 4bd14740827758fea0e9f43486d3ed1575901461
 }
