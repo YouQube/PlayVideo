@@ -74,7 +74,7 @@ class SearchFragment : Fragment() {
                         val url = item.snippet?.thumbnails?.default?.url
 
                         shortsVideoIds.add(item.id?.videoId)
-                        resShortsItem.add(SearchListItem(title,uploader,0,url,false,"12:02"))
+                        resShortsItem.add(SearchListItem(title,uploader,0,url,false,"0",null))
 
                     }
                 }
@@ -96,7 +96,7 @@ class SearchFragment : Fragment() {
                         val url = item.snippet?.thumbnails?.default?.url
 
                         listVideoIds.add(item.id?.videoId)
-                        resListItem.add(SearchListItem(title,uploader,0,url!!,false,"12:02"))
+                        resListItem.add(SearchListItem(title,uploader,0,url!!,false,"0",null))
 
 
                     }
