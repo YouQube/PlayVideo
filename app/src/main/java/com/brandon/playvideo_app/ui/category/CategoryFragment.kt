@@ -152,7 +152,7 @@ class CategoryFragment : Fragment() {
             //최초 CategoryFragment 진입 했을 때 처리
             initState.observe(viewLifecycleOwner) { initState ->
                 if (initState) {
-                    viewModel.getTrendingVideos() //초기 화면 트렌드 비디오 셋팅
+                    viewModel.fetchTrendingVideos() //초기 화면 트렌드 비디오 셋팅
                     binding.tvChannelByCategory.isVisible = false
                 }
             }

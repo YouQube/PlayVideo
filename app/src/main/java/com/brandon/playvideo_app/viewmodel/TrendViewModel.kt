@@ -24,7 +24,7 @@ class TrendViewModel(val repository: PlayVideoRepository = PlayVideoRepository()
 
     //repository 데이터 요청 하고 통신 끝나면 isLoading false
     //최초 실행시 nextPage를 받아 와서 List에 저장
-    fun trendingVideos() {
+    fun fetchTrendingVideos() {
         viewModelScope.launch {
             runCatching {
                 val trendingVideos = repository.getTrendingVideos().items
@@ -45,7 +45,7 @@ class TrendViewModel(val repository: PlayVideoRepository = PlayVideoRepository()
     }
 
     //다음 트렌딩 비디오를 받아 오는 함수
-    fun getNextTrendingVideos() {
+    fun fetchNextTrendingVideos() {
         viewModelScope.launch {
             val videos = repository.getNextTrendingVideos(pageList[pageIdx]).items
             _trendVideos.value = videos

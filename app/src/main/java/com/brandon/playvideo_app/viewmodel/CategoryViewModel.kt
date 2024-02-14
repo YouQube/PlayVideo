@@ -66,7 +66,7 @@ class CategoryViewModel(val repository: PlayVideoRepository = PlayVideoRepositor
     }
 
     //트렌딩 비디오 영상 초기 화면 셋팅용
-    fun getTrendingVideos() {
+    fun fetchTrendingVideos() {
         viewModelScope.launch {
             runCatching {
                 val videos = repository.getTrendingVideos().items

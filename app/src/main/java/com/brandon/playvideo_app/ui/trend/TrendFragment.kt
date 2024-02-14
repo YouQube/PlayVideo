@@ -66,7 +66,7 @@ class TrendFragment : Fragment() {
             }
         }
         //viewModel에 데이터 요청
-        viewModel.trendingVideos()
+        viewModel.fetchTrendingVideos()
         setUpClickListener()
     }
 
@@ -87,7 +87,7 @@ class TrendFragment : Fragment() {
     }
 
 
-    //viewModel 상태 관찰 //binding 으로 묶고 viewModel 상태를 observing 해도 되는지??
+    //viewModel 상태 관찰
     private fun viewModelObserve() {
         with(viewModel) {
             trendVideos.observe(viewLifecycleOwner) {
@@ -117,11 +117,11 @@ class TrendFragment : Fragment() {
         object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                //스크롤이 끝까지 닫아서 내릴 곳이 없으면 아이템을 추가
+                //스크롤이 끝까지 닿아서 내릴 곳이 없으면 아이템을 추가
                 if (!recyclerView.canScrollVertically(1)) {
                     with(viewModel) {
                         loadingState(true)
-                        getNextTrendingVideos()
+                        fetchNextTrendingVideos()
                     }
                 }
                 //scrollToTop 버튼 visible
