@@ -32,7 +32,8 @@ class YoutubeSearchRepositoryImpl(private val youtubeApi: YouTubeApi) : YoutubeS
         @Query(value = "maxResults") maxResults: Int,
         @Query(value = "part") part: String,
         @Query(value = "type") type: String,
-        @Query(value = "order") order: String
+        @Query(value = "order") order: String,
+        @Query(value = "pageToken") pageToken: String?,
     ): RepositoryResult<YoutubeSearchResponse> {
         Timber.d("getRecentVideosByChannelId 호출됨")
         return try {
@@ -41,7 +42,8 @@ class YoutubeSearchRepositoryImpl(private val youtubeApi: YouTubeApi) : YoutubeS
                 maxResults = maxResults,
                 part = part,
                 type = type,
-                order = order
+                order = order,
+                pageToken = pageToken
             )
             if (response.isSuccessful) {
                 val data = response.body()

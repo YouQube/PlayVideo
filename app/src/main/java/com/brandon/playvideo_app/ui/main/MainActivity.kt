@@ -3,9 +3,11 @@ package com.brandon.playvideo_app.ui.main
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.brandon.playvideo_app.R
@@ -56,11 +58,12 @@ class MainActivity : AppCompatActivity() {
             WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars = true
         }
 
-        binding.clContainer.setPadding(0, getStatusBarHeight(this)-10, 0, getNaviBarHeight(this))
+        binding.clContainer.setPadding(0, getStatusBarHeight(this) - 10, 0, getNaviBarHeight(this))
 
 
         initView()
     }
+
 
 
     private fun initView() = with(binding) {
@@ -70,6 +73,18 @@ class MainActivity : AppCompatActivity() {
         ) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNavigation.setupWithNavController(navController)
+
+//        navController.addOnDestinationChangedListener { _, destination, _ ->
+//            Timber.tag("메인").d("Fragment 변환: ${destination.label}")
+//
+//            if (destination.id == R.id.videoDetailFragment) {
+//                Timber.tag("main").d("현재 화면: 디테일")
+//                bottomNavigation.isVisible = false
+//            } else {
+//                Timber.tag("main").d("현재 화면: 나머지")
+//                bottomNavigation.isVisible = true
+//            }
+//        }
     }
 
     fun getStatusBarHeight(context: Context): Int {
@@ -82,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getNaviBarHeight(context:Context) : Int {
+    fun getNaviBarHeight(context: Context): Int {
         val resourceId = context.resources.getIdentifier("navigation_bar_height", "dimen", "android")
 
         return if (resourceId > 0) {
@@ -92,4 +107,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main)
+        Timber.d("현재 fragment: " + currentFragment?.javaClass?.simpleName)
+        if (currentFragment is NavHostFragment) {
+            finish()
+        } else {
+            super.onBackPressed()
+        }
+    }
 }

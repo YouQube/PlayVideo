@@ -1,48 +1,54 @@
 package com.brandon.playvideo_app.util
 
-import com.brandon.playvideo_app.data.model.SubscribedVideoModel
-import com.brandon.playvideo_app.data.model.YoutubeSearchItem
-import com.brandon.playvideo_app.data.model.YoutubeSearchResponse
+import java.time.Duration
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 object Converter {
+    private fun convertPublishTimeToLocalDateTime(publishTime: String): LocalDateTime? {
+        return try {
+            val instant = Instant.parse(publishTime)
+            LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+        } catch (e: Exception) {
+            null
+        }
+    }
 
-//    fun convertToSubscribedChannelModel(youtubeSearchResponse: YoutubeSearchResponse?): SubscribedChannelModel? {
-//        youtubeSearchResponse?.let { response ->
-//            val videoList = response.items?.mapNotNull { convertToVideoModel(it) }
-//            return SubscribedChannelModel(
-//                channelName = videoList?.firstOrNull()?.channelTitle,
-//                videoList = videoList,
-//                pageInfo = response.pageInfo
-//            )
-//        }
-//        return null
-//    }
-//
-//    private fun convertToVideoModel(youtubeSearchItem: YoutubeSearchItem): SubscribedVideoModel? {
-//        val snippet = youtubeSearchItem.snippet ?: return null
-//        val thumbnails = snippet.thumbnails
-//        val publishTime = snippet.publishTime?.let { convertPublishTimeToLocalDateTime(it) }
-//        return SubscribedVideoModel(
-//            videoId = youtubeSearchItem.id?.videoId,
-//            title = snippet.title,
-//            description = snippet.description,
-//            thumbnails = thumbnails,
-//            channelTitle = snippet.channelTitle,
-//            liveBroadcastContent = snippet.liveBroadcastContent,
-//            publishTime = publishTime
-//        )
-//    }
-//
-//    // 함수 호출 전 입력값에 대해 세이프콜을 적용함으로 non-nullable 한 함수로 작성
-//    private fun convertPublishTimeToLocalDateTime(publishTime: String): LocalDateTime? {
-//        return try {
-//            val instant = Instant.parse(publishTime)
-//            LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
-//        } catch (e: Exception) {
-//            null
-//        }
-//    }
+    fun formatPublishedTime(timeString: String?): String {
+        timeString ?: return "알 수 없음"
+        val dateTime = LocalDateTime.parse(timeString, DateTimeFormatter.ISO_DATE_TIME)
+        val now = LocalDateTime.now()
+        val duration = Duration.between(dateTime, now).abs()
+
+        return when {
+            duration.toMinutes() < 60 -> "${duration.toMinutes()} 분 전"
+            duration.toHours() < 24 -> "${duration.toHours()} 시간 전"
+            duration.toDays() < 30 -> "${duration.toDays()} 일 전"
+            duration.toDays() < 365 -> "${duration.toDays() / 30} 개월 전"
+            else -> "${duration.toDays() / 365} 년 전"
+        }
+    }
+
+    fun formatViews(views: Int?): String {
+        views ?: return "알 수 없음"
+        return when {
+            views < 1000 -> views.toString()
+            views < 10000 -> String.format("%.1f천", views.toDouble() / 1000)
+            views < 100000000 -> String.format("%.1f만", views.toDouble() / 10000)
+            else -> String.format("%.1f억", views.toDouble() / 100000000)
+        }
+    }
+
+    fun formatSubscriberCount(views: Int?): String {
+        views ?: return "알 수 없음"
+        return when {
+            views < 1000 -> views.toString()
+            views < 10000 -> String.format("%.1f천", views.toDouble() / 1000)
+            views < 100000000 -> String.format("%.1f만", views.toDouble() / 10000)
+            else -> String.format("%.1f억", views.toDouble() / 100000000)
+        }
+    }
+
 }

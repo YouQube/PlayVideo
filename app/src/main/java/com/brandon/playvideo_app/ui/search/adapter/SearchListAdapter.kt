@@ -1,5 +1,6 @@
 package com.brandon.playvideo_app.ui.search.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.brandon.playvideo_app.databinding.ItemVideoLibraryBinding
 import com.brandon.playvideo_app.databinding.RvitemSearchListBinding
 import com.brandon.playvideo_app.model.SearchListItem
+import com.brandon.playvideo_app.ui.detail.ChannelDetailActivity
 import com.bumptech.glide.Glide
 
 
@@ -25,7 +27,7 @@ class SearchListAdapter(searchListItems : MutableList<SearchListItem>) : Recycle
         val tvTitle = binding.tvSearchTitle
         val tvUploader = binding.tvSearchUploader
         var tvViews = binding.tvSearchView
-        val tvPlayTime = binding.tvSearchPlayTime
+        val tvPlayTime = binding.tvSearchAmount
         val ivThumbnail = binding.ivSearchThumbnail
         val clThumbnail = binding.clSearchItem
 
@@ -52,6 +54,12 @@ class SearchListAdapter(searchListItems : MutableList<SearchListItem>) : Recycle
         }
 
 
+        init {
+            tvUploader.setOnClickListener {
+                val intent = Intent(binding.root.context, ChannelDetailActivity::class.java)
+                binding.root.context.startActivity(intent)
+            }
+        }
     }
 
     fun setOnClickListener(listener1: OnItemClickListener) {
@@ -72,7 +80,7 @@ class SearchListAdapter(searchListItems : MutableList<SearchListItem>) : Recycle
         holder.tvTitle.text = items[position].title
         holder.tvUploader.text = items[position].uploader
         holder.tvViews.text = items[position].viewCount.toString()
-        holder.tvPlayTime.text = items[position].playTime
+        holder.tvPlayTime.text = items[position].videoCount
 
         Glide.with(holder.itemView)
             .load(items[position].thumbnail)

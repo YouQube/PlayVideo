@@ -23,7 +23,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/iv_channelDetail_banner"
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:layout_marginStart="12dp"
@@ -34,17 +34,17 @@
         app:layout_constraintTop_toBottomOf="@+id/collapse_container" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/iv_channelDetail_thumbnail"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/ic_temp_logo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_channelDetail_banner" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_channelDetail_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -52,33 +52,65 @@
         android:text="채널이름"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintStart_toEndOf="@+id/iv_channelDetail_thumbnail"
+        app:layout_constraintTop_toBottomOf="@+id/iv_channelDetail_banner" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tv_channelDetail_handler"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="2dp"
         android:text="\@asdfqwer"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintStart_toEndOf="@+id/iv_channelDetail_thumbnail"
+        app:layout_constraintTop_toBottomOf="@+id/tv_channelDetail_title" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tv_channelDetail_subsc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="2dp"
-        android:text="구독자 38.1만명 · 동영상 426개"
+        android:text="구독자"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintStart_toEndOf="@+id/iv_channelDetail_thumbnail"
+        app:layout_constraintTop_toBottomOf="@+id/tv_channelDetail_handler" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/tv_channelDetail_subscCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="2dp"
+        android:text="38.1만명"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_channelDetail_subsc"
+        app:layout_constraintTop_toBottomOf="@+id/tv_channelDetail_handler" />
+
+    <TextView
+        android:id="@+id/tv_channelDetail_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text=" · 동영상"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_channelDetail_subscCount"
+        app:layout_constraintTop_toBottomOf="@+id/tv_channelDetail_handler" />
+
+    <TextView
+        android:id="@+id/tv_channelDetail_videoCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="2dp"
+        android:text="426개"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_channelDetail_video"
+        app:layout_constraintTop_toBottomOf="@+id/tv_channelDetail_handler" />
+
+    <TextView
+        android:id="@+id/tv_channelDetail_description"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="12dp"
@@ -88,10 +120,10 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_channelDetail_thumbnail" />
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/sv_channelDetail_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -99,23 +131,15 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4">
+        app:layout_constraintTop_toBottomOf="@+id/tv_channelDetail_description">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_width="80dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="14dp"
-                android:gravity="center"
-                android:text="홈"
-                android:textColor="@color/gray2"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="80dp"
+                android:id="@+id/tv_channelDetail_tabVideo"
+                android:layout_width="100dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="14dp"
                 android:gravity="center"
@@ -124,7 +148,8 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:layout_width="80dp"
+                android:id="@+id/tv_channelDetail_shorts"
+                android:layout_width="100dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="14dp"
                 android:gravity="center"
@@ -133,7 +158,8 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:layout_width="80dp"
+                android:id="@+id/tv_channelDetail_playlist"
+                android:layout_width="100dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="14dp"
                 android:gravity="center"
@@ -141,19 +167,12 @@
                 android:textColor="@color/gray2"
                 android:textSize="14sp" />
 
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="14dp"
-                android:gravity="center"
-                android:text="커뮤니티"
-                android:textColor="@color/gray2"
-                android:textSize="14sp" />
 
         </LinearLayout>
     </ScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_channelDetail"
         android:layout_width="match_parent"
         android:paddingHorizontal="12dp"
         android:layout_height="0dp"
@@ -161,6 +180,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintTop_toBottomOf="@+id/sv_channelDetail_tab"
         tools:listitem="@layout/rvitem_search_list"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
