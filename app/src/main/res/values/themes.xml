@@ -5,6 +5,10 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
+
+        <item name="android:scrollbarThumbVertical">@android:color/holo_red_light</item>
+        <!-- 스크롤 바의 크기를 지정합니다. -->
+        <item name="android:scrollbarSize">2dp</item>
     </style>
 
     <style name="Theme.PlayVideo_App" parent="Base.Theme.PlayVideo_App" />

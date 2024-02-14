@@ -77,4 +77,8 @@ dependencies {
 
     // youtube embed player
     implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
+
+    // lottie
+    implementation ("com.airbnb.android:lottie:6.3.0")
+
 }

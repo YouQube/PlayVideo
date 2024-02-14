@@ -10,6 +10,7 @@ import com.brandon.playvideo_app.databinding.ItemSubscriptionVerticalBinding
 import com.brandon.playvideo_app.util.Converter.formatPublishedTime
 import com.brandon.playvideo_app.util.Converter.formatViews
 import com.bumptech.glide.Glide
+import timber.log.Timber
 
 class VerticalVideoListAdapter(
     private val onItemClick: (String) -> Unit
@@ -37,6 +38,7 @@ class VerticalVideoListAdapter(
                 tvDetail.text = detail
 
                 container.setOnClickListener {
+                    Timber.tag("click").d("Video Click")
                     onItemClick(item.videoId)
                 }
             }
@@ -52,6 +54,7 @@ class VerticalVideoListAdapter(
     override fun onBindViewHolder(holder: SubscribedChannelVideoHolder, position: Int) {
         holder.bind(getItem(position))
     }
+
 }
 
 class VideoItemVerticalDiffCallback : DiffUtil.ItemCallback<VideoItemVertical>() {
