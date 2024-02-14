@@ -14,6 +14,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import java.util.concurrent.Executors
 import javax.inject.Singleton
+import kotlin.text.Typography.dagger
 
 @Module
 @InstallIn(SingletonComponent::class)

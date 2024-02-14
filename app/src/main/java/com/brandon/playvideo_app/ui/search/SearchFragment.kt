@@ -2,21 +2,18 @@ package com.brandon.playvideo_app.ui.search
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.brandon.playvideo_app.R
 import com.brandon.playvideo_app.data.api.RetrofitClient.apiService
-import com.brandon.playvideo_app.ui.search.adapter.SearchListAdapter
 import com.brandon.playvideo_app.databinding.SearchFragmentBinding
 import com.brandon.playvideo_app.model.SearchListItem
 import com.brandon.playvideo_app.ui.detail.VideoDetailFragment
-import com.brandon.playvideo_app.ui.library.adapter.LibraryChannelAdapter
-import com.brandon.playvideo_app.ui.library.adapter.LibraryVideoAdapter
+import com.brandon.playvideo_app.ui.search.adapter.SearchListAdapter
 import com.brandon.playvideo_app.ui.search.adapter.SearchShortsAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -76,7 +73,7 @@ class SearchFragment : Fragment() {
                     for(item in shortResult.items!!){
                         val title = item.snippet?.title
                         val uploader = item.snippet?.channelTitle
-                        val url = item.snippet?.thumbnails?.default?.url
+                        val url = item.snippet?.thumbnails?.high?.url
 
                         shortsVideoIds.add(item.id?.videoId)
                         resShortsItem.add(SearchListItem(title,uploader,0,url,false,"0",null))
@@ -98,7 +95,7 @@ class SearchFragment : Fragment() {
                     for(item in result.items!!){
                         val title = item.snippet?.title
                         val uploader = item.snippet?.channelTitle
-                        val url = item.snippet?.thumbnails?.default?.url
+                        val url = item.snippet?.thumbnails?.high?.url
 
                         listVideoIds.add(item.id?.videoId)
                         resListItem.add(SearchListItem(title,uploader,0,url!!,false,"0",null))
