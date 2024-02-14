@@ -35,7 +35,6 @@ class TrendFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Timber.d("Create")
-
     }
 
     override fun onCreateView(
@@ -44,7 +43,7 @@ class TrendFragment : Fragment() {
     ): View {
         _binding = TrendFragmentBinding.inflate(inflater, container, false)
         initRecyclerView()
-        viewModelObserving()
+        viewModelObserve()
         return binding.root
     }
 
@@ -52,7 +51,7 @@ class TrendFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val toolbarBinding = ToolbarCommonBinding.bind(view.findViewById(R.id.included_tool_bar))
-        toolbarBinding.toolbarCommon.inflateMenu(R.menu.library_tool_bar_menu)
+        toolbarBinding.toolbarCommon.inflateMenu(R.menu.common_tool_bar_menu)
 
         toolbarBinding.toolbarCommon.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
@@ -62,18 +61,12 @@ class TrendFragment : Fragment() {
 
                     true
                 }
-
-                R.id.setting -> {
-                    // 메뉴 아이템 2 클릭 시 동작할 코드 작성
-                    Timber.d("Setting Item Clicked!")
-                    true
-                }
                 // 다른 메뉴 아이템에 대해서도 필요한 경우 추가할 수 있음
                 else -> false
             }
         }
         //viewModel에 데이터 요청
-        viewModel.trendingVideos()
+        viewModel.fetchTrendingVideos()
         setUpClickListener()
     }
 
@@ -94,24 +87,29 @@ class TrendFragment : Fragment() {
     }
 
 
-    //viewModel 상태 관찰 //binding 으로 묶고 viewModel 상태를 observing 해도 되는지??
-    private fun viewModelObserving() {
-        with(binding) {
-            viewModel.trendVideos.observe(viewLifecycleOwner) {
+    //viewModel 상태 관찰
+    private fun viewModelObserve() {
+        with(viewModel) {
+            trendVideos.observe(viewLifecycleOwner) {
                 val videos = videoAdapter.currentList.toMutableList().apply {
                     addAll(it)
                 }
                 videoAdapter.submitList(videos)
             }
-            viewModel.isLoading.observe(viewLifecycleOwner) {
-                pbTrendLoading.isVisible = it
+            isLoading.observe(viewLifecycleOwner) {
+                binding.pbTrendLoading.isVisible = it
+            }
+            receptionImage.observe(viewLifecycleOwner) {
+                binding.constraintLayoutTrendFragment.isVisible = it
             }
         }
     }
 
     private fun setUpClickListener() {
-        binding.fbTrendScrollToTop.setOnClickListener {
-            binding.recyclerView.smoothScrollToPosition(0)
+        with(binding) {
+            fbTrendScrollToTop.setOnClickListener {
+                recyclerView.smoothScrollToPosition(0)
+            }
         }
     }
 
@@ -119,10 +117,12 @@ class TrendFragment : Fragment() {
         object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                //스크롤이 끝까지 닫아서 내릴 곳이 없으면 아이템을 추가
+                //스크롤이 끝까지 닿아서 내릴 곳이 없으면 아이템을 추가
                 if (!recyclerView.canScrollVertically(1)) {
-                    viewModel.loadingState(true)
-                    viewModel.getNextTrendingVideos()
+                    with(viewModel) {
+                        loadingState(true)
+                        fetchNextTrendingVideos()
+                    }
                 }
                 //scrollToTop 버튼 visible
                 with(binding) {

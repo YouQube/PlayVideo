@@ -66,19 +66,29 @@ class CategoryViewModel(val repository: PlayVideoRepository = PlayVideoRepositor
     }
 
     //트렌딩 비디오 영상 초기 화면 셋팅용
-    fun getTrendingVideos() {
+    fun fetchTrendingVideos() {
         viewModelScope.launch {
-            val videos = repository.getTrendingVideos().items
-            _trendVideos.value = videos
-            _initState.value = false
+            runCatching {
+                val videos = repository.getTrendingVideos().items
+                _trendVideos.value = videos
+                _initState.value = false
+            }.onFailure {
+                receptionFailed()
+                receptionState(false)
+            }
         }
     }
 
     //카테고리의 id 받아오는 코드
     fun getCategoryIds() {
         viewModelScope.launch {
-            val ids = repository.getCategoryIds()
-            _categoryIdList.value = ids
+            runCatching {
+                val ids = repository.getCategoryIds()
+                _categoryIdList.value = ids
+            }.onFailure {
+                receptionFailed()
+                receptionState(false)
+            }
         }
     }
 
@@ -99,6 +109,7 @@ class CategoryViewModel(val repository: PlayVideoRepository = PlayVideoRepositor
         _receptionState.value = state
     }
 
+    //선택된 칩 위치를 기억 하기 위한 코드
     fun saveCategoryTitle(category: String) {
         _saveCategoryTitle.value = category
     }
