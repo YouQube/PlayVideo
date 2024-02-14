@@ -6,7 +6,6 @@ data class SubscribedChannelModel(
     var videos: List<SubscribedVideoModel>? = null,
     var nextPageToken: String? = null,
 )
-
 data class ChannelInfoModel(val channelId: String, val snippet: ChannelSnippet?, val statistics: ChannelStatistics?)
 
 data class SubscribedVideoModel(val videoId: String, var info: VideoInfoModel?)
