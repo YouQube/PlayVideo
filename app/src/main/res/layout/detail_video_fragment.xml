@@ -31,7 +31,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/tv_detail_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -47,11 +47,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="조회수"
-            app:layout_constraintStart_toStartOf="@id/tv_title"
-            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+            app:layout_constraintStart_toStartOf="@id/tv_detail_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_detail_title" />
 
         <TextView
-            android:id="@+id/tv_view_count"
+            android:id="@+id/tv_detail_views"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -65,8 +65,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="X 시간 전"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_view_count"
-            app:layout_constraintStart_toEndOf="@id/tv_view_count" />
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_detail_views"
+            app:layout_constraintStart_toEndOf="@id/tv_detail_views" />
 
         <ImageView
             android:id="@+id/iv_channel_icon"
@@ -75,11 +75,11 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/shape_circular_background"
             android:clipToOutline="true"
-            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintStart_toStartOf="@id/tv_detail_title"
             app:layout_constraintTop_toBottomOf="@id/tv_title_view_count" />
 
         <TextView
-            android:id="@+id/tv_channel_name"
+            android:id="@+id/tv_detail_channel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -94,8 +94,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="구독자 수"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_channel_name"
-            app:layout_constraintStart_toEndOf="@id/tv_channel_name" />
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_detail_channel"
+            app:layout_constraintStart_toEndOf="@id/tv_detail_channel" />
 
         <TextView
             android:id="@+id/tv_comment_title"
@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="댓글 수: "
-            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintStart_toStartOf="@id/tv_detail_title"
             app:layout_constraintTop_toBottomOf="@id/iv_channel_icon" />
 
         <TextView

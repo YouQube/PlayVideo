@@ -27,7 +27,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/tv_channel_name"
+        android:id="@+id/tv_detail_channel"
         style="@style/video_title_style"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

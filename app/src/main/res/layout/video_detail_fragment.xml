@@ -23,131 +23,84 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_detail_title"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:padding="16dp"
-                android:paddingHorizontal="15dp"
-                android:text="Title"
-                android:textColor="#0A0A0A"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_line0" />
-
-            <TextView
-                android:id="@+id/tv_line1"
-                android:layout_width="0dp"
-                android:layout_height="3dp"
-                android:background="@drawable/btn_edge"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_title" />
-
-            <TextView
-                android:id="@+id/tv_line0"
-                android:layout_width="0dp"
-                android:layout_height="3dp"
-                android:background="@drawable/btn_edge"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_detail_thumbnail" />
-
-            <TextView
-                android:id="@+id/tv_detail_channel"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:gravity="center_vertical"
-                android:padding="16dp"
-                android:paddingHorizontal="15dp"
-                android:text="channel"
-                android:textColor="#0A0A0A"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_line1" />
 
             <TextView
                 android:id="@+id/tv_detail_favorite"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/btn_edge"
                 android:gravity="center"
                 android:text="favorite"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/tv_line3"
-                app:layout_constraintEnd_toEndOf="@+id/tv_detail_channel"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_title" />
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:layout_editor_absoluteY="312dp" />
 
             <TextView
-                android:id="@+id/tv_line3"
-                android:layout_width="0dp"
-                android:layout_height="3dp"
-                android:background="@drawable/btn_edge"
+                android:id="@+id/tv_detail_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:text="영상 제목입니다"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_channel" />
+                app:layout_constraintTop_toBottomOf="@id/iv_detail_thumbnail" />
+
+            <TextView
+                android:id="@+id/tv_title_view_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="조회수"
+                app:layout_constraintStart_toStartOf="@id/tv_detail_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_title" />
 
             <TextView
                 android:id="@+id/tv_detail_views"
-                android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="16dp"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="15dp"
-                android:text="views"
-                android:textColor="#0A0A0A"
-                android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/tv_detail_view"
-                app:layout_constraintTop_toBottomOf="@+id/tv_line3" />
-
-            <TextView
-                android:id="@+id/tv_detail_view"
-                android:layout_width="0dp"
-                android:layout_height="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="15dp"
-                android:text="조회수"
-                android:textColor="#0A0A0A"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_line3" />
+                android:text="XX 회"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_title_view_count"
+                app:layout_constraintStart_toEndOf="@id/tv_title_view_count" />
 
             <TextView
-                android:id="@+id/tv_line4"
-                android:layout_width="0dp"
-                android:layout_height="3dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/btn_edge"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                android:id="@+id/tv_detail_channelTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="채널 명"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_views" />
+                tools:layout_editor_absoluteY="328dp" />
 
-            <TextView
-                android:id="@+id/tv_detail_description"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:minHeight="300dp"
+                android:orientation="vertical"
                 android:padding="16dp"
-                android:paddingHorizontal="15dp"
-                android:text="description"
-                android:textColor="#0A0A0A"
-                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_line4" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_channelTitle"
+                tools:background="@color/gray4">
+
+                <TextView
+                    android:id="@+id/tv_summery_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="영상 설명"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_detail_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:text="영상 설명입니다" />
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
