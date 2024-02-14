@@ -6,7 +6,6 @@ class SearchListItem(
     var viewCount : Int?,
     var thumbnail : String?,
     var isInterset : Boolean,
-    var videoCount : String?
-) {
-
-}
+    var videoCount : String?,
+    var playTime : Long?
+)

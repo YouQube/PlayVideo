@@ -17,6 +17,9 @@ import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
+import java.time.Duration
+import java.util.Collections
 
 class ChannelDetailActivity: AppCompatActivity() {
 
@@ -67,7 +70,9 @@ class ChannelDetailActivity: AppCompatActivity() {
                 LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             binding.rvChannelDetail.adapter = playlistsAdapter
 
+            playlists.clear()
             videoIds.clear()
+
             lifecycleScope.launch {
                 val result = getPlaylists(channelId)
                 if( result?.pageInfo?.totalResults!! > 0 ) {
@@ -77,7 +82,7 @@ class ChannelDetailActivity: AppCompatActivity() {
                         val url = item.snippet?.thumbnails?.default?.url
                         val videoCount =  item.contentDetails?.itemCount.toString()
 
-                        playlists.add(SearchListItem(title,uploader,null,url,false,videoCount))
+                        playlists.add(SearchListItem(title,uploader,null,url,false,videoCount,null))
                     }
                 }
 
@@ -95,6 +100,8 @@ class ChannelDetailActivity: AppCompatActivity() {
             binding.rvChannelDetail.adapter = shortsAdapter
 
             videoIds.clear()
+            shorts.clear()
+
             lifecycleScope.launch {
                 val result = getShorts(channelId)
                 if( result?.pageInfo?.totalResults!! > 0 ) {
@@ -104,7 +111,7 @@ class ChannelDetailActivity: AppCompatActivity() {
                         val url = item.snippet?.thumbnails?.default?.url
 
                         videoIds.add((item.id?.videoId))
-                        shorts.add(SearchListItem(title,uploader,null,url,false,null))
+                        shorts.add(SearchListItem(title,uploader,null,url,false,"0",0))
                     }
                 }
                 val shortResult = getViewCount(videoIds)
@@ -119,6 +126,51 @@ class ChannelDetailActivity: AppCompatActivity() {
                 shortsAdapter.items = shorts
 
                 shortsAdapter.notifyDataSetChanged()
+            }
+        }
+
+        binding.tvChannelDetailTabVideo.setOnClickListener {
+            binding.rvChannelDetail.layoutManager =
+                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            binding.rvChannelDetail.adapter = playlistsAdapter
+
+            videoIds.clear()
+            video.clear()
+
+            lifecycleScope.launch { //서스펜드 메소드를 사용한다면 라이프사이클 스코프 안에서는 순차적으로 시행된다.
+
+                val result = getVideo(channelId)
+                Timber.tag("test").d("result= %s", result)
+                if( result?.pageInfo?.totalResults!! > 0 ) {
+                    for(item in result.items!!){
+                        val title = item.snippet?.title
+                        val uploader = item.snippet?.channelTitle
+                        val url = item.snippet?.thumbnails?.default?.url
+
+                        videoIds.add(item.id?.videoId)
+                        video.add(SearchListItem(title,uploader,0,url!!,false,"0",0))
+
+                    }
+                }
+
+                val result2 = getDurationByVideoId(videoIds)
+
+                for(i in video.indices){
+                    val playTime = result2?.items?.get(i)?.contentDetails?.duration
+                    val duration = Duration.parse(playTime)
+                    val seconds = duration.seconds
+                    if (playTime != null) {
+                        video[i].playTime = seconds
+                    }
+                }
+
+                video.removeIf {
+                    it.playTime!! <= 240
+                }
+                playlistsAdapter.items = video
+
+                playlistsAdapter.notifyDataSetChanged()
+
             }
         }
 
@@ -148,7 +200,7 @@ class ChannelDetailActivity: AppCompatActivity() {
                 apiKey = apiKey,
                 part = "snippet",
                 channelId = channelId,
-                maxResults = 10,
+                maxResults = 50,
                 order= "relevance",
                 regionCode ="KR",
                 type ="video",
@@ -165,5 +217,29 @@ class ChannelDetailActivity: AppCompatActivity() {
                 id= conrvertedId
             )
         }
+
+    private suspend fun getVideo(id: String)=
+        withContext(Dispatchers.IO){
+            RetrofitClient.apiService.searchVideo(
+                apiKey = apiKey,
+                part = "snippet",
+                channelId = id,
+                maxResults = 30,
+                order= "relevance",
+                regionCode ="KR",
+                type ="video",
+                videoDuration = "any")
+        }
+
+    private suspend fun getDurationByVideoId(ids : MutableList<String?>) =
+        withContext(Dispatchers.IO){
+            val conrvertedIds = ids.joinToString(",")
+            RetrofitClient.apiService.getDurationByChannelId(
+                apiKey = apiKey,
+                part = "contentDetails",
+                id = conrvertedIds)
+        }
+
+
 
 }
