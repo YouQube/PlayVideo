@@ -58,7 +58,7 @@ class SearchFragment : Fragment() {
         binding.rvSearchShorts.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvSearchShorts.adapter = shortsAdapter
-        //(binding.rvSearchShorts.adapter as SearchShortsAdapter).notifyDataSetChanged()
+
         binding.rvSearchList.layoutManager =
             LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         binding.rvSearchList.adapter = listAdapter
@@ -74,7 +74,7 @@ class SearchFragment : Fragment() {
                         val url = item.snippet?.thumbnails?.default?.url
 
                         shortsVideoIds.add(item.id?.videoId)
-                        resShortsItem.add(SearchListItem(title,uploader,0,url,false,"12:02"))
+                        resShortsItem.add(SearchListItem(title,uploader,0,url,false,"0",null))
 
                     }
                 }
@@ -96,7 +96,7 @@ class SearchFragment : Fragment() {
                         val url = item.snippet?.thumbnails?.default?.url
 
                         listVideoIds.add(item.id?.videoId)
-                        resListItem.add(SearchListItem(title,uploader,0,url!!,false,"12:02"))
+                        resListItem.add(SearchListItem(title,uploader,0,url!!,false,"0",null))
 
 
                     }

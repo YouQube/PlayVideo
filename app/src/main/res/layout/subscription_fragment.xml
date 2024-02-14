@@ -31,6 +31,7 @@
                     android:id="@+id/channel_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="100dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/included_tool_bar">
@@ -46,12 +47,12 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_channel_icon_horizontal" />
+                        tools:listitem="@layout/item_subscription_horizontal" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
-                        android:background="@color/white"
+                        android:background="?android:attr/windowBackground"
                         android:gravity="center"
                         android:paddingHorizontal="18dp"
                         android:text="All"
@@ -71,45 +72,10 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/channel_container">
 
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chip_group"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
 
-                        <!-- Chip elements here -->
-                        <com.google.android.material.chip.Chip
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Chip 1" />
 
-                        <com.google.android.material.chip.Chip
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Chip 2" />
-
-                        <com.google.android.material.chip.Chip
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Chip 3" />
-
-                        <com.google.android.material.chip.Chip
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Chip 4" />
-
-                        <com.google.android.material.chip.Chip
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Chip 5" />
-
-                        <com.google.android.material.chip.Chip
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Chip 6" />
 
                         <!-- Add more chips as needed -->
-                    </com.google.android.material.chip.ChipGroup>
                 </HorizontalScrollView>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -132,8 +98,8 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
             android:scrollingCache="true"
-            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_video_main" />
+            android:visibility="visible"
+            tools:listitem="@layout/item_subscription_vertical" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

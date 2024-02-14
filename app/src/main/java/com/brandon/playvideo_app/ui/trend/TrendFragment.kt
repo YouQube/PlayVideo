@@ -58,6 +58,7 @@ class TrendFragment : Fragment() {
                 R.id.search -> {
                     // 메뉴 아이템 1 클릭 시 동작할 코드 작성
                     Timber.d("Search Item Clicked!")
+
                     true
                 }
                 // 다른 메뉴 아이템에 대해서도 필요한 경우 추가할 수 있음
