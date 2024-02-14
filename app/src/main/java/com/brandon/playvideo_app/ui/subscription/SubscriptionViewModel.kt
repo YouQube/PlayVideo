@@ -19,8 +19,6 @@ import com.brandon.playvideo_app.data.repository.YoutubeVideoRepository
 import com.jess.camp.util.SingleLiveEvent
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class SubscriptionViewModel(
     private val youtubeSearchRepository: YoutubeSearchRepository,
@@ -42,6 +40,12 @@ class SubscriptionViewModel(
     )
     val mediaData: LiveData<List<SubscribedChannelModel>> = _mediaData
 
+
+    private val _subscriptionUiState: MutableLiveData<SubscriptionUiState> = MutableLiveData(
+        SubscriptionUiState.init())
+    val subscriptionUiState: LiveData<SubscriptionUiState> = _subscriptionUiState
+
+
     private val _channelsHorizontal = MutableLiveData<List<ChannelItemHorizontal>>()
     val channelItemHorizontal: LiveData<List<ChannelItemHorizontal>> = _channelsHorizontal
 
@@ -50,7 +54,7 @@ class SubscriptionViewModel(
 
     private val channels: List<SubscribedChannelModel>? = _mediaData.value
 
-    private var isLoading = false
+    private var isLoading = _subscriptionUiState.value?.isVideoLoading
 
     init {
         setVideos()
@@ -64,7 +68,6 @@ class SubscriptionViewModel(
             channels?.forEach { channel ->
                 val videos = if (isAdd) {
                     getNewVideos(channel, channel.nextPageToken)
-
                 } else {
                     getNewVideos(channel)
                 }
@@ -72,13 +75,15 @@ class SubscriptionViewModel(
             }
             updateChannelStates()
             updateVideos(allVideos)
-            isLoading = false
+            _subscriptionUiState.value = subscriptionUiState.value?.copy(isVideoLoading = false, isInitialLoading = false)
+            Timber.tag("로딩").d("준비 완료: ${subscriptionUiState.value}")
         }
     }
 
     fun getNextVideos() {
-        if (isLoading) return
-        isLoading = true
+        Timber.tag("로딩").d("현재 상태: $isLoading")
+        if (subscriptionUiState.value?.isVideoLoading == true) return
+        _subscriptionUiState.value = subscriptionUiState.value?.copy(isVideoLoading = true)
         setVideos(true)
     }
 
@@ -87,19 +92,10 @@ class SubscriptionViewModel(
         Timber.tag("count").d("기존 리스트 개수: ${videosVertical.value?.size}")
         Timber.tag("count").d("추가 리스트 개수: ${newVideos.size}")
         val allVideos = (videosVertical.value?.toMutableList() ?: emptyList()) + newVideos.shuffled()
+        Timber.tag("load").e("${allVideos.mapIndexed{ index, videoItemVertical -> 
+            "$index : ${videoItemVertical.videoTitle}\n"
+        } }")
         _videosVertical.value = allVideos
-    }
-
-    fun sortVideoList(isAscending: Boolean? = true) {
-        if (isAscending == true) {
-            _videosVertical.value = videosVertical.value?.sortedBy {
-                LocalDateTime.parse(it.publishedAt, DateTimeFormatter.ISO_DATE_TIME)
-            }
-        } else {
-            _videosVertical.value = videosVertical.value?.sortedByDescending {
-                LocalDateTime.parse(it.publishedAt, DateTimeFormatter.ISO_DATE_TIME)
-            }
-        }
     }
 
 
