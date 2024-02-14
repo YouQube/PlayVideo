@@ -54,7 +54,6 @@ class SubscriptionViewModel(
 
     private val channels: List<SubscribedChannelModel>? = _mediaData.value
 
-    private var isLoading = _subscriptionUiState.value?.isVideoLoading
 
     init {
         setVideos()
@@ -81,7 +80,7 @@ class SubscriptionViewModel(
     }
 
     fun getNextVideos() {
-        Timber.tag("로딩").d("현재 상태: $isLoading")
+        Timber.tag("로딩").d("현재 상태: ${_subscriptionUiState.value?.isVideoLoading}")
         if (subscriptionUiState.value?.isVideoLoading == true) return
         _subscriptionUiState.value = subscriptionUiState.value?.copy(isVideoLoading = true)
         setVideos(true)
