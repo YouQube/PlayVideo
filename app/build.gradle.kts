@@ -74,4 +74,7 @@ dependencies {
 
     //progressBar Loading UI
     implementation ("com.github.emreesen27:Android-Nested-Progress:v1.0.2")
+
+    // youtube embed player
+    implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
 }
