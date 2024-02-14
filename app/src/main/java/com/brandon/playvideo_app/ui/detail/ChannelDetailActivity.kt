@@ -25,7 +25,7 @@ class ChannelDetailActivity: AppCompatActivity() {
 
     private val binding by lazy { ChanneldetailActivityBinding.inflate(layoutInflater) }
     private lateinit var channelInfo : YoutubeChannelResponse
-    private val apiKey = "AIzaSyCC8wNtOt0EiqzkoudHp1P9mrOHdCc1ap4"
+    private val apiKey = "AIzaSyD1EOr7wypjcnHHfrWvPmdPkx4wn04OBk4"
     private val channelId = "UCS2OAdHoLt-9T6cG9A2H49Q"
     private var playlists = mutableListOf<SearchListItem>()
     private var shorts = mutableListOf<SearchListItem>()

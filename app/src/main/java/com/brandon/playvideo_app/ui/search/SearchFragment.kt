@@ -1,11 +1,13 @@
 package com.brandon.playvideo_app.ui.search
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.brandon.playvideo_app.data.api.RetrofitClient.apiService
@@ -19,6 +21,8 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class SearchFragment : Fragment() {
+    private lateinit var callback: OnBackPressedCallback
+
     private lateinit var binding : SearchFragmentBinding
     private var resListItem = mutableListOf<SearchListItem>()
     private var resShortsItem = mutableListOf<SearchListItem>()
@@ -27,7 +31,7 @@ class SearchFragment : Fragment() {
 
     private var listVideoIds = mutableListOf<String?>()
     private var shortsVideoIds = mutableListOf<String?>()
-    private val apiKey = "AIzaSyCC8wNtOt0EiqzkoudHp1P9mrOHdCc1ap4"
+    private val apiKey = "AIzaSyD1EOr7wypjcnHHfrWvPmdPkx4wn04OBk4"
     companion object {
         @JvmStatic
         fun newInstance() =
@@ -41,6 +45,16 @@ class SearchFragment : Fragment() {
         super.onCreate(savedInstanceState)
         Timber.d("Create")
 
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                super.handleOnBackCancelled()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun onCreateView(
@@ -120,6 +134,13 @@ class SearchFragment : Fragment() {
         }
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
+    }
+
+
+
     private suspend fun getSearchList(query: String)=
         withContext(Dispatchers.IO){
             apiService.searchVideo(
@@ -155,6 +176,7 @@ class SearchFragment : Fragment() {
                 id= conrvertedId
             )
         }
+
 
 
 }
