@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginTop="12dp"
+    android:layout_marginBottom="8dp"
+    android:orientation="vertical"
+    android:id="@+id/cl_channel_thumb_item">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_channel_thumbnail"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:clipToOutline="true"
+        android:padding="4dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_temp_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@drawable/shape_circular_background" />
+
+    <TextView
+        android:id="@+id/tv_channel_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingStart="5dp"
+        android:text="채널 명입니다다다다다다"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/iv_channel_thumbnail"
+        app:layout_constraintStart_toStartOf="@id/iv_channel_thumbnail"
+        app:layout_constraintTop_toBottomOf="@id/iv_channel_thumbnail" />
+
+    <View
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_margin="2dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/shape_circular_background"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        app:layout_constraintBottom_toBottomOf="@id/iv_channel_thumbnail"
+        app:layout_constraintEnd_toEndOf="@id/iv_channel_thumbnail" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

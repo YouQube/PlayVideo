@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingRight="8dp"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="10dp"
+    android:id="@+id/cl_search_item">
 
     <ImageView
         android:id="@+id/iv_search_thumbnail"

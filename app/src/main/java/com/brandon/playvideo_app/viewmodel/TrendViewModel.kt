@@ -15,19 +15,28 @@ class TrendViewModel(val repository: PlayVideoRepository = PlayVideoRepository()
     private val _isLoading = MutableLiveData<Boolean>(true)
     val isLoading: LiveData<Boolean> get() = _isLoading
 
+    private val _receptionImage = MutableLiveData<Boolean>(false)
+    val receptionImage: LiveData<Boolean> get() = _receptionImage
+
     //다음 페이지 정보 관련 변수
     private val pageList: MutableList<String> = mutableListOf()
     private var pageIdx = 0
 
     //repository 데이터 요청 하고 통신 끝나면 isLoading false
     //최초 실행시 nextPage를 받아 와서 List에 저장
-    fun trendingVideos() {
+    fun fetchTrendingVideos() {
         viewModelScope.launch {
-            val trendingVideos = repository.getTrendingVideos().items
-            _trendVideos.value = trendingVideos
-            loadingState(false)
-            val nextPageToken = repository.getTrendingVideos().nextPageToken
-            pageList.add(nextPageToken)
+            runCatching {
+                val trendingVideos = repository.getTrendingVideos().items
+                _trendVideos.value = trendingVideos
+                loadingState(false)
+                val nextPageToken = repository.getTrendingVideos().nextPageToken
+                pageList.add(nextPageToken)
+                failedState(false)
+            }.onFailure {
+                loadingState(false)
+                failedState(true) //통신 실패
+            }
         }
     }
 
@@ -36,7 +45,7 @@ class TrendViewModel(val repository: PlayVideoRepository = PlayVideoRepository()
     }
 
     //다음 트렌딩 비디오를 받아 오는 함수
-    fun getNextTrendingVideos() {
+    fun fetchNextTrendingVideos() {
         viewModelScope.launch {
             val videos = repository.getNextTrendingVideos(pageList[pageIdx]).items
             _trendVideos.value = videos
@@ -47,5 +56,10 @@ class TrendViewModel(val repository: PlayVideoRepository = PlayVideoRepository()
             //페이지 index 이동
             pageIdx++
         }
+    }
+
+    //통신 불가 예외 처리 state true 이면 실패
+    private fun failedState(state: Boolean) {
+        _receptionImage.value = state
     }
 }
