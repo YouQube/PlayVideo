@@ -11,6 +11,10 @@ import com.brandon.playvideo_app.util.Converter.formatPublishedTime
 import com.brandon.playvideo_app.util.Converter.formatSubscriberCount
 import com.brandon.playvideo_app.util.Converter.formatViews
 import com.bumptech.glide.Glide
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
+
 
 class VideoDetailFragment() : Fragment() {
 
@@ -42,9 +46,14 @@ class VideoDetailFragment() : Fragment() {
     private fun initView() {
         with(binding) {
             videoEntity?.let {
-                Glide.with(this@VideoDetailFragment)
-                    .load(it.videoThumbnail)
-                    .into(ivThumbnail)
+                lifecycle.addObserver(youtubePlayer)
+                youtubePlayer.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                    override fun onReady(youTubePlayer: YouTubePlayer) {
+                        val videoId = "${it.videoId}"
+                        youTubePlayer.loadVideo(videoId, 0f)
+                    }
+                })
+
                 tvTitle.text = it.videoTitle
                 tvViewCount.text = formatViews(it.videoViewCount)
                 tvPublishedAt.text = formatPublishedTime(it.videoPublishedAt)
@@ -61,6 +70,7 @@ class VideoDetailFragment() : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.youtubePlayer.release();
         _binding = null
     }
 
