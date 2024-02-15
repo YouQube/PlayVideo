@@ -118,17 +118,22 @@ class SubscriptionFragment : Fragment() {
                         commit()
                     }
                 }
+                is SubscriptionListEvent.LoadErrorState -> {
+                    Timber.d("Load error state: ${event.isError}")
+                    binding.lottie404.isVisible = event.isError
+                    binding.tvAll.isVisible = event.isError.not()
+                }
             }
         }
-        subscriptionUiState.observe(viewLifecycleOwner){
-            if(it.isInitialLoading.not()){
+        subscriptionUiState.observe(viewLifecycleOwner) {
+            if (it.isInitialLoading.not()) {
                 offLoading()
             }
         }
     }
 
     private fun offLoading() {
-        binding.lottieAnimationView.isVisible = false
+        binding.lottieLoading.isVisible = false
         binding.appBarLayout.setExpanded(true, false)
     }
 

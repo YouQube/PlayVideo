@@ -8,4 +8,9 @@ interface SubscriptionListEvent {
         val videoEntity: VideoEntity,
     ) : SubscriptionListEvent
 
+    data class LoadErrorState(
+        val isError: Boolean
+    ):SubscriptionListEvent
+
+
 }

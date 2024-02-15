@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -101,10 +102,9 @@ class CategoryFragment : Fragment() {
 
     private fun createChip(category: String, videoCategoryId: String): Chip {
         return Chip(context).apply {
-            setText(category)
+            text = category
             isClickable = true
             isCheckable = true
-            setChipBackgroundColorResource(R.color.themeColor3)
             setOnClickListener {
                 with(viewModel) {
                     //로딩 ui 처리
@@ -115,6 +115,17 @@ class CategoryFragment : Fragment() {
                     saveCategoryTitle(category)
                 }
             }
+            setOnCheckedChangeListener {_, isChecked ->
+                if(isChecked){
+                    setChipBackgroundColorResource(R.color.themeColor2)
+                    setTextColor(ContextCompat.getColor(context, R.color.white))
+                }else{
+                    setChipBackgroundColorResource(R.color.themeColor3)
+                    setTextColor(ContextCompat.getColor(context, R.color.black))
+                }
+            }
+            setChipBackgroundColorResource(R.color.themeColor3)
+            setTextColor(ContextCompat.getColor(context, R.color.black))
         }
     }
 

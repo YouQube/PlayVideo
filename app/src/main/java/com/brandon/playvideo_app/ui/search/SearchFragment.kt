@@ -72,7 +72,6 @@ class SearchFragment : Fragment() {
             LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         binding.rvSearchList.adapter = listAdapter
 
-
         binding.etSearchSearching.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -86,6 +85,7 @@ class SearchFragment : Fragment() {
                 return false
             }
         })
+
 
         with(binding) {
 

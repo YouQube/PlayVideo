@@ -95,6 +95,12 @@ class SubscriptionViewModel(
         Timber.tag("load").e("${allVideos.mapIndexed{ index, videoItemVertical -> 
             "$index : ${videoItemVertical.videoTitle}\n"
         } }")
+        if(allVideos.isEmpty()) {
+            _event.value = SubscriptionListEvent.LoadErrorState(true)
+            _channelsHorizontal.value = emptyList()
+        }else{
+            _event.value = SubscriptionListEvent.LoadErrorState(false)
+        }
         _videosVertical.value = allVideos
     }
 

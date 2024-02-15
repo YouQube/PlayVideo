@@ -54,11 +54,13 @@
                         tools:listitem="@layout/item_subscription_horizontal" />
 
                     <TextView
+                        android:id="@+id/tv_all"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:gravity="center"
                         android:paddingHorizontal="18dp"
                         android:text="All"
+                        android:visibility="gone"
                         android:textColor="@color/themeColor3"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -103,10 +105,22 @@
             android:visibility="visible"
             tools:listitem="@layout/item_subscription_vertical" />
 
+
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_404"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:padding="70dp"
+        android:layout_marginTop="200dp"
+        app:lottie_autoPlay="true"
+        android:visibility="visible"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/lottie_404" />
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieAnimationView"
+        android:id="@+id/lottie_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"

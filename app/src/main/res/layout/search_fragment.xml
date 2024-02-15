@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/themeColor1"
+    android:fitsSystemWindows="true"
     tools:context=".ui.search.SearchFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,46 +13,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        android:fitsSystemWindows="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/iv_back"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/left_arrow"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintBottom_toBottomOf="@id/et_search_searching"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/et_search_searching"
             app:tint="@color/themeColor4" />
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/et_search_searching"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="12dp"
-            android:backgroundTint="@color/themeColor2"
-            app:searchHintIcon="@color/themeColor4"
+            android:layout_marginTop="12dp"
             android:background="@drawable/shape_search_searching"
-            app:iconifiedByDefault="false"
+            android:backgroundTint="@color/gray4"
             android:lines="1"
+            app:iconifiedByDefault="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_back"
             app:layout_constraintTop_toTopOf="parent"
-            app:queryHint="검색어를 입력해주세요" />
+            app:queryHint="검색어를 입력해주세요"
+            app:searchHintIcon="@color/themeColor4" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/iv_search_searchBtn"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_marginEnd="10dp"-->
-<!--            android:src="@drawable/search"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
+        <!--        <ImageView-->
+        <!--            android:id="@+id/iv_search_searchBtn"-->
+        <!--            android:layout_width="30dp"-->
+        <!--            android:layout_height="30dp"-->
+        <!--            android:layout_marginEnd="10dp"-->
+        <!--            android:src="@drawable/search"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -82,6 +88,7 @@
             android:id="@+id/rv_search_shorts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="155dp"
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
