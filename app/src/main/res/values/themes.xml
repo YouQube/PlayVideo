@@ -9,6 +9,7 @@
         <item name="android:scrollbarThumbVertical">@android:color/holo_red_light</item>
         <!-- 스크롤 바의 크기를 지정합니다. -->
         <item name="android:scrollbarSize">2dp</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Theme.PlayVideo_App" parent="Base.Theme.PlayVideo_App" />

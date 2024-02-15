@@ -115,7 +115,7 @@
         android:padding="70dp"
         android:layout_marginTop="200dp"
         app:lottie_autoPlay="true"
-        android:visibility="visible"
+        android:visibility="gone"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/lottie_404" />
 

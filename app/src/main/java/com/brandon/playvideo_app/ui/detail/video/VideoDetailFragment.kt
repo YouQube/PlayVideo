@@ -55,7 +55,7 @@ class VideoDetailFragment() : Fragment() {
                 })
 
                 tvTitle.text = it.videoTitle
-                tvViewCount.text = formatViews(it.videoViewCount)
+                tvDetailViews.text = formatViews(it.videoViewCount)
                 tvPublishedAt.text = formatPublishedTime(it.videoPublishedAt)
                 Glide.with(this@VideoDetailFragment)
                     .load(it.channelIconImage)
