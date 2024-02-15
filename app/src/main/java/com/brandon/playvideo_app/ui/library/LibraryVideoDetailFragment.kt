@@ -96,9 +96,6 @@ class LibraryVideoDetailFragment :
             imageUrl = itemThumbnail
             viewCount = itemViews
 
-            Log.d(TAG, "onViewCreated: $itemViews")
-            Log.d(TAG, "onViewCreated: $viewCount")
-
             binding.tvVideoDetailTitle.text = itemTitle
             binding.tvVideoDetailChannelTitle.text = itemChannelTitle
             binding.tvVideoDetailDescription.text = itemDescription

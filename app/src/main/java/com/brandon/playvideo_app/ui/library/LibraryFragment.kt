@@ -89,26 +89,6 @@ class LibraryFragment : Fragment() {
         }
 
         binding.ivEditProfile.setOnClickListener {
-//            adapter = EditProfileAdapter(this)
-////            val userInfo = adapter.getInfo()
-//            val userProfileImage = adapter.getImageInfo()
-////            val editProfile = EditProfileFragment(userInfo, userProfileImage)
-//            val editProfile = EditProfileFragment(userProfileImage)
-////            val editProfile = EditProfileFragment()
-//            editProfile.okClick = object: OkClick {
-//                override fun onClick(profileImage: Drawable, name: String, description: String) {
-//                    adapter.editInfo(profileImage, name, description)
-//                }
-//            }
-//            editProfile.show(
-//                requireActivity().supportFragmentManager, "EditProfile"
-//            )
-//            val fragment: Fragment
-//            val bundle = Bundle()
-//            fragment = EditProfileFragment()
-//            fragment.arguments = bundle
-//
-//            replaceFragment(fragment, true)
             val intent = Intent(activity, EditProfileActivity::class.java)
             startActivity(intent)
         }
@@ -168,12 +148,6 @@ class LibraryFragment : Fragment() {
 
         val fragmentTransition = requireActivity().supportFragmentManager.beginTransaction()
 
-//        if (isTransition) {
-//            fragmentTransition.setCustomAnimations(
-//                android.R.anim.slide_out_right,
-//                android.R.anim.slide_in_left
-//            )
-//        }
         fragmentTransition.replace(R.id.nav_host_fragment_activity_main, fragment)
             .addToBackStack(fragment.javaClass.simpleName)
         fragmentTransition.commit()
@@ -187,22 +161,6 @@ class LibraryFragment : Fragment() {
         }
         saveUserProfile(profileImage, name, description)
     }
-
-//    fun giveData(): List<String> {
-//        return if (giveData().isNullOrEmpty()) {
-//            val emptyName = ""
-//            val emptyDescription = ""
-//            listOf(
-//                emptyName,
-//                emptyDescription
-//            )
-//        } else {
-//            listOf(
-//                binding.tvProfileName.text.toString(),
-//                binding.tvProfileDescription.text.toString()
-//            )
-//        }
-//    }
 
     fun giveImageData(): Drawable {
         return binding.ivEditProfile.drawable

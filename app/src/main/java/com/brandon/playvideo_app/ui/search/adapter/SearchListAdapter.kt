@@ -31,11 +31,8 @@ class SearchListAdapter(searchListItems : MutableList<SearchListItem>) : Recycle
         val tvPlayTime = binding.tvSearchAmount
         val ivThumbnail = binding.ivSearchThumbnail
         val clThumbnail = binding.clSearchItem
-<<<<<<< HEAD
         val originViews = binding.originViews
-=======
         val tvChaneelId = binding.tvChannelId
->>>>>>> 714e4061cf4e48c9cff357ca1932d593da18ec9a
 
         init {
             ivThumbnail.setOnClickListener(this)

@@ -34,7 +34,7 @@ class SearchFragment : Fragment() {
 
     private var listVideoIds = mutableListOf<String?>()
     private var shortsVideoIds = mutableListOf<String?>()
-    private val apiKey = "AIzaSyCC8wNtOt0EiqzkoudHp1P9mrOHdCc1ap4"
+    private val apiKey = "AIzaSyBLbVhwL3SB3shkh-dwMJz23OXpw4FSd2A"
 
 
     companion object {
@@ -42,7 +42,6 @@ class SearchFragment : Fragment() {
         fun newInstance() =
             SearchFragment().apply {
                 arguments = Bundle().apply {
-
                 }
             }
     }
@@ -73,67 +72,10 @@ class SearchFragment : Fragment() {
             LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         binding.rvSearchList.adapter = listAdapter
 
-<<<<<<< HEAD
-        binding.ivSearchSearchBtn.setOnClickListener {
-            val query = binding.etSearchSearching.text.toString()
-            lifecycleScope.launch { //서스펜드 메소드를 사용한다면 라이프사이클 스코프 안에서는 순차적으로 시행된다.
-                val shortResult = getSearchShorts(query)
-                if( shortResult?.pageInfo?.totalResults!! > 0 ) {
-                    for(item in shortResult.items!!){
-                        val title = item.snippet?.title
-                        val uploader = item.snippet?.channelTitle
-                        val description = item.snippet?.description
-                        val url = item.snippet?.thumbnails?.high?.url
-
-                        shortsVideoIds.add(item.id?.videoId)
-                        resShortsItem.add(SearchListItem(title,uploader,0,url, description, false,"0",null))
-
-                    }
-                }
-                val shortResult2 = getViewCount(shortsVideoIds)
-
-                for(i in resShortsItem.indices){
-                    val viewCount = shortResult2?.items?.get(i)?.statistics?.viewCount
-                    if (viewCount != null) {
-                        resShortsItem[i].viewCount = viewCount
-                    }
-                }
-
-                val result = getSearchList(query)
-                Timber.tag("test").d("result= %s", result)
-                if( result?.pageInfo?.totalResults!! > 0 ) {
-                    for(item in result.items!!){
-                        val title = item.snippet?.title
-                        val uploader = item.snippet?.channelTitle
-                        val description = item.snippet?.description
-                        val url = item.snippet?.thumbnails?.high?.url
-
-                        listVideoIds.add(item.id?.videoId)
-                        resListItem.add(SearchListItem(title,uploader,0,url!!,description, false,"0",null))
-
-
-                    }
-                }
-                val result2 = getViewCount(listVideoIds)
-
-                for(i in resListItem.indices){
-                    val viewCount = result2?.items?.get(i)?.statistics?.viewCount
-                    if (viewCount != null) {
-                        resListItem[i].viewCount = viewCount
-                    }
-                }
-
-                listAdapter.items = resListItem
-                shortsAdapter.items = resShortsItem
-
-                listAdapter.notifyDataSetChanged()
-                shortsAdapter.notifyDataSetChanged()
-=======
 
         binding.etSearchSearching.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
->>>>>>> 714e4061cf4e48c9cff357ca1932d593da18ec9a
 
                 val query = binding.etSearchSearching.query.toString()
                 searchList(query)
@@ -167,15 +109,15 @@ class SearchFragment : Fragment() {
 
     private suspend fun getSearchShorts(query: String) =
         withContext(Dispatchers.IO){
-        apiService.searchVideo(
-            apiKey = apiKey,
-            part = "snippet",
-            q = query,
-            maxResults =5,
-            order= "relevance",
-            regionCode ="KR",
-            type ="video",
-            videoDuration = "short")
+            apiService.searchVideo(
+                apiKey = apiKey,
+                part = "snippet",
+                q = query,
+                maxResults =5,
+                order= "relevance",
+                regionCode ="KR",
+                type ="video",
+                videoDuration = "short")
         }
 
     private suspend fun getViewCount(ids : MutableList<String?>)=
@@ -191,9 +133,10 @@ class SearchFragment : Fragment() {
     private val onVideoClicked = object : SearchListAdapter.OnItemClickListener {
         override fun onClicked(item: SearchListItem) {
             val fragment: Fragment
-
+//            val bundle = Bundle()
+//            bundle.putParcelable("searchResult", listAdapter.items)
             fragment = LibraryVideoDetailFragment.newInstance(item)
-
+//            fragment.arguments = bundle
 
             replaceFragment(fragment, true)
         }
@@ -203,12 +146,6 @@ class SearchFragment : Fragment() {
 
         val fragmentTransition = requireActivity().supportFragmentManager.beginTransaction()
 
-//        if (isTransition) {
-//            fragmentTransition.setCustomAnimations(
-//                android.R.anim.slide_out_right,
-//                android.R.anim.slide_in_left
-//            )
-//        }
         fragmentTransition.replace(R.id.nav_host_fragment_activity_main, fragment)
             .addToBackStack(fragment.javaClass.simpleName)
         fragmentTransition.commit()
@@ -226,9 +163,10 @@ class SearchFragment : Fragment() {
                     val title = item.snippet?.title
                     val uploader = item.snippet?.channelTitle
                     val url = item.snippet?.thumbnails?.default?.url
+                    val description = item.snippet?.description
 
                     shortsVideoIds.add(item.id?.videoId)
-                    resShortsItem.add(SearchListItem(title,uploader,0,url,false,"0",null,null))
+                    resShortsItem.add(SearchListItem(title,uploader,0,url,description,false,"0",null,null))
 
                 }
             }
@@ -249,9 +187,10 @@ class SearchFragment : Fragment() {
                     val uploader = item.snippet?.channelTitle
                     val url = item.snippet?.thumbnails?.default?.url
                     val channelId = item.snippet?.channelId
+                    val description = item.snippet?.description
 
                     listVideoIds.add(item.id?.videoId)
-                    resListItem.add(SearchListItem(title,uploader,0,url!!,false,"0",null,channelId))
+                    resListItem.add(SearchListItem(title,uploader,0,url!!,description,false,"0",null,channelId))
 
 
                 }
@@ -280,5 +219,4 @@ class SearchFragment : Fragment() {
 
 
 }
-
 

@@ -68,8 +68,6 @@ class ChannelDetailActivity: AppCompatActivity() {
 
         binding.tvChannelDetailPlaylist.setOnClickListener {
 
-
-<<<<<<< HEAD
             playlists.clear()
             videoIds.clear()
 
@@ -83,7 +81,7 @@ class ChannelDetailActivity: AppCompatActivity() {
                         val url = item.snippet?.thumbnails?.default?.url
                         val videoCount =  item.contentDetails?.itemCount.toString()
 
-                        playlists.add(SearchListItem(title,uploader,null,url,description, false,videoCount,null))
+                        playlists.add(SearchListItem(title,uploader,null,url,description, false,videoCount,null, null))
                     }
                 }
 
@@ -91,9 +89,9 @@ class ChannelDetailActivity: AppCompatActivity() {
 
                 playlistsAdapter.notifyDataSetChanged()
             }
-=======
+
             searchPlaylists()
->>>>>>> 714e4061cf4e48c9cff357ca1932d593da18ec9a
+
         }
 
         binding.tvChannelDetailShorts.setOnClickListener {
@@ -101,7 +99,7 @@ class ChannelDetailActivity: AppCompatActivity() {
 
             searchShorts()
 
-<<<<<<< HEAD
+
             lifecycleScope.launch {
                 val result = getShorts(channelId)
                 if( result?.pageInfo?.totalResults!! > 0 ) {
@@ -112,7 +110,7 @@ class ChannelDetailActivity: AppCompatActivity() {
                         val url = item.snippet?.thumbnails?.default?.url
 
                         videoIds.add((item.id?.videoId))
-                        shorts.add(SearchListItem(title,uploader,null,url,description, false,"0",0))
+                        shorts.add(SearchListItem(title,uploader,null,url,description, false,"0",0, null))
                     }
                 }
                 val shortResult = getViewCount(videoIds)
@@ -128,13 +126,11 @@ class ChannelDetailActivity: AppCompatActivity() {
 
                 shortsAdapter.notifyDataSetChanged()
             }
-=======
->>>>>>> 714e4061cf4e48c9cff357ca1932d593da18ec9a
+
         }
 
         binding.tvChannelDetailTabVideo.setOnClickListener {
 
-<<<<<<< HEAD
             videoIds.clear()
             video.clear()
 
@@ -150,7 +146,7 @@ class ChannelDetailActivity: AppCompatActivity() {
                         val url = item.snippet?.thumbnails?.default?.url
 
                         videoIds.add(item.id?.videoId)
-                        video.add(SearchListItem(title,uploader,0,url!!,description,false,"0",0))
+                        video.add(SearchListItem(title,uploader,0,url!!,description,false,"0",0, null))
 
                     }
                 }
@@ -174,9 +170,9 @@ class ChannelDetailActivity: AppCompatActivity() {
                 playlistsAdapter.notifyDataSetChanged()
 
             }
-=======
+
             searchVideo()
->>>>>>> 714e4061cf4e48c9cff357ca1932d593da18ec9a
+
         }
 
     }
@@ -262,7 +258,7 @@ class ChannelDetailActivity: AppCompatActivity() {
                     val url = item.snippet?.thumbnails?.default?.url
                     val videoCount =  item.contentDetails?.itemCount.toString()
 
-                    playlists.add(SearchListItem(title,uploader,null,url,false,videoCount,null,null))
+                    playlists.add(SearchListItem(title,uploader,null,url,"",false,videoCount,null,null))
                 }
             }
 
@@ -290,7 +286,7 @@ class ChannelDetailActivity: AppCompatActivity() {
                     val url = item.snippet?.thumbnails?.default?.url
 
                     videoIds.add((item.id?.videoId))
-                    shorts.add(SearchListItem(title,uploader,null,url,false,"0",0,null))
+                    shorts.add(SearchListItem(title,uploader,null,url,"",false,"0",0,null))
                 }
             }
             val shortResult = getViewCount(videoIds)
@@ -327,7 +323,7 @@ class ChannelDetailActivity: AppCompatActivity() {
                     val url = item.snippet?.thumbnails?.default?.url
 
                     videoIds.add(item.id?.videoId)
-                    video.add(SearchListItem(title,uploader,0,url!!,false,"0",0,null))
+                    video.add(SearchListItem(title,uploader,0,url!!,"",false,"0",0,null))
 
                 }
             }
