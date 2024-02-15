@@ -104,7 +104,7 @@ class CategoryFragment : Fragment() {
             setText(category)
             isClickable = true
             isCheckable = true
-
+            setChipBackgroundColorResource(R.color.themeColor3)
             setOnClickListener {
                 with(viewModel) {
                     //로딩 ui 처리

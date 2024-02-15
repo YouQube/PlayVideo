@@ -33,6 +33,7 @@
         android:paddingStart="5dp"
         android:text="채널 명입니다다다다다다"
         android:textAlignment="center"
+        android:textColor="@color/themeColor4"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/iv_channel_thumbnail"
