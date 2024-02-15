@@ -43,7 +43,7 @@
             app:layout_constraintTop_toBottomOf="@id/youtube_player" />
 
         <TextView
-            android:id="@+id/tv_title_view_count"
+            android:id="@+id/tv_view_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="조회수"
@@ -51,13 +51,13 @@
             app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
         <TextView
-            android:id="@+id/tv_view_count"
+            android:id="@+id/tv_detail_views"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="XX 회"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_title_view_count"
-            app:layout_constraintStart_toEndOf="@id/tv_title_view_count" />
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_view_count"
+            app:layout_constraintStart_toEndOf="@id/tv_view_count" />
 
         <TextView
             android:id="@+id/tv_publishedAt"
@@ -65,8 +65,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="X 시간 전"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_view_count"
-            app:layout_constraintStart_toEndOf="@id/tv_view_count" />
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_detail_views"
+            app:layout_constraintStart_toEndOf="@id/tv_detail_views" />
 
         <ImageView
             android:id="@+id/iv_channel_icon"
@@ -76,7 +76,7 @@
             android:background="@drawable/shape_circular_background"
             android:clipToOutline="true"
             app:layout_constraintStart_toStartOf="@id/tv_title"
-            app:layout_constraintTop_toBottomOf="@id/tv_title_view_count" />
+            app:layout_constraintTop_toBottomOf="@id/tv_view_count" />
 
         <TextView
             android:id="@+id/tv_channel_name"

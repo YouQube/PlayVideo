@@ -42,6 +42,7 @@ class ChannelDetailActivity: AppCompatActivity() {
         playlists.clear()
         videoIds.clear()
         shorts.clear()
+        video.clear()
         searchVideo()
 
 
@@ -67,20 +68,14 @@ class ChannelDetailActivity: AppCompatActivity() {
         }
 
         binding.tvChannelDetailPlaylist.setOnClickListener {
-
-
             searchPlaylists()
         }
 
         binding.tvChannelDetailShorts.setOnClickListener {
-
-
             searchShorts()
-
         }
 
         binding.tvChannelDetailTabVideo.setOnClickListener {
-
             searchVideo()
         }
 
@@ -167,7 +162,7 @@ class ChannelDetailActivity: AppCompatActivity() {
                     val url = item.snippet?.thumbnails?.default?.url
                     val videoCount =  item.contentDetails?.itemCount.toString()
 
-                    playlists.add(SearchListItem(title,uploader,null,url,false,videoCount,null,null))
+                    playlists.add(SearchListItem(title,uploader,null,url, "",false,videoCount,null,null))
                 }
             }
 
@@ -195,7 +190,7 @@ class ChannelDetailActivity: AppCompatActivity() {
                     val url = item.snippet?.thumbnails?.default?.url
 
                     videoIds.add((item.id?.videoId))
-                    shorts.add(SearchListItem(title,uploader,null,url,false,"0",0,null))
+                    shorts.add(SearchListItem(title,uploader,null,url,"",false,"0",0,null))
                 }
             }
             val shortResult = getViewCount(videoIds)
@@ -230,9 +225,10 @@ class ChannelDetailActivity: AppCompatActivity() {
                     val title = item.snippet?.title
                     val uploader = item.snippet?.channelTitle
                     val url = item.snippet?.thumbnails?.default?.url
+                    val description = item.snippet?.description
 
                     videoIds.add(item.id?.videoId)
-                    video.add(SearchListItem(title,uploader,0,url!!,false,"0",0,null))
+                    video.add(SearchListItem(title,uploader,0,url!!,description,false,"0",0,null))
 
                 }
             }

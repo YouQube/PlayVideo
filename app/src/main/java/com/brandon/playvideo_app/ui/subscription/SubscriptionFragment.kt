@@ -17,6 +17,7 @@ import com.brandon.playvideo_app.data.repository.impl.YoutubeVideoRepositoryImpl
 import com.brandon.playvideo_app.databinding.SubscriptionFragmentBinding
 import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
 import com.brandon.playvideo_app.ui.detail.video.VideoDetailFragment
+import com.brandon.playvideo_app.ui.search.SearchFragment
 import com.brandon.playvideo_app.ui.subscription.adapter.HorizontalChannelListAdapter
 import com.brandon.playvideo_app.ui.subscription.adapter.VerticalVideoListAdapter
 import com.brandon.playvideo_app.ui.trend.TrendFragment
@@ -105,6 +106,24 @@ class SubscriptionFragment : Fragment() {
 
         videosVertical.observe(viewLifecycleOwner) {
             verticalVideoListAdapter.submitList(it)
+        }
+
+        val toolbarBinding = ToolbarCommonBinding.bind(requireView().findViewById(R.id.included_tool_bar))
+        toolbarBinding.toolbarCommon.inflateMenu(R.menu.common_tool_bar_menu)
+        toolbarBinding.toolbarCommon.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.search -> {
+                    val searchFragment = SearchFragment.newInstance()
+                    requireActivity().supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.nav_host_fragment_activity_main, searchFragment)
+                        addToBackStack(null)
+                        commit()
+                    }
+                    true
+                }
+
+                else -> false
+            }
         }
 
         event.observe(viewLifecycleOwner) { event ->

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.brandon.playvideo_app.R
 import com.brandon.playvideo_app.databinding.CategoryFragmentBinding
 import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
+import com.brandon.playvideo_app.ui.search.SearchFragment
 import com.brandon.playvideo_app.viewmodel.CategoryViewModel
 import com.google.android.material.chip.Chip
 
@@ -58,6 +59,12 @@ class CategoryFragment : Fragment() {
         toolbarBinding.toolbarCommon.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.search -> {
+                    val searchFragment = SearchFragment.newInstance()
+                    requireActivity().supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.nav_host_fragment_activity_main, searchFragment)
+                        addToBackStack(null)
+                        commit()
+                    }
                     true
                 }
 

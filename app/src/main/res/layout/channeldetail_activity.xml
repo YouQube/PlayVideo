@@ -6,22 +6,32 @@
     android:layout_height="match_parent"
     android:background="@color/themeColor1">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/collapse_container"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/tb_category_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/themeColor1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <include
-            android:id="@+id/included_tool_bar"
-            layout="@layout/toolbar_common"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/collapse_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <include
+                android:id="@+id/included_tool_bar"
+                layout="@layout/toolbar_common"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <ImageView
         android:id="@+id/iv_channelDetail_banner"
@@ -33,7 +43,7 @@
         android:scaleType="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/collapse_container" />
+        app:layout_constraintTop_toBottomOf="@+id/tb_category_toolbar" />
 
     <ImageView
         android:id="@+id/iv_channelDetail_thumbnail"
