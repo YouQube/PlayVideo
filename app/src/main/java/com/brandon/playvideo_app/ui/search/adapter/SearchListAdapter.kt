@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.brandon.playvideo_app.databinding.ItemVideoLibraryBinding
 import com.brandon.playvideo_app.databinding.RvitemSearchListBinding
 import com.brandon.playvideo_app.model.SearchListItem
 import com.brandon.playvideo_app.ui.detail.ChannelDetailActivity
@@ -30,6 +31,7 @@ class SearchListAdapter(searchListItems : MutableList<SearchListItem>) : Recycle
         val tvPlayTime = binding.tvSearchAmount
         val ivThumbnail = binding.ivSearchThumbnail
         val clThumbnail = binding.clSearchItem
+        val originViews = binding.originViews
         val tvChaneelId = binding.tvChannelId
 
         init {
@@ -79,6 +81,7 @@ class SearchListAdapter(searchListItems : MutableList<SearchListItem>) : Recycle
         holder.tvTitle.text = items[position].title
         holder.tvUploader.text = items[position].uploader
         holder.tvViews.text = Converter.formatViews(items[position].viewCount)
+        holder.originViews.text = items[position].viewCount.toString()
         holder.tvPlayTime.text = items[position].videoCount
         holder.tvChaneelId.text = items[position].channelId
 

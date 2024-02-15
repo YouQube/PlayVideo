@@ -5,6 +5,7 @@ class SearchListItem(
     val uploader : String?,
     var viewCount : Int?,
     var thumbnail : String?,
+    var description : String?,
     var isInterset : Boolean,
     var videoCount : String?,
     var playTime : Long?,

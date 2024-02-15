@@ -68,8 +68,30 @@ class ChannelDetailActivity: AppCompatActivity() {
 
         binding.tvChannelDetailPlaylist.setOnClickListener {
 
+            playlists.clear()
+            videoIds.clear()
+
+            lifecycleScope.launch {
+                val result = getPlaylists(channelId)
+                if( result?.pageInfo?.totalResults!! > 0 ) {
+                    for (item in result?.items!!){
+                        val title = item.snippet?.title
+                        val uploader = item.snippet?.channelTitle
+                        val description = item.snippet?.description
+                        val url = item.snippet?.thumbnails?.default?.url
+                        val videoCount =  item.contentDetails?.itemCount.toString()
+
+                        playlists.add(SearchListItem(title,uploader,null,url,description, false,videoCount,null, null))
+                    }
+                }
+
+                playlistsAdapter.items = playlists
+
+                playlistsAdapter.notifyDataSetChanged()
+            }
 
             searchPlaylists()
+
         }
 
         binding.tvChannelDetailShorts.setOnClickListener {
@@ -77,11 +99,80 @@ class ChannelDetailActivity: AppCompatActivity() {
 
             searchShorts()
 
+
+            lifecycleScope.launch {
+                val result = getShorts(channelId)
+                if( result?.pageInfo?.totalResults!! > 0 ) {
+                    for (item in result?.items!!){
+                        val title = item.snippet?.title
+                        val uploader = item.snippet?.channelTitle
+                        val description = item.snippet?.description
+                        val url = item.snippet?.thumbnails?.default?.url
+
+                        videoIds.add((item.id?.videoId))
+                        shorts.add(SearchListItem(title,uploader,null,url,description, false,"0",0, null))
+                    }
+                }
+                val shortResult = getViewCount(videoIds)
+
+                for(i in playlists.indices){
+                    val viewCount = shortResult?.items?.get(i)?.statistics?.viewCount
+                    if (viewCount != null) {
+                        shorts[i].viewCount = viewCount
+                    }
+                }
+
+                shortsAdapter.items = shorts
+
+                shortsAdapter.notifyDataSetChanged()
+            }
+
         }
 
         binding.tvChannelDetailTabVideo.setOnClickListener {
 
+            videoIds.clear()
+            video.clear()
+
+            lifecycleScope.launch { //서스펜드 메소드를 사용한다면 라이프사이클 스코프 안에서는 순차적으로 시행된다.
+
+                val result = getVideo(channelId)
+                Timber.tag("test").d("result= %s", result)
+                if( result?.pageInfo?.totalResults!! > 0 ) {
+                    for(item in result.items!!){
+                        val title = item.snippet?.title
+                        val uploader = item.snippet?.channelTitle
+                        val description = item.snippet?.description
+                        val url = item.snippet?.thumbnails?.default?.url
+
+                        videoIds.add(item.id?.videoId)
+                        video.add(SearchListItem(title,uploader,0,url!!,description,false,"0",0, null))
+
+                    }
+                }
+
+                val result2 = getDurationByVideoId(videoIds)
+
+                for(i in video.indices){
+                    val playTime = result2?.items?.get(i)?.contentDetails?.duration
+                    val duration = Duration.parse(playTime)
+                    val seconds = duration.seconds
+                    if (playTime != null) {
+                        video[i].playTime = seconds
+                    }
+                }
+
+                video.removeIf {
+                    it.playTime!! <= 240
+                }
+                playlistsAdapter.items = video
+
+                playlistsAdapter.notifyDataSetChanged()
+
+            }
+
             searchVideo()
+
         }
 
     }
@@ -167,7 +258,7 @@ class ChannelDetailActivity: AppCompatActivity() {
                     val url = item.snippet?.thumbnails?.default?.url
                     val videoCount =  item.contentDetails?.itemCount.toString()
 
-                    playlists.add(SearchListItem(title,uploader,null,url,false,videoCount,null,null))
+                    playlists.add(SearchListItem(title,uploader,null,url,"",false,videoCount,null,null))
                 }
             }
 
@@ -195,7 +286,7 @@ class ChannelDetailActivity: AppCompatActivity() {
                     val url = item.snippet?.thumbnails?.default?.url
 
                     videoIds.add((item.id?.videoId))
-                    shorts.add(SearchListItem(title,uploader,null,url,false,"0",0,null))
+                    shorts.add(SearchListItem(title,uploader,null,url,"",false,"0",0,null))
                 }
             }
             val shortResult = getViewCount(videoIds)
@@ -232,7 +323,7 @@ class ChannelDetailActivity: AppCompatActivity() {
                     val url = item.snippet?.thumbnails?.default?.url
 
                     videoIds.add(item.id?.videoId)
-                    video.add(SearchListItem(title,uploader,0,url!!,false,"0",0,null))
+                    video.add(SearchListItem(title,uploader,0,url!!,"",false,"0",0,null))
 
                 }
             }

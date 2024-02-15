@@ -17,6 +17,10 @@
         android:enableOnBackInvokedCallback="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.library.EditProfileActivity"
+            android:theme="@style/Theme.Design.NoActionBar"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
@@ -25,8 +29,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.detail.ChannelDetailActivity"
-            android:exported="false">
-        </activity>
+        <activity
+            android:name=".ui.detail.ChannelDetailActivity"
+            android:exported="false"></activity>
     </application>
+
 </manifest>
