@@ -1,13 +1,17 @@
 package com.brandon.playvideo_app.ui.main
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.view.WindowManager
+import android.view.animation.OvershootInterpolator
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.animation.doOnEnd
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.brandon.playvideo_app.R
@@ -18,8 +22,11 @@ import com.brandon.playvideo_app.ui.search.SearchFragment
 import com.brandon.playvideo_app.ui.subscription.SubscriptionFragment
 import com.brandon.playvideo_app.ui.trend.TrendFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Delay
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
-import kotlin.text.Typography.dagger
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -45,6 +52,35 @@ class MainActivity : AppCompatActivity() {
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                false
+            }
+            setOnExitAnimationListener { screen ->
+                val zoomX = ObjectAnimator.ofFloat(
+                    screen.iconView,
+                    View.SCALE_X,
+                    0.4f,
+                    0.0f
+                )
+                zoomX.interpolator = OvershootInterpolator()
+                zoomX.duration = 500L
+                zoomX.doOnEnd { screen.remove() }
+
+                val zoomY = ObjectAnimator.ofFloat(
+                    screen.iconView,
+                    View.SCALE_Y,
+                    0.4f,
+                    0.0f
+                )
+                zoomY.interpolator = OvershootInterpolator()
+                zoomY.duration = 500L
+                zoomY.doOnEnd { screen.remove() }
+
+                zoomX.start()
+                zoomY.start()
+            }
+        }
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
@@ -63,8 +99,8 @@ class MainActivity : AppCompatActivity() {
 
 
         initView()
-    }
 
+    }
 
 
     private fun initView() = with(binding) {
@@ -75,17 +111,6 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         binding.bottomNavigation.setupWithNavController(navController)
 
-//        navController.addOnDestinationChangedListener { _, destination, _ ->
-//            Timber.tag("메인").d("Fragment 변환: ${destination.label}")
-//
-//            if (destination.id == R.id.videoDetailFragment) {
-//                Timber.tag("main").d("현재 화면: 디테일")
-//                bottomNavigation.isVisible = false
-//            } else {
-//                Timber.tag("main").d("현재 화면: 나머지")
-//                bottomNavigation.isVisible = true
-//            }
-//        }
     }
 
     fun getStatusBarHeight(context: Context): Int {

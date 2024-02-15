@@ -9,7 +9,16 @@
         <item name="android:scrollbarThumbVertical">@android:color/holo_red_light</item>
         <!-- 스크롤 바의 크기를 지정합니다. -->
         <item name="android:scrollbarSize">2dp</item>
+
     </style>
 
     <style name="Theme.PlayVideo_App" parent="Base.Theme.PlayVideo_App" />
+
+    <style name="Theme.AppCompat.Starting" parent="Theme.SplashScreen">
+        <item name="postSplashScreenTheme">@style/Base.Theme.PlayVideo_App</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/avd_anim</item>
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="android:windowSplashScreenAnimationDuration">1000</item>
+        <item name="android:windowSplashScreenBrandingImage">@drawable/ic_action_name</item>
+    </style>
 </resources>
