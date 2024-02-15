@@ -3,28 +3,21 @@ package com.brandon.playvideo_app.ui.search
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.SearchView
-import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isGone
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.brandon.playvideo_app.R
 import com.brandon.playvideo_app.data.api.RetrofitClient.apiService
-import com.brandon.playvideo_app.ui.search.adapter.SearchListAdapter
 import com.brandon.playvideo_app.databinding.SearchFragmentBinding
 import com.brandon.playvideo_app.model.SearchListItem
 import com.brandon.playvideo_app.ui.detail.VideoDetailFragment
-import com.brandon.playvideo_app.ui.library.adapter.LibraryChannelAdapter
-import com.brandon.playvideo_app.ui.library.adapter.LibraryVideoAdapter
+import com.brandon.playvideo_app.ui.search.adapter.SearchListAdapter
 import com.brandon.playvideo_app.ui.search.adapter.SearchShortsAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -79,6 +72,7 @@ class SearchFragment : Fragment() {
             LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         binding.rvSearchList.adapter = listAdapter
 
+
         binding.etSearchSearching.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -92,11 +86,6 @@ class SearchFragment : Fragment() {
                 return false
             }
         })
-
-
-
-
-
 
         with(binding) {
 

@@ -7,11 +7,11 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Base64
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.drawable.toBitmap
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +25,6 @@ import com.brandon.playvideo_app.viewmodel.LibraryVideoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-
 import java.io.ByteArrayOutputStream
 
 @AndroidEntryPoint
@@ -88,6 +87,7 @@ class LibraryFragment : Fragment() {
             val intent = Intent(activity, EditProfileActivity::class.java)
             startActivity(intent)
         }
+
     }
 
     private val onVideoClicked = object : LibraryVideoAdapter.OnItemClickListener {

@@ -6,12 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.brandon.playvideo_app.data.local.entities.VideoEntity
 import com.brandon.playvideo_app.databinding.ItemVideoLibraryBinding
+import com.brandon.playvideo_app.util.Converter
 import com.bumptech.glide.Glide
-import java.util.concurrent.Executors
 
 
 class LibraryVideoAdapter : ListAdapter<VideoEntity, LibraryVideoAdapter.VideosViewHolder>(diffCallback) {
@@ -28,7 +26,7 @@ class LibraryVideoAdapter : ListAdapter<VideoEntity, LibraryVideoAdapter.VideosV
             with(binding) {
                 tvVideoTitle.text = video.title
                 tvVideoUploader.text = video.channelTitle
-                tvVideoView.text = video.views.toString()
+                tvVideoView.text = Converter.formatViews(video.views)
 
                 Glide.with(itemView)
                     .load(video.url)
