@@ -7,5 +7,6 @@ class SearchListItem(
     var thumbnail : String?,
     var isInterset : Boolean,
     var videoCount : String?,
-    var playTime : Long?
+    var playTime : Long?,
+    val channelId : String?
 )

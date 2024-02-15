@@ -3,11 +3,17 @@ package com.brandon.playvideo_app.ui.search
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.SearchView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isGone
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -26,7 +32,6 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class SearchFragment : Fragment() {
-    private lateinit var callback: OnBackPressedCallback
 
     private lateinit var binding : SearchFragmentBinding
     private var resListItem = mutableListOf<SearchListItem>()
@@ -54,16 +59,6 @@ class SearchFragment : Fragment() {
 
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                super.handleOnBackCancelled()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -84,74 +79,31 @@ class SearchFragment : Fragment() {
             LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         binding.rvSearchList.adapter = listAdapter
 
-        binding.ivSearchSearchBtn.setOnClickListener {
-            val query = binding.etSearchSearching.text.toString()
-            lifecycleScope.launch { //서스펜드 메소드를 사용한다면 라이프사이클 스코프 안에서는 순차적으로 시행된다.
-                val shortResult = getSearchShorts(query)
-                if( shortResult?.pageInfo?.totalResults!! > 0 ) {
-                    for(item in shortResult.items!!){
-                        val title = item.snippet?.title
-                        val uploader = item.snippet?.channelTitle
-                        val url = item.snippet?.thumbnails?.default?.url
+        binding.etSearchSearching.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
 
-                        shortsVideoIds.add(item.id?.videoId)
-                        resShortsItem.add(SearchListItem(title,uploader,0,url,false,"0",null))
-
-                    }
-                }
-                val shortResult2 = getViewCount(shortsVideoIds)
-
-                for(i in resShortsItem.indices){
-                    val viewCount = shortResult2?.items?.get(i)?.statistics?.viewCount
-                    if (viewCount != null) {
-                        resShortsItem[i].viewCount = viewCount
-                    }
-                }
-
-                val result = getSearchList(query)
-                Timber.tag("test").d("result= %s", result)
-                if( result?.pageInfo?.totalResults!! > 0 ) {
-                    for(item in result.items!!){
-                        val title = item.snippet?.title
-                        val uploader = item.snippet?.channelTitle
-                        val url = item.snippet?.thumbnails?.default?.url
-
-                        listVideoIds.add(item.id?.videoId)
-                        resListItem.add(SearchListItem(title,uploader,0,url!!,false,"0",null))
-
-
-                    }
-                }
-                val result2 = getViewCount(listVideoIds)
-
-                for(i in resListItem.indices){
-                    val viewCount = result2?.items?.get(i)?.statistics?.viewCount
-                    if (viewCount != null) {
-                        resListItem[i].viewCount = viewCount
-                    }
-                }
-
-                listAdapter.items = resListItem
-                shortsAdapter.items = resShortsItem
-
-                listAdapter.notifyDataSetChanged()
-                shortsAdapter.notifyDataSetChanged()
-
+                val query = binding.etSearchSearching.query.toString()
+                searchList(query)
+                return true
             }
-        }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+
+
+
+
+
+
         with(binding) {
 
             listAdapter.setOnClickListener(onVideoClicked)
             rvSearchList.adapter = listAdapter
         }
     }
-
-    override fun onDetach() {
-        super.onDetach()
-        callback.remove()
-    }
-
-
 
     private suspend fun getSearchList(query: String)=
         withContext(Dispatchers.IO){
@@ -215,4 +167,72 @@ class SearchFragment : Fragment() {
             .addToBackStack(fragment.javaClass.simpleName)
         fragmentTransition.commit()
     }
+
+
+    private fun searchList(query : String){
+        binding.tvSearchShort.isGone = false
+        resShortsItem.clear()
+        resListItem.clear()
+        lifecycleScope.launch { //서스펜드 메소드를 사용한다면 라이프사이클 스코프 안에서는 순차적으로 시행된다.
+            val shortResult = getSearchShorts(query)
+            if( shortResult?.pageInfo?.totalResults!! > 0 ) {
+                for(item in shortResult.items!!){
+                    val title = item.snippet?.title
+                    val uploader = item.snippet?.channelTitle
+                    val url = item.snippet?.thumbnails?.default?.url
+
+                    shortsVideoIds.add(item.id?.videoId)
+                    resShortsItem.add(SearchListItem(title,uploader,0,url,false,"0",null,null))
+
+                }
+            }
+            val shortResult2 = getViewCount(shortsVideoIds)
+
+            for(i in resShortsItem.indices){
+                val viewCount = shortResult2?.items?.get(i)?.statistics?.viewCount
+                if (viewCount != null) {
+                    resShortsItem[i].viewCount = viewCount
+                }
+            }
+
+            val result = getSearchList(query)
+            Timber.tag("test").d("result= %s", result)
+            if( result?.pageInfo?.totalResults!! > 0 ) {
+                for(item in result.items!!){
+                    val title = item.snippet?.title
+                    val uploader = item.snippet?.channelTitle
+                    val url = item.snippet?.thumbnails?.default?.url
+                    val channelId = item.snippet?.channelId
+
+                    listVideoIds.add(item.id?.videoId)
+                    resListItem.add(SearchListItem(title,uploader,0,url!!,false,"0",null,channelId))
+
+
+                }
+            }
+            val result2 = getViewCount(listVideoIds)
+
+            for(i in resListItem.indices){
+                val viewCount = result2?.items?.get(i)?.statistics?.viewCount
+                if (viewCount != null) {
+                    resListItem[i].viewCount = viewCount
+                }
+            }
+
+            listAdapter.items = resListItem
+            shortsAdapter.items = resShortsItem
+
+            listAdapter.notifyDataSetChanged()
+            shortsAdapter.notifyDataSetChanged()
+
+            val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(binding.etSearchSearching.windowToken, 0)
+        }
+    }
+
+
+
+
 }
+
+
