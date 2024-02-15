@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.brandon.playvideo_app.R
 import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
 import com.brandon.playvideo_app.databinding.TrendFragmentBinding
+import com.brandon.playvideo_app.ui.detail.video.VideoDetailFragment
+import com.brandon.playvideo_app.ui.search.SearchFragment
 import com.brandon.playvideo_app.viewmodel.TrendViewModel
 import timber.log.Timber
 
@@ -58,7 +60,12 @@ class TrendFragment : Fragment() {
                 R.id.search -> {
                     // 메뉴 아이템 1 클릭 시 동작할 코드 작성
                     Timber.d("Search Item Clicked!")
-
+                    val searchFragment = SearchFragment.newInstance()
+                    requireActivity().supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.nav_host_fragment_activity_main, searchFragment)
+                        addToBackStack(null)
+                        commit()
+                    }
                     true
                 }
                 // 다른 메뉴 아이템에 대해서도 필요한 경우 추가할 수 있음
