@@ -3,6 +3,7 @@ package com.brandon.playvideo_app.ui.search
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +34,7 @@ class SearchFragment : Fragment() {
 
     private var listVideoIds = mutableListOf<String?>()
     private var shortsVideoIds = mutableListOf<String?>()
-    private val apiKey = "AIzaSyD1EOr7wypjcnHHfrWvPmdPkx4wn04OBk4"
+    private val apiKey = "AIzaSyCC8wNtOt0EiqzkoudHp1P9mrOHdCc1ap4"
 
 
     companion object {

@@ -21,10 +21,10 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/left_arrow"
-            android:tint="@color/themeColor4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/themeColor4" />
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/et_search_searching"
@@ -32,6 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="12dp"
+            android:backgroundTint="@color/themeColor2"
+            app:searchHintIcon="@color/themeColor4"
             android:background="@drawable/shape_search_searching"
             app:iconifiedByDefault="false"
             android:lines="1"
