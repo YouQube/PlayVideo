@@ -6,5 +6,8 @@
     <color name="gray4">#CECECE</color>
     <color name="gray2">#6C6C6C</color>
     <color name="gray1">#3B3B3B</color>
-
+    <color name="themeColor1">#1E2022</color>
+    <color name="themeColor2">#52616A</color>
+    <color name="themeColor3">#C9D6DE</color>
+    <color name="themeColor4">#F0F5F9</color>
 </resources>

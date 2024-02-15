@@ -37,7 +37,6 @@ class SearchFragment : Fragment() {
     private val apiKey = "AIzaSyCC8wNtOt0EiqzkoudHp1P9mrOHdCc1ap4"
 
 
-
     companion object {
         @JvmStatic
         fun newInstance() =
