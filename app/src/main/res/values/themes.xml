@@ -19,6 +19,6 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/avd_anim</item>
         <item name="windowSplashScreenBackground">@color/white</item>
         <item name="android:windowSplashScreenAnimationDuration">1000</item>
-        <item name="android:windowSplashScreenBrandingImage">@drawable/ic_action_name</item>
+        <item name="android:windowSplashScreenBrandingImage">@drawable/ic_viniverse</item>
     </style>
 </resources>
