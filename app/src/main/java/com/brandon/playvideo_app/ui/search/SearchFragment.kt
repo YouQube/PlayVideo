@@ -16,7 +16,7 @@ import com.brandon.playvideo_app.R
 import com.brandon.playvideo_app.data.api.RetrofitClient.apiService
 import com.brandon.playvideo_app.databinding.SearchFragmentBinding
 import com.brandon.playvideo_app.model.SearchListItem
-import com.brandon.playvideo_app.ui.detail.VideoDetailFragment
+import com.brandon.playvideo_app.ui.library.LibraryVideoDetailFragment
 import com.brandon.playvideo_app.ui.search.adapter.SearchListAdapter
 import com.brandon.playvideo_app.ui.search.adapter.SearchShortsAdapter
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +34,7 @@ class SearchFragment : Fragment() {
 
     private var listVideoIds = mutableListOf<String?>()
     private var shortsVideoIds = mutableListOf<String?>()
-    private val apiKey = "AIzaSyCC8wNtOt0EiqzkoudHp1P9mrOHdCc1ap4"
+    private val apiKey = "AIzaSyBLbVhwL3SB3shkh-dwMJz23OXpw4FSd2A"
 
 
     companion object {
@@ -109,15 +109,15 @@ class SearchFragment : Fragment() {
 
     private suspend fun getSearchShorts(query: String) =
         withContext(Dispatchers.IO){
-        apiService.searchVideo(
-            apiKey = apiKey,
-            part = "snippet",
-            q = query,
-            maxResults =5,
-            order= "relevance",
-            regionCode ="KR",
-            type ="video",
-            videoDuration = "short")
+            apiService.searchVideo(
+                apiKey = apiKey,
+                part = "snippet",
+                q = query,
+                maxResults =5,
+                order= "relevance",
+                regionCode ="KR",
+                type ="video",
+                videoDuration = "short")
         }
 
     private suspend fun getViewCount(ids : MutableList<String?>)=
@@ -133,10 +133,10 @@ class SearchFragment : Fragment() {
     private val onVideoClicked = object : SearchListAdapter.OnItemClickListener {
         override fun onClicked(item: SearchListItem) {
             val fragment: Fragment
-            val bundle = Bundle()
+//            val bundle = Bundle()
 //            bundle.putParcelable("searchResult", listAdapter.items)
-            fragment = VideoDetailFragment.newInstance()
-            fragment.arguments = bundle
+            fragment = LibraryVideoDetailFragment.newInstance(item)
+//            fragment.arguments = bundle
 
             replaceFragment(fragment, true)
         }
@@ -146,12 +146,6 @@ class SearchFragment : Fragment() {
 
         val fragmentTransition = requireActivity().supportFragmentManager.beginTransaction()
 
-        if (isTransition) {
-            fragmentTransition.setCustomAnimations(
-                android.R.anim.slide_out_right,
-                android.R.anim.slide_in_left
-            )
-        }
         fragmentTransition.replace(R.id.nav_host_fragment_activity_main, fragment)
             .addToBackStack(fragment.javaClass.simpleName)
         fragmentTransition.commit()
@@ -169,9 +163,10 @@ class SearchFragment : Fragment() {
                     val title = item.snippet?.title
                     val uploader = item.snippet?.channelTitle
                     val url = item.snippet?.thumbnails?.default?.url
+                    val description = item.snippet?.description
 
                     shortsVideoIds.add(item.id?.videoId)
-                    resShortsItem.add(SearchListItem(title,uploader,0,url,false,"0",null,null))
+                    resShortsItem.add(SearchListItem(title,uploader,0,url,description,false,"0",null,null))
 
                 }
             }
@@ -192,9 +187,10 @@ class SearchFragment : Fragment() {
                     val uploader = item.snippet?.channelTitle
                     val url = item.snippet?.thumbnails?.default?.url
                     val channelId = item.snippet?.channelId
+                    val description = item.snippet?.description
 
                     listVideoIds.add(item.id?.videoId)
-                    resListItem.add(SearchListItem(title,uploader,0,url!!,false,"0",null,channelId))
+                    resListItem.add(SearchListItem(title,uploader,0,url!!,description,false,"0",null,channelId))
 
 
                 }
@@ -223,5 +219,4 @@ class SearchFragment : Fragment() {
 
 
 }
-
 
