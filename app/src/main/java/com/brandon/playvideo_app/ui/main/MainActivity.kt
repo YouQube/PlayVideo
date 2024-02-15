@@ -52,6 +52,17 @@ class MainActivity : AppCompatActivity() {
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setSplash()
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
+
+
+        Timber.plant(Timber.DebugTree())
+        initView()
+
+    }
+
+    private fun setSplash() {
         installSplashScreen().apply {
             setKeepOnScreenCondition {
                 false
@@ -81,25 +92,6 @@ class MainActivity : AppCompatActivity() {
                 zoomY.start()
             }
         }
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-
-
-        Timber.plant(Timber.DebugTree())
-        window.apply {
-            setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-            )
-            statusBarColor = Color.BLACK
-            WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars = true
-        }
-
-        binding.clContainer.setPadding(0, getStatusBarHeight(this) - 10, 0, getNaviBarHeight(this))
-
-
-        initView()
-
     }
 
 
@@ -112,27 +104,6 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setupWithNavController(navController)
 
     }
-
-    fun getStatusBarHeight(context: Context): Int {
-        val resourceId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
-
-        return if (resourceId > 0) {
-            context.resources.getDimensionPixelSize(resourceId)
-        } else {
-            0
-        }
-    }
-
-    fun getNaviBarHeight(context: Context): Int {
-        val resourceId = context.resources.getIdentifier("navigation_bar_height", "dimen", "android")
-
-        return if (resourceId > 0) {
-            context.resources.getDimensionPixelSize(resourceId)
-        } else {
-            0
-        }
-    }
-
     override fun onBackPressed() {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main)
         Timber.d("현재 fragment: " + currentFragment?.javaClass?.simpleName)

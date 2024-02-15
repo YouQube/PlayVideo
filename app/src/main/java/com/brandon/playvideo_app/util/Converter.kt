@@ -35,9 +35,9 @@ object Converter {
         views ?: return "알 수 없음"
         return when {
             views < 1000 -> views.toString()
-            views < 10000 -> String.format("%.1f천", views.toDouble() / 1000)
-            views < 100000000 -> String.format("%.1f만", views.toDouble() / 10000)
-            else -> String.format("%.1f억", views.toDouble() / 100000000)
+            views < 10000 -> String.format("%.1f천회", views.toDouble() / 1000)
+            views < 100000000 -> String.format("%.1f만회", views.toDouble() / 10000)
+            else -> String.format("%.1f억회", views.toDouble() / 100000000)
         }
     }
 

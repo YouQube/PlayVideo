@@ -6,20 +6,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.brandon.playvideo_app.R
 import com.brandon.playvideo_app.data.api.RetrofitClient
 import com.brandon.playvideo_app.data.model.YoutubeChannelResponse
 import com.brandon.playvideo_app.databinding.ChanneldetailActivityBinding
 import com.brandon.playvideo_app.model.SearchListItem
 import com.brandon.playvideo_app.ui.detail.adapter.ChannelDetailPlallistsAdapter
 import com.brandon.playvideo_app.ui.detail.adapter.ChannelDetailShortsAdapter
-import com.brandon.playvideo_app.ui.search.adapter.SearchListAdapter
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.time.Duration
-import java.util.Collections
 
 class ChannelDetailActivity: AppCompatActivity() {
 
@@ -35,6 +34,7 @@ class ChannelDetailActivity: AppCompatActivity() {
     private var videoIds = mutableListOf<String?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_PlayVideo_App)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         channelId = intent.getStringExtra("data")!!

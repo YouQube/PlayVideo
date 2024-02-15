@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.brandon.playvideo_app.R
 import com.brandon.playvideo_app.databinding.LibraryFragmentBinding
 import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
-import com.brandon.playvideo_app.ui.library.adapter.EditProfileAdapter
 import com.brandon.playvideo_app.ui.library.adapter.LibraryChannelAdapter
 import com.brandon.playvideo_app.ui.library.adapter.LibraryVideoAdapter
 import com.brandon.playvideo_app.ui.search.SearchFragment
@@ -27,12 +26,13 @@ import com.brandon.playvideo_app.viewmodel.LibraryVideoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.io.ByteArrayOutputStream
 
 @AndroidEntryPoint
 class LibraryFragment : Fragment() {
 
-    private var _binding: LibraryFragmentBinding? = null
+    private var _binding : LibraryFragmentBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var libraryVideoAdapter: LibraryVideoAdapter
@@ -44,7 +44,7 @@ class LibraryFragment : Fragment() {
     private val channelViewModel by viewModels<LibraryChannelViewModel>()
 
     private val sharedPreferences by lazy {
-        requireContext().getSharedPreferences(KEY_PREFS, Context.MODE_PRIVATE)
+        requireContext().getSharedPreferences("sp", Context.MODE_PRIVATE)
     }
 
     companion object {
@@ -80,7 +80,7 @@ class LibraryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setupToolbar(view)
         setUpRv()
         collectVideos()
         collectChannels()
@@ -213,6 +213,21 @@ class LibraryFragment : Fragment() {
                 ivEditProfile.setImageBitmap(bitmap) // Bitmap을 이용해 이미지 띄우기
                 tvProfileName.text = sharedPreferences.getString("name", "")
                 tvProfileDescription.text = sharedPreferences.getString("description", "")
+            }
+        }
+    }
+
+    private fun setupToolbar(view: View) {
+        val toolbarBinding = ToolbarCommonBinding.bind(view.findViewById(R.id.included_tool_bar))
+        toolbarBinding.toolbarCommon.inflateMenu(R.menu.common_tool_bar_menu)
+        toolbarBinding.toolbarCommon.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.search -> {
+                    Timber.d("Search Item Clicked!")
+                    true
+                }
+
+                else -> false
             }
         }
     }
