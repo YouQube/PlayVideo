@@ -108,24 +108,6 @@ class SubscriptionFragment : Fragment() {
             verticalVideoListAdapter.submitList(it)
         }
 
-        val toolbarBinding = ToolbarCommonBinding.bind(requireView().findViewById(R.id.included_tool_bar))
-        toolbarBinding.toolbarCommon.inflateMenu(R.menu.common_tool_bar_menu)
-        toolbarBinding.toolbarCommon.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.search -> {
-                    val searchFragment = SearchFragment.newInstance()
-                    requireActivity().supportFragmentManager.beginTransaction().apply {
-                        replace(R.id.nav_host_fragment_activity_main, searchFragment)
-                        addToBackStack(null)
-                        commit()
-                    }
-                    true
-                }
-
-                else -> false
-            }
-        }
-
         event.observe(viewLifecycleOwner) { event ->
             when (event) {
                 is SubscriptionListEvent.OpenContent -> {
@@ -176,6 +158,7 @@ class SubscriptionFragment : Fragment() {
     private fun setupToolbar(view: View) {
         val toolbarBinding = ToolbarCommonBinding.bind(view.findViewById(R.id.included_tool_bar))
         toolbarBinding.toolbarCommon.inflateMenu(R.menu.common_tool_bar_menu)
+
         toolbarBinding.toolbarCommon.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.search -> {
