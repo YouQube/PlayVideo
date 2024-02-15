@@ -31,7 +31,7 @@
         </activity>
         <activity
             android:name=".ui.detail.ChannelDetailActivity"
-            android:exported="false"></activity>
+            android:exported="false"/>
     </application>
 
 </manifest>

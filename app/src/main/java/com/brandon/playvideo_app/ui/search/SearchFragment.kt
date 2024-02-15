@@ -38,7 +38,10 @@ class SearchFragment : Fragment() {
     private var shortsVideoIds = mutableListOf<String?>()
     private val apiKey = "AIzaSyBLbVhwL3SB3shkh-dwMJz23OXpw4FSd2A"
 
-
+    private val pageListShorts: MutableList<String> = mutableListOf()
+    private val pageListLong: MutableList<String> = mutableListOf()
+    private var pageIdxShorts = 0
+    private var pageIdxLong = 0
     companion object {
         @JvmStatic
         fun newInstance() =
@@ -179,12 +182,21 @@ class SearchFragment : Fragment() {
         resListItem.clear()
         lifecycleScope.launch { //서스펜드 메소드를 사용한다면 라이프사이클 스코프 안에서는 순차적으로 시행된다.
             val shortResult = getSearchShorts(query)
+
+            val pageTokenShorts = shortResult?.nextPageToken
+
+            if (pageTokenShorts != null) {
+                pageListShorts.add(pageTokenShorts)
+            }
+            pageIdxShorts++
+
             if( shortResult?.pageInfo?.totalResults!! > 0 ) {
                 for(item in shortResult.items!!){
                     val title = item.snippet?.title
                     val uploader = item.snippet?.channelTitle
                     val url = item.snippet?.thumbnails?.default?.url
                     val description = item.snippet?.description
+
 
                     shortsVideoIds.add(item.id?.videoId)
                     resShortsItem.add(SearchListItem(title,uploader,0,url,description,false,"0",null,null))
@@ -201,6 +213,14 @@ class SearchFragment : Fragment() {
             }
 
             val result = getSearchList(query)
+
+            val pageTokenLong = shortResult?.nextPageToken
+
+            if (pageTokenLong != null) {
+                pageListShorts.add(pageTokenLong)
+            }
+            pageIdxLong++
+
             Timber.tag("test").d("result= %s", result)
             if( result?.pageInfo?.totalResults!! > 0 ) {
                 for(item in result.items!!){

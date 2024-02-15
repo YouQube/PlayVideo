@@ -44,7 +44,7 @@ class SearchListAdapter(searchListItems : MutableList<SearchListItem>) : Recycle
 //                }
 //            }
             tvUploader.setOnClickListener {
-                val intent = Intent(binding.root.context, ChannelDetailActivity::class.java)
+                val intent = Intent(binding.root.context,ChannelDetailActivity::class.java)
                 intent.putExtra("data",tvChaneelId.text.toString())
                 binding.root.context.startActivity(intent)
             }
