@@ -63,6 +63,7 @@
                         android:visibility="gone"
                         android:textColor="@color/themeColor3"
                         android:textSize="18sp"
+                        android:background="@color/themeColor1"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@id/channel_container"
                         app:layout_constraintEnd_toEndOf="@id/channel_container"
@@ -123,7 +124,7 @@
         android:id="@+id/lottie_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@color/themeColor1"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/lottie_loading_box" />
