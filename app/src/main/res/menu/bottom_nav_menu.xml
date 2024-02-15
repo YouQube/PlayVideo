@@ -20,10 +20,5 @@
         android:icon="@drawable/ic_library"
         android:title="@string/main_tab_title_library" />
 
-    <item
-        android:id="@+id/searchFragment"
-        android:icon="@drawable/ic_launcher_background"
-        android:title="@string/main_tab_title_search" />
-
 
 </menu>

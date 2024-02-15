@@ -46,9 +46,6 @@ class MainActivity : AppCompatActivity() {
         MainTabHolder(
             fragment = LibraryFragment.newInstance(), title = R.string.main_tab_title_library
         ),
-        MainTabHolder(
-            fragment = SearchFragment.newInstance(), title = R.string.main_tab_title_search
-        ),
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
