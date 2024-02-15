@@ -32,8 +32,8 @@ class SubscriptionViewModel(
     private val _mediaData = MutableLiveData<List<SubscribedChannelModel>>(
         listOf(
             SubscribedChannelModel(channelId = "UChbZEmY6uHbTRHxu5g--c7Q"),  // 일타쿠마
-//            SubscribedChannelModel(channelId = "UC0VR2v4TZeGcOrZHnmwbU_Q"),  // 육식맨
-//            SubscribedChannelModel(channelId = "UCg86gCCgZGWkoHk8c015cQQ"),  // 떼잉
+            SubscribedChannelModel(channelId = "UC0VR2v4TZeGcOrZHnmwbU_Q"),  // 육식맨
+            SubscribedChannelModel(channelId = "UCg86gCCgZGWkoHk8c015cQQ"),  // 떼잉
 //        SubscribedChannelItem(channelId = "UCY2uWQDCzn_ZE-JpTfDRR2A"),  // 입질의 추억
 //        SubscribedChannelItem(channelId = "UCvW8norVMTLt7QN-s2pS4Bw"),  // 조승연의 탐구생활
         )
