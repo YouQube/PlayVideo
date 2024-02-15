@@ -17,7 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.brandon.playvideo_app.R
 import com.brandon.playvideo_app.databinding.LibraryFragmentBinding
-import com.brandon.playvideo_app.ui.detail.VideoDetailFragment
+import com.brandon.playvideo_app.ui.library.adapter.EditProfileAdapter
 import com.brandon.playvideo_app.ui.library.adapter.LibraryChannelAdapter
 import com.brandon.playvideo_app.ui.library.adapter.LibraryVideoAdapter
 import com.brandon.playvideo_app.viewmodel.LibraryChannelViewModel
@@ -25,24 +25,24 @@ import com.brandon.playvideo_app.viewmodel.LibraryVideoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-
 import java.io.ByteArrayOutputStream
 
 @AndroidEntryPoint
 class LibraryFragment : Fragment() {
 
-    private var _binding : LibraryFragmentBinding? = null
+    private var _binding: LibraryFragmentBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var libraryVideoAdapter: LibraryVideoAdapter
     private lateinit var libraryChannelAdapter: LibraryChannelAdapter
+//    private lateinit var adapter: EditProfileAdapter
 
     private val videoViewModel by viewModels<LibraryVideoViewModel>()
 
     private val channelViewModel by viewModels<LibraryChannelViewModel>()
 
     private val sharedPreferences by lazy {
-        requireContext().getSharedPreferences("sp", Context.MODE_PRIVATE)
+        requireContext().getSharedPreferences(KEY_PREFS, Context.MODE_PRIVATE)
     }
 
     companion object {
@@ -52,10 +52,14 @@ class LibraryFragment : Fragment() {
                 arguments = Bundle().apply {
                 }
             }
+
+        const val KEY_PREFS = "profile_setting"
+        const val EXTRA_STORE_PROFILE_IMAGE = "storeProfileImage"
     }
 
     override fun onResume() {
         super.onResume()
+        loadUserProfile()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +68,7 @@ class LibraryFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         // Inflate the layout for this fragment
         _binding = LibraryFragmentBinding.inflate(inflater, container, false)
@@ -85,6 +89,26 @@ class LibraryFragment : Fragment() {
         }
 
         binding.ivEditProfile.setOnClickListener {
+//            adapter = EditProfileAdapter(this)
+////            val userInfo = adapter.getInfo()
+//            val userProfileImage = adapter.getImageInfo()
+////            val editProfile = EditProfileFragment(userInfo, userProfileImage)
+//            val editProfile = EditProfileFragment(userProfileImage)
+////            val editProfile = EditProfileFragment()
+//            editProfile.okClick = object: OkClick {
+//                override fun onClick(profileImage: Drawable, name: String, description: String) {
+//                    adapter.editInfo(profileImage, name, description)
+//                }
+//            }
+//            editProfile.show(
+//                requireActivity().supportFragmentManager, "EditProfile"
+//            )
+//            val fragment: Fragment
+//            val bundle = Bundle()
+//            fragment = EditProfileFragment()
+//            fragment.arguments = bundle
+//
+//            replaceFragment(fragment, true)
             val intent = Intent(activity, EditProfileActivity::class.java)
             startActivity(intent)
         }
@@ -96,7 +120,7 @@ class LibraryFragment : Fragment() {
             val fragment: Fragment
             val bundle = Bundle()
             bundle.putInt(getString(R.string.videoID), videosId)
-            fragment = VideoDetailFragment.newInstance()
+            fragment = LibraryVideoDetailFragment()
             fragment.arguments = bundle
 
             replaceFragment(fragment, true)
@@ -133,8 +157,10 @@ class LibraryFragment : Fragment() {
         videoList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         videoList.adapter = libraryVideoAdapter
 
-        libraryChannelAdapter = LibraryChannelAdapter().apply { setOnClickListener(onChannelClicked) }
-        channelList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        libraryChannelAdapter =
+            LibraryChannelAdapter().apply { setOnClickListener(onChannelClicked) }
+        channelList.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         channelList.adapter = libraryChannelAdapter
     }
 
@@ -142,12 +168,12 @@ class LibraryFragment : Fragment() {
 
         val fragmentTransition = requireActivity().supportFragmentManager.beginTransaction()
 
-        if (isTransition) {
-            fragmentTransition.setCustomAnimations(
-                android.R.anim.slide_out_right,
-                android.R.anim.slide_in_left
-            )
-        }
+//        if (isTransition) {
+//            fragmentTransition.setCustomAnimations(
+//                android.R.anim.slide_out_right,
+//                android.R.anim.slide_in_left
+//            )
+//        }
         fragmentTransition.replace(R.id.nav_host_fragment_activity_main, fragment)
             .addToBackStack(fragment.javaClass.simpleName)
         fragmentTransition.commit()
@@ -162,12 +188,21 @@ class LibraryFragment : Fragment() {
         saveUserProfile(profileImage, name, description)
     }
 
-    fun giveData(): List<String> {
-        return listOf(
-            binding.tvProfileName.text.toString(),
-            binding.tvProfileDescription.text.toString()
-        )
-    }
+//    fun giveData(): List<String> {
+//        return if (giveData().isNullOrEmpty()) {
+//            val emptyName = ""
+//            val emptyDescription = ""
+//            listOf(
+//                emptyName,
+//                emptyDescription
+//            )
+//        } else {
+//            listOf(
+//                binding.tvProfileName.text.toString(),
+//                binding.tvProfileDescription.text.toString()
+//            )
+//        }
+//    }
 
     fun giveImageData(): Drawable {
         return binding.ivEditProfile.drawable
@@ -175,19 +210,24 @@ class LibraryFragment : Fragment() {
 
     private fun saveUserProfile(profileImage: Drawable, name: String, description: String) {
         val stream = ByteArrayOutputStream()
-        profileImage.toBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream) // Drawable을 Bitmap으로 변환
+        profileImage.toBitmap()
+            .compress(Bitmap.CompressFormat.PNG, 100, stream) // Drawable을 Bitmap으로 변환
         val byteArray = stream.toByteArray()
         val editor = sharedPreferences.edit()
-        editor.putString("storeProfileImage", Base64.encodeToString(byteArray, Base64.DEFAULT)) // Bitmap을 Base64 문자열로 인코딩
+        editor.putString(
+            EXTRA_STORE_PROFILE_IMAGE,
+            Base64.encodeToString(byteArray, Base64.DEFAULT)
+        ) // Bitmap을 Base64 문자열로 인코딩
         editor.putString("name", name)
         editor.putString("description", description)
         editor.apply()
     }
 
     private fun loadUserProfile() {
-        val storedProfileImage = sharedPreferences.getString("storeProfileImage", "")
+        val storedProfileImage = sharedPreferences.getString(EXTRA_STORE_PROFILE_IMAGE, "")
         if (storedProfileImage != "") {
-            val byteArray = Base64.decode(storedProfileImage, Base64.DEFAULT) // Base64 문자열을 Bitmap으로 디코딩
+            val byteArray =
+                Base64.decode(storedProfileImage, Base64.DEFAULT) // Base64 문자열을 Bitmap으로 디코딩
             val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
             with(binding) {
                 ivEditProfile.setImageBitmap(bitmap) // Bitmap을 이용해 이미지 띄우기

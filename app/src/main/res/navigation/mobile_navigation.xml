@@ -31,7 +31,7 @@
         android:label="trend_fragment"
         tools:layout="@layout/trend_fragment" />
     <fragment
-        android:id="@+id/videoDetailFragment"
+        android:id="@+id/libraryVideoDetailFragment"
         android:name="com.brandon.playvideo_app.ui.detail.video.VideoDetailFragment"
         android:label="detail_video_fragment"
         tools:layout="@layout/detail_video_fragment" />

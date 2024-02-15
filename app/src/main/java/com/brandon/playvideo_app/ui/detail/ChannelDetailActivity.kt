@@ -79,10 +79,11 @@ class ChannelDetailActivity: AppCompatActivity() {
                     for (item in result?.items!!){
                         val title = item.snippet?.title
                         val uploader = item.snippet?.channelTitle
+                        val description = item.snippet?.description
                         val url = item.snippet?.thumbnails?.default?.url
                         val videoCount =  item.contentDetails?.itemCount.toString()
 
-                        playlists.add(SearchListItem(title,uploader,null,url,false,videoCount,null))
+                        playlists.add(SearchListItem(title,uploader,null,url,description, false,videoCount,null))
                     }
                 }
 
@@ -108,10 +109,11 @@ class ChannelDetailActivity: AppCompatActivity() {
                     for (item in result?.items!!){
                         val title = item.snippet?.title
                         val uploader = item.snippet?.channelTitle
+                        val description = item.snippet?.description
                         val url = item.snippet?.thumbnails?.default?.url
 
                         videoIds.add((item.id?.videoId))
-                        shorts.add(SearchListItem(title,uploader,null,url,false,"0",0))
+                        shorts.add(SearchListItem(title,uploader,null,url,description, false,"0",0))
                     }
                 }
                 val shortResult = getViewCount(videoIds)
@@ -145,10 +147,11 @@ class ChannelDetailActivity: AppCompatActivity() {
                     for(item in result.items!!){
                         val title = item.snippet?.title
                         val uploader = item.snippet?.channelTitle
+                        val description = item.snippet?.description
                         val url = item.snippet?.thumbnails?.default?.url
 
                         videoIds.add(item.id?.videoId)
-                        video.add(SearchListItem(title,uploader,0,url!!,false,"0",0))
+                        video.add(SearchListItem(title,uploader,0,url!!,description,false,"0",0))
 
                     }
                 }

@@ -8,6 +8,7 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.brandon.playvideo_app.R
 import com.brandon.playvideo_app.databinding.CategoryFragmentBinding
@@ -78,7 +79,8 @@ class CategoryFragment : Fragment() {
             recyclerviewChannelsByCategory.apply {
                 adapter = channelAdapter
                 layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            GridLayoutManager(context,2)
+            //LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
         }
     }
@@ -120,7 +122,7 @@ class CategoryFragment : Fragment() {
         with(binding) {
             tvChannelByCategory.isVisible = state
             constraintLayoutCategoryFragment.isVisible = !state
-            ivCategoryLogo.isVisible = state
+            //ivCategoryLogo.isVisible = state
         }
     }
 

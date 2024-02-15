@@ -9,6 +9,7 @@ import com.brandon.playvideo_app.databinding.ItemVideoLibraryBinding
 import com.brandon.playvideo_app.databinding.RvitemSearchListBinding
 import com.brandon.playvideo_app.model.SearchListItem
 import com.brandon.playvideo_app.ui.detail.ChannelDetailActivity
+import com.brandon.playvideo_app.util.Converter
 import com.bumptech.glide.Glide
 
 
@@ -30,6 +31,7 @@ class SearchListAdapter(searchListItems : MutableList<SearchListItem>) : Recycle
         val tvPlayTime = binding.tvSearchAmount
         val ivThumbnail = binding.ivSearchThumbnail
         val clThumbnail = binding.clSearchItem
+        val originViews = binding.originViews
 
         init {
             ivThumbnail.setOnClickListener(this)
@@ -79,7 +81,8 @@ class SearchListAdapter(searchListItems : MutableList<SearchListItem>) : Recycle
 
         holder.tvTitle.text = items[position].title
         holder.tvUploader.text = items[position].uploader
-        holder.tvViews.text = items[position].viewCount.toString()
+        holder.tvViews.text = Converter.formatViews(items[position].viewCount)
+        holder.originViews.text = items[position].viewCount.toString()
         holder.tvPlayTime.text = items[position].videoCount
 
         Glide.with(holder.itemView)

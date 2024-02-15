@@ -12,8 +12,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import java.util.concurrent.Executors
 import javax.inject.Singleton
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -37,7 +37,6 @@ object MainModule {
                     db.execSQL("insert into channels (id, channelId, channelTitle, description, url) values (4, ' @ddolddolddol', '똘똘똘이의 유튜브', '팬샵 #국밥 #볶음밥 똘똘똘이 마트 :: https://ddol.fanshop.me/ ', 'https://yt3.googleusercontent.com/ytc/AIf8zZQq8riv-JZ5QK0PzGIbnPcC5SvM6gcJ0flexNwH=s176-c-k-c0x00ffffff-no-rj-mo');")
                     db.execSQL("insert into channels (id, channelId, channelTitle, description, url) values (5, '@hanyeseul', '한예슬 is', '한예슬의 무엇이든 물어보슬\uD83D\uDD2E', 'https://yt3.ggpht.com/lkUkWXjhf7KiLf6VlIblJGDAiL6mFoHIOHa7Z54O6NoKdmvS8hSI2J8ZxqhlUHvuUoUNVwte4Qs=s176-c-k-c0x00ffffff-no-rj-mo');")
                 }
-
             })
             .build()
 

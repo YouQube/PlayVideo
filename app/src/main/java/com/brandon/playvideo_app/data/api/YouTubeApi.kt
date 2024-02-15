@@ -1,11 +1,10 @@
 package com.brandon.playvideo_app.data.api
 
 import com.brandon.playvideo_app.data.model.CategoryVideoModel
-import com.brandon.playvideo_app.data.model.PlaylistsItem
 import com.brandon.playvideo_app.data.model.PlaylistsResponse
 import com.brandon.playvideo_app.data.model.YoutubeChannelResponse
-import com.brandon.playvideo_app.data.model.YoutubeVideoResponse
 import com.brandon.playvideo_app.data.model.YoutubeSearchResponse
+import com.brandon.playvideo_app.data.model.YoutubeVideoResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

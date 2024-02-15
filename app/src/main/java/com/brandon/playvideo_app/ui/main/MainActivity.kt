@@ -19,6 +19,7 @@ import com.brandon.playvideo_app.ui.subscription.SubscriptionFragment
 import com.brandon.playvideo_app.ui.trend.TrendFragment
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import kotlin.text.Typography.dagger
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
