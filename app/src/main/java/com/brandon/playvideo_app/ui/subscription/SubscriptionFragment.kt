@@ -163,6 +163,12 @@ class SubscriptionFragment : Fragment() {
             when (menuItem.itemId) {
                 R.id.search -> {
                     Timber.d("Search Item Clicked!")
+                    val searchFragment = SearchFragment.newInstance()
+                    requireActivity().supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.nav_host_fragment_activity_main, searchFragment)
+                        addToBackStack(null)
+                        commit()
+                    }
                     true
                 }
 
