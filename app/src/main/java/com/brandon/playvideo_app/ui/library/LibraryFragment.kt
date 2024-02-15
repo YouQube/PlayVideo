@@ -17,9 +17,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.brandon.playvideo_app.R
 import com.brandon.playvideo_app.databinding.LibraryFragmentBinding
+import com.brandon.playvideo_app.databinding.ToolbarCommonBinding
 import com.brandon.playvideo_app.ui.detail.VideoDetailFragment
 import com.brandon.playvideo_app.ui.library.adapter.LibraryChannelAdapter
 import com.brandon.playvideo_app.ui.library.adapter.LibraryVideoAdapter
+import com.brandon.playvideo_app.ui.search.SearchFragment
 import com.brandon.playvideo_app.viewmodel.LibraryChannelViewModel
 import com.brandon.playvideo_app.viewmodel.LibraryVideoViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -86,6 +88,24 @@ class LibraryFragment : Fragment() {
         binding.ivEditProfile.setOnClickListener {
             val intent = Intent(activity, EditProfileActivity::class.java)
             startActivity(intent)
+        }
+
+        val toolbarBinding = ToolbarCommonBinding.bind(view.findViewById(R.id.included_tool_bar))
+        toolbarBinding.toolbarCommon.inflateMenu(R.menu.common_tool_bar_menu)
+        toolbarBinding.toolbarCommon.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.search -> {
+                    val searchFragment = SearchFragment.newInstance()
+                    requireActivity().supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.nav_host_fragment_activity_main, searchFragment)
+                        addToBackStack(null)
+                        commit()
+                    }
+                    true
+                }
+
+                else -> false
+            }
         }
 
     }
