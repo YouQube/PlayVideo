@@ -30,6 +30,7 @@ class SearchListAdapter(searchListItems : MutableList<SearchListItem>) : Recycle
         val tvPlayTime = binding.tvSearchAmount
         val ivThumbnail = binding.ivSearchThumbnail
         val clThumbnail = binding.clSearchItem
+        val tvChaneelId = binding.tvChannelId
 
         init {
             ivThumbnail.setOnClickListener(this)
@@ -40,6 +41,11 @@ class SearchListAdapter(searchListItems : MutableList<SearchListItem>) : Recycle
 //                    listener.onClicked(position)
 //                }
 //            }
+            tvUploader.setOnClickListener {
+                val intent = Intent(binding.root.context, ChannelDetailActivity::class.java)
+                intent.putExtra("data",tvChaneelId.text.toString())
+                binding.root.context.startActivity(intent)
+            }
         }
 
         // 아이템 클릭 이벤트 처리
@@ -53,13 +59,6 @@ class SearchListAdapter(searchListItems : MutableList<SearchListItem>) : Recycle
             notifyItemChanged(position)
         }
 
-
-        init {
-            tvUploader.setOnClickListener {
-                val intent = Intent(binding.root.context, ChannelDetailActivity::class.java)
-                binding.root.context.startActivity(intent)
-            }
-        }
     }
 
     fun setOnClickListener(listener1: OnItemClickListener) {
@@ -81,6 +80,7 @@ class SearchListAdapter(searchListItems : MutableList<SearchListItem>) : Recycle
         holder.tvUploader.text = items[position].uploader
         holder.tvViews.text = Converter.formatViews(items[position].viewCount)
         holder.tvPlayTime.text = items[position].videoCount
+        holder.tvChaneelId.text = items[position].channelId
 
         Glide.with(holder.itemView)
             .load(items[position].thumbnail)
